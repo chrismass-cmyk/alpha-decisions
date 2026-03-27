@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MacKenzie's Copy Decisions — Alpha Schools</title>
+<style>
+  :root {
+    --navy: #1F3864; --navy-light: #2d4f8a; --gold: #C9A84C; --gold-light: #f0d080;
+    --red: #C00000; --amber: #E8A838; --green: #375623; --green-light: #E2EFDA;
+    --soft-red: #FFC7CE; --bg: #F7F6F3; --white: #ffffff; --border: #D8D4CC;
+    --text: #1a1a1a; --muted: #666; --edit-ring: #E8A838;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+
+  /* ── HEADER ── */
+  .site-header { background: var(--navy); color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+  .header-inner { max-width: 900px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .header-title { font-family: Arial, sans-serif; font-size: 17px; font-weight: 700; }
+  .header-subtitle { font-family: Arial, sans-serif; font-size: 11px; color: rgba(255,255,255,.7); margin-top: 2px; }
+  .progress-wrap { flex: 1; min-width: 140px; }
+  .progress-label { font-family: Arial, sans-serif; font-size: 11px; color: rgba(255,255,255,.8); margin-bottom: 4px; text-align: right; }
+  .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 2px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { background: var(--gold); height: 100%; border-radius: 2px; transition: width .3s; width: 0%; }
+  .hbtn { border: none; padding: 8px 14px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 3px; letter-spacing: .04em; white-space: nowrap; transition: background .15s, color .15s; }
+  .hbtn-gold { background: var(--gold); color: var(--navy); }
+  .hbtn-gold:hover { background: var(--gold-light); }
+  .hbtn-amber { background: var(--amber); color: #1a1a1a; }
+  .hbtn-amber:hover { background: #f5bc50; }
+  .hbtn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,.4); }
+  .hbtn-outline:hover { background: rgba(255,255,255,.1); }
+  .edit-mode-bar { background: var(--amber); color: #1a1a1a; text-align: center; padding: 7px 24px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .03em; display: none; }
+  .edit-mode-bar.show { display: block; }
+
+  /* ── INTRO ── */
+  .intro-banner { background: white; border-bottom: 3px solid var(--gold); padding: 18px 24px; }
+  .intro-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: flex-start; gap: 20px; }
+  .intro-text h2 { font-family: Arial, sans-serif; font-size: 16px; color: var(--navy); margin-bottom: 5px; }
+  .intro-text p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .intro-stats { background: var(--navy); color: white; padding: 10px 16px; border-radius: 3px; font-family: Arial, sans-serif; font-size: 12px; white-space: nowrap; text-align: center; min-width: 110px; }
+  .intro-stats .big-num { font-size: 28px; font-weight: 700; color: var(--gold); display: block; line-height: 1; }
+
+  /* ── MAIN ── */
+  .main { max-width: 900px; margin: 0 auto; padding: 28px 24px 80px; }
+
+  /* ── CATEGORY ── */
+  .cat-block { margin-bottom: 36px; }
+  .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--navy); }
+  .category-icon { width: 32px; height: 32px; background: var(--navy); color: white; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 2px; }
+  .cat-title-text { font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: var(--navy); letter-spacing: .07em; text-transform: uppercase; }
+  .cat-count { font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); margin-left: auto; }
+  .cat-edit-controls { display: none; gap: 6px; margin-left: 8px; }
+  .is-editing .cat-edit-controls { display: flex; }
+
+  /* ── QUESTION CARD ── */
+  .q-card { background: white; border: 1px solid var(--border); border-left: 4px solid var(--border); margin-bottom: 12px; transition: border-left-color .2s, box-shadow .2s; position: relative; }
+  .q-card.answered { border-left-color: var(--green); box-shadow: 0 1px 4px rgba(55,86,35,.12); }
+  .q-card.conflict { border-left-color: var(--amber); }
+  .q-card.conflict.answered { border-left-color: var(--green); }
+  .is-editing .q-card { border-style: dashed; border-color: var(--amber); border-left-color: var(--amber); border-left-width: 4px; }
+  .is-editing .q-card.answered { border-left-color: var(--amber); }
+
+  .q-header { padding: 13px 16px 9px; display: flex; align-items: flex-start; gap: 10px; }
+  .q-number { font-family: Arial, sans-serif; font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: .05em; padding-top: 3px; min-width: 26px; }
+  .q-title-wrap { flex: 1; }
+  .q-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: 700; color: var(--navy); line-height: 1.35; margin-bottom: 3px; }
+  .q-context { font-size: 12px; color: var(--muted); font-family: Arial, sans-serif; line-height: 1.45; }
+  .sources { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+  .source-tag { background: #eee; color: #555; font-size: 10px; font-family: Arial, sans-serif; padding: 1px 6px; border-radius: 2px; }
+  .source-tag.conflict-tag { background: #FFF3CD; color: #7D6608; }
+  .q-status-icon { font-size: 16px; padding-top: 1px; flex-shrink: 0; }
+
+  /* ── OPTIONS (answer mode) ── */
+  .q-options { padding: 2px 16px 14px 52px; }
+  .option-row { display: flex; align-items: flex-start; gap: 10px; padding: 7px 9px; margin-bottom: 3px; cursor: pointer; border: 1px solid transparent; border-radius: 2px; transition: background .1s, border-color .1s; }
+  .option-row:hover { background: #f5f3ef; }
+  .option-row.selected { background: var(--green-light); border-color: #b5d49a; }
+  .option-row input[type="radio"] { margin-top: 3px; accent-color: var(--green); flex-shrink: 0; }
+  .option-label { font-family: Arial, sans-serif; font-size: 13px; line-height: 1.4; cursor: pointer; }
+  .option-key { font-weight: 700; color: var(--navy); font-family: 'Courier New', monospace; font-size: 13px; }
+  .option-note { color: var(--muted); font-size: 11px; display: block; margin-top: 1px; }
+
+  /* ── WRITE-IN ── */
+  .write-in-wrap { padding: 0 16px 6px 52px; }
+  .field-label { font-family: Arial, sans-serif; font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: .04em; margin-bottom: 3px; text-transform: uppercase; }
+  .write-in-input, .notes-input { width: 100%; border: 1px solid var(--border); padding: 6px 9px; font-family: Arial, sans-serif; font-size: 13px; color: var(--text); background: white; border-radius: 2px; outline: none; transition: border-color .15s; }
+  .write-in-input:focus, .notes-input:focus { border-color: var(--navy); }
+  .notes-wrap { padding: 0 16px 13px 52px; }
+  .notes-input { background: #fafaf8; resize: vertical; min-height: 50px; font-size: 12px; }
+
+  /* ── CONFLICT BADGE ── */
+  .conflict-badge { display: inline-flex; align-items: center; gap: 3px; background: #FFF3CD; border: 1px solid #f0d080; color: #7D5A00; font-family: Arial, sans-serif; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 2px; margin-left: 8px; vertical-align: middle; }
+
+  /* ── EDIT MODE OVERLAYS ── */
+  .edit-toolbar { display: none; position: absolute; top: 8px; right: 8px; gap: 4px; }
+  .is-editing .edit-toolbar { display: flex; }
+  .etb { background: white; border: 1px solid var(--border); color: var(--muted); font-size: 10px; font-family: Arial, sans-serif; font-weight: 700; padding: 3px 7px; cursor: pointer; border-radius: 2px; white-space: nowrap; }
+  .etb:hover { background: #f0ede8; color: var(--text); }
+  .etb.danger { color: var(--red); }
+  .etb.danger:hover { background: var(--soft-red); }
+  .etb.active { background: #FFF3CD; border-color: var(--amber); color: #7D5A00; }
+
+  /* editable text in edit mode */
+  .is-editing [contenteditable="true"] {
+    outline: none;
+    background: rgba(232, 168, 56, 0.1);
+    border-radius: 2px;
+    padding: 1px 3px;
+    cursor: text;
+    min-width: 30px;
+    display: inline-block;
+  }
+  .is-editing [contenteditable="true"]:focus {
+    background: rgba(232, 168, 56, 0.22);
+    box-shadow: 0 0 0 2px var(--amber);
+  }
+  .is-editing [contenteditable="true"]:empty::before {
+    content: attr(data-placeholder);
+    color: #aaa;
+    font-style: italic;
+  }
+  .is-editing [contenteditable="true"].block-editable {
+    display: block;
+    width: 100%;
+  }
+
+  /* edit-mode option row */
+  .option-edit-row { display: none; align-items: flex-start; gap: 6px; padding: 5px 7px; margin-bottom: 3px; border: 1px dashed var(--amber); background: #fffdf5; border-radius: 2px; }
+  .is-editing .option-edit-row { display: flex; }
+  .is-editing .option-row { display: none; } /* hide answer radios in edit mode */
+  .opt-key-input { width: 28px; border: 1px solid var(--border); padding: 4px 5px; font-family: 'Courier New', monospace; font-size: 12px; font-weight: 700; text-align: center; background: white; border-radius: 2px; flex-shrink: 0; }
+  .opt-text-wrap { flex: 1; }
+  .opt-label-edit { font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: var(--navy); display: block; width: 100%; min-height: 20px; }
+  .opt-note-edit { font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); display: block; width: 100%; min-height: 16px; margin-top: 2px; }
+  .opt-custom-toggle { font-family: Arial, sans-serif; font-size: 10px; cursor: pointer; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 3px; margin-top: 2px; }
+  .opt-custom-toggle input { accent-color: var(--navy); }
+  .opt-del-btn { color: var(--red); font-size: 14px; cursor: pointer; line-height: 1; padding: 2px 4px; font-family: Arial, sans-serif; flex-shrink: 0; border: none; background: none; }
+  .opt-del-btn:hover { background: var(--soft-red); border-radius: 2px; }
+
+  /* source editing */
+  .source-edit-wrap { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; align-items: center; }
+  .source-editable { display: flex; align-items: center; gap: 2px; background: #eee; padding: 1px 3px 1px 6px; border-radius: 2px; font-size: 10px; font-family: Arial, sans-serif; }
+  .source-editable span { outline: none; min-width: 20px; }
+  .source-editable span:focus { background: #fff; }
+  .source-del { color: var(--red); cursor: pointer; font-size: 11px; border: none; background: none; line-height: 1; padding: 0 2px; }
+  .add-source-btn { font-size: 10px; font-family: Arial, sans-serif; background: none; border: 1px dashed #bbb; color: var(--muted); padding: 2px 6px; cursor: pointer; border-radius: 2px; }
+  .add-source-btn:hover { background: #f0ede8; }
+
+  /* add buttons in edit mode */
+  .add-opt-btn { display: none; margin: 4px 0 10px 52px; background: none; border: 1px dashed var(--amber); color: var(--amber); font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 5px 12px; cursor: pointer; border-radius: 2px; }
+  .add-opt-btn:hover { background: #fffbf0; }
+  .is-editing .add-opt-btn { display: inline-block; }
+  .add-q-btn { display: none; width: 100%; background: none; border: 2px dashed var(--amber); color: #7D5A00; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; padding: 10px; cursor: pointer; border-radius: 2px; margin-top: 6px; text-align: center; }
+  .add-q-btn:hover { background: #fffbf0; }
+  .is-editing .add-q-btn { display: block; }
+
+  /* move up/down */
+  .move-btns { display: flex; gap: 2px; }
+
+  /* ── COMPLETE BANNER ── */
+  .complete-banner { background: var(--navy); color: white; text-align: center; padding: 28px 24px; margin-top: 28px; display: none; }
+  .complete-banner.show { display: block; }
+  .complete-banner h3 { font-family: Arial, sans-serif; font-size: 20px; margin-bottom: 7px; color: var(--gold); }
+  .complete-banner p { font-size: 13px; color: rgba(255,255,255,.8); margin-bottom: 14px; }
+  .complete-btn { background: var(--gold); color: var(--navy); border: none; padding: 10px 26px; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; border-radius: 3px; }
+
+  /* ── MODAL ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 200; display: none; align-items: center; justify-content: center; padding: 24px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; max-width: 720px; width: 100%; max-height: 80vh; display: flex; flex-direction: column; border-top: 4px solid var(--navy); box-shadow: 0 8px 40px rgba(0,0,0,.3); }
+  .modal-header { padding: 16px 22px; background: var(--navy); color: white; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .modal-header h3 { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+  .modal-close { background: none; border: none; color: white; font-size: 22px; cursor: pointer; opacity: .7; }
+  .modal-close:hover { opacity: 1; }
+  .modal-body { padding: 18px 22px; overflow-y: auto; flex: 1; }
+  .export-section { margin-bottom: 18px; }
+  .export-section h4 { font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 9px; }
+  .export-row { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid #f0ede8; font-family: Arial, sans-serif; font-size: 12px; }
+  .export-row:last-child { border-bottom: none; }
+  .export-q { font-weight: 700; color: var(--navy); flex: 1; min-width: 180px; }
+  .export-a { color: var(--green); font-weight: 700; flex: 1; }
+  .export-a.unanswered { color: #aaa; font-style: italic; font-weight: normal; }
+  .export-note { color: var(--muted); font-size: 11px; flex: 1; }
+  .modal-footer { padding: 12px 22px; background: #f7f6f3; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; flex-shrink: 0; }
+  .btn-copy { background: var(--navy); color: white; border: none; padding: 8px 16px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 3px; }
+  .btn-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: 8px 16px; font-family: Arial, sans-serif; font-size: 12px; cursor: pointer; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div>
+      <div class="header-title">Alpha Schools — Copy Decisions</div>
+      <div class="header-subtitle">MacKenzie Price &nbsp;·&nbsp; Style Guide Final Answers</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label" id="progressLabel">0 of 21 answered</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
+    </div>
+    <button class="hbtn hbtn-outline" id="editToggleBtn" onclick="toggleEditMode()">✏ Edit Questions</button>
+    <button class="hbtn hbtn-amber" id="downloadBtn" onclick="downloadPage()" style="display:none">⬇ Save Page</button>
+    <button class="hbtn hbtn-gold" onclick="openModal()">Export Decisions ↓</button>
+  </div>
+</header>
+<div class="edit-mode-bar" id="editModeBar">
+  ✏ EDIT MODE — Click any text to change it. Use the controls on each card to add/remove questions and options. Click "Save Page" to download the updated file.
+</div>
+
+<div class="intro-banner">
+  <div class="intro-inner">
+    <div class="intro-text">
+      <h2>Your final word on open copy questions</h2>
+      <p>These questions came from research across alpha.school, 2hourlearning.com, GT School, Texas Sports Academy, meeting notes, and internal docs. Sources often conflict. Your answers update the copy editor reference guide.</p>
+    </div>
+    <div class="intro-stats">
+      <span class="big-num" id="answeredCount">0</span>
+      of <span id="totalCount">21</span> answered
+    </div>
+  </div>
+</div>
+
+<main class="main" id="mainContent"></main>
+
+<div class="complete-banner" id="completeBanner">
+  <h3>All decisions made.</h3>
+  <p>Export your answers to share with the copy editing team.</p>
+  <button class="complete-btn" onclick="openModal()">Export Final Decisions</button>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>MacKenzie's Copy Decisions — Export</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Close</button>
+      <button class="btn-copy" onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+let categories = [
+  {
+    id:"spelling", icon:"Aa", title:"Spelling & Capitalization",
+    questions:[
+      { id:"timeback", title:'"TimeBack" or "Time Back"?', conflict:true,
+        context:'Messaging Framework (Nov 2025) and Terminology Guide (Mar 2026) write it as one word: "TimeBack." A Feb 2026 meeting note says two words: "Time Back." These may refer to different things (software product vs. concept).',
+        sources:["Messaging Framework","Terminology Guide","Meeting Note 2/18/26"],
+        options:[
+          {key:"A",label:'"TimeBack"',note:"One word, camelCase — the software/platform product name"},
+          {key:"B",label:'"Time Back"',note:"Two words, both capitalized — as written in meeting notes"},
+          {key:"C",label:"Both correct in different contexts",note:"TimeBack = the app; Time Back = the concept in copy"},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"guide_cap", title:'Capitalizing "guide" / "guides"', conflict:true,
+        context:'Meeting notes say do not capitalize — same rule as "teacher." But alpha.school website and the Visual Style Guide both use "Guides" (capital G). Which is correct?',
+        sources:["Meeting Note 10/29/25","alpha.school website","Visual Style Guide"],
+        options:[
+          {key:"A",label:'Always lowercase: guide, guides',note:"Even in headings and pull quotes"},
+          {key:"B",label:'Lowercase in body text; Title Case in headings',note:"guide in a paragraph; Guide in a headline or card"},
+          {key:"C",label:'Always Title Case: Guide, Guides',note:"It is a proper role title, like Doctor or Coach"},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"session_cap", title:'Capitalizing "Session"', conflict:false,
+        context:'Meeting notes say capitalize when referring to a specific numbered session. Does this apply only to numbered references, or more broadly?',
+        sources:["Meeting Note 12/10/25","Meeting Note 2/18/26"],
+        options:[
+          {key:"A",label:'Capitalize only numbered sessions: Session One, Session Two',note:'Generic use stays lowercase: "a session," "each session"'},
+          {key:"B",label:'Always capitalize Session when referring to any specific session',note:'Including non-numbered: "this Session," "the current Session"'},
+          {key:"C",label:'Never capitalize (always lowercase)',note:"session one, session two"}
+        ]
+      },
+      { id:"twox", title:'"2x" or "2X" — which form?', conflict:true,
+        context:'Sources use both. The Three Commitments use "2X." Some body copy uses "2x." The Messaging Framework uses "2×" (multiplication symbol). Is one form standard, or does it vary by context?',
+        sources:["alpha.school (2X)","2hourlearning.com (2x)","Messaging Framework (2×)"],
+        options:[
+          {key:"A",label:'"2X" always',note:"Uppercase X — matches Three Commitments treatment"},
+          {key:"B",label:'"2x" always',note:"Lowercase x — more common in informal/body copy"},
+          {key:"C",label:'Context-dependent: 2X in headlines; 2x in body text',note:""},
+          {key:"D",label:'"2×" (the multiplication symbol ×)',note:"As used in the internal docs"}
+        ]
+      },
+      { id:"test2pass", title:'"Test2Pass" or "Test 2 Pass"?', conflict:true,
+        context:'MacKenzie\'s Substack and the alpha.school blog write it as one word: "Test2Pass." Instagram uses "Test 2 Pass" with spaces. This is an internal assessment tool name — the spelling affects signage, app labels, and any parent-facing mentions.',
+        sources:["MacKenzie Substack (Test2Pass)","alpha.school blog (Test2Pass)","Instagram (Test 2 Pass)"],
+        options:[
+          {key:"A",label:'"Test2Pass" — one word, always',note:"Matches Substack and blog usage"},
+          {key:"B",label:'"Test 2 Pass" — with spaces',note:"Matches Instagram usage"},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"wonderlab", title:'"WonderLab" or "Wonder Lab"?', conflict:true,
+        context:'Substack and Instagram use "WonderLab" (one word). The alpha.school website uses both forms — "Wonder Lab" in headers and "WonderLab" in blog text. Physical campus signage reads "WONDER LAB" (two words).',
+        sources:["Substack (WonderLab)","Instagram (WonderLab)","alpha.school website (both)","Campus signage (WONDER LAB)"],
+        options:[
+          {key:"A",label:'"WonderLab" — one word, capital W and capital L',note:""},
+          {key:"B",label:'"Wonder Lab" — two words',note:"Matches physical signage"},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"nextgen", title:'"NextGen Academy" or "Next Gen Academy"?', conflict:true,
+        context:'The 2hourlearning.com footer says "Next Gen Academy" (with space). The founder page body text says "NextGen Academy" (no space). This affects how it appears in bios, partner pages, and program descriptions.',
+        sources:["2hourlearning.com footer (Next Gen Academy)","Founder page body (NextGen Academy)"],
+        options:[
+          {key:"A",label:'"NextGen Academy" — no space',note:""},
+          {key:"B",label:'"Next Gen Academy" — with space',note:""},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"shadow_day", title:'"Shadow Day" (capitalized) vs. "shadows" (lowercase)', conflict:false,
+        context:'MacKenzie\'s Instagram uses lowercase "shadows" for a daily closing routine where students reflect on their day. But "Shadow Day" as a prospective family visit event appears to be a named program. Are these two different things that simply share a word?',
+        sources:["MacKenzie Instagram (shadows — daily routine)","Program calendar (Shadow Day — visitor event)"],
+        options:[
+          {key:"A",label:'"Shadow Day" (capitalized) for visitor days; "shadows" (lowercase) for the daily routine',note:"Two distinct uses of the same word"},
+          {key:"B",label:'Always lowercase "shadow day"',note:""},
+          {key:"C",label:'Always capitalize "Shadow Day"',note:""}
+        ]
+      }
+    ]
+  },
+  {
+    id:"terminology", icon:"T", title:"Terminology Choices",
+    questions:[
+      { id:"twice_much", title:'"Twice as much" vs. "twice as fast"', conflict:true,
+        context:'A Nov 2025 meeting note (Joe) says kids learn "twice as much" — not "twice as fast." But alpha.school homepage and 2hourlearning.com still say "twice as fast." Is this a universal rule?',
+        sources:["Meeting Note 11/19/25 (Joe)","alpha.school homepage","2hourlearning.com"],
+        options:[
+          {key:"A",label:'"Twice as much" — universal rule, never "twice as fast"',note:"Update all existing copy that says 'twice as fast'"},
+          {key:"B",label:'"Twice as much" preferred; "twice as fast" OK in time-saving context',note:"e.g., 'finish school twice as fast' when emphasizing time"},
+          {key:"C",label:"Both are fine interchangeably",note:""},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"life_skills", title:'"Life Skills" vs. "Real World Skills"', conflict:false,
+        context:'Meeting note says always "Life Skills," never "real world skills." Is this absolute?',
+        sources:["Meeting Note 10/29/25"],
+        options:[
+          {key:"A",label:'"Life Skills" — always, across all copy and campuses',note:""},
+          {key:"B",label:'"Life Skills" preferred; "real-world skills" OK in comparative context',note:""},
+          {key:"C",label:'TSA uses different terminology — confirm TSA-specific version',note:"e.g., 'athletic life skills' or athletic framing"}
+        ]
+      },
+      { id:"love_school", title:'"Love School" vs. "Love Learning"', conflict:false,
+        context:'Meeting notes say never "kids love learning" — wrong message. Always "kids love school" or "Love School." Is this universal?',
+        sources:["Meeting Note 10/29/25","Meeting Note 11/5/25"],
+        options:[
+          {key:"A",label:'"Love School" — always. Never "love learning."',note:""},
+          {key:"B",label:'"Love School" in marketing; "love learning" OK in educational content',note:""},
+          {key:"C",label:"Both acceptable",note:""}
+        ]
+      },
+      { id:"teacher", title:'Using "teacher" vs. "guide"', conflict:false,
+        context:'Meeting notes say avoid "teacher" entirely — Alpha uses "guides." But some contexts (competitive comparisons, parent familiarity) may call for the word.',
+        sources:["Meeting Note 3/18/26"],
+        options:[
+          {key:"A",label:"Never use 'teacher' in any external copy — always 'guide'",note:""},
+          {key:"B",label:"Avoid 'teacher'; OK in explicit comparisons like 'Unlike traditional teachers, our guides…'",note:""},
+          {key:"C",label:"Context-dependent — writer's call",note:""}
+        ]
+      },
+      { id:"info_sessions", title:'Replacing "Info Sessions"', conflict:false,
+        context:'Meeting notes say stop using "info sessions." Two replacements were proposed. Are both acceptable, or is one preferred?',
+        sources:["Meeting Note 1/28/26","Meeting Note 2/11/26"],
+        options:[
+          {key:"A",label:'"Parent Experience Sharing" — always',note:""},
+          {key:"B",label:'"Conversational Gatherings" — always',note:""},
+          {key:"C",label:"Both acceptable — use based on event format",note:""},
+          {key:"D",label:"A different term entirely",note:"",custom:true}
+        ]
+      },
+      { id:"summer", title:'Replacing "Summer Slide"', conflict:false,
+        context:'Meeting notes say avoid negative framing. Two positive alternatives were proposed.',
+        sources:["Meeting Note 2/18/26"],
+        options:[
+          {key:"A",label:'"Summer Surge" — always',note:""},
+          {key:"B",label:'"Launch Pad" — always',note:""},
+          {key:"C",label:"Both acceptable interchangeably",note:""},
+          {key:"D",label:"A different term",note:"",custom:true}
+        ]
+      },
+      { id:"lifeskills_one_two", title:'"LifeSkills" (one word) or "life skills" (two words)?', conflict:true,
+        context:'The internal Messaging Framework uses "LifeSkills" as one camelCase word — possibly treating it as a product/program name. Every external source (alpha.school, 2hourlearning.com, Substack, Instagram) uses "life skills" as two lowercase words. Is the Framework introducing a new standard, or is this an error in the Framework?',
+        sources:["Messaging Framework (LifeSkills — one word)","alpha.school, Substack, Instagram (life skills — two words)"],
+        options:[
+          {key:"A",label:'"LifeSkills" — one word, per the Messaging Framework',note:"Treat it as a branded program name"},
+          {key:"B",label:'"life skills" — two words, matching all external usage',note:"Framework is inconsistent with everything else"},
+          {key:"C",label:'"LifeSkills" for the program name; "life skills" as a general concept',note:"e.g., 'The LifeSkills program teaches life skills'"}
+        ]
+      },
+      { id:"alpha_school_plural", title:'"Alpha School" or "Alpha Schools"?', conflict:true,
+        context:'alpha.school consistently uses the singular. 2hourlearning.com and Instagram use both forms. MacKenzie\'s founder page bio says "Alpha Schools" (plural). The plural may refer to the network while singular refers to a single location.',
+        sources:["alpha.school (singular)","MacKenzie founder bio (Alpha Schools)","2hourlearning.com (both)","Instagram (both)"],
+        options:[
+          {key:"A",label:'"Alpha School" — always singular, regardless of context',note:""},
+          {key:"B",label:'"Alpha School" for a single campus; "Alpha Schools" for the network',note:"e.g., 'Alpha School Austin' vs. 'the Alpha Schools network'"},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"limitless_singular_plural", title:'"Limitless Launch" or "Limitless Launches"?', conflict:false,
+        context:'Q22 above confirms "Limitless Launch" replaces "Brain Warmup." But the alpha.school program page uses "Limitless Launches" (plural) in at least one location. Is the singular or plural the standard form?',
+        sources:["Meeting Note 2/18/26 (Limitless Launch — singular)","alpha.school program page (Limitless Launches — plural)"],
+        options:[
+          {key:"A",label:'"Limitless Launch" — singular always',note:"'We start each day with Limitless Launch'"},
+          {key:"B",label:'"Limitless Launches" — plural always',note:""},
+          {key:"C",label:'Context-dependent: singular for a single event; plural for the recurring program',note:""}
+        ]
+      }
+    ]
+  },
+  {
+    id:"stats", icon:"%", title:"Statistics & Claims",
+    questions:[
+      { id:"vacation_stat", title:'Vacation preference stat: 40–60%, 60%, or 62%?', conflict:true,
+        context:'Different sources cite different numbers for "students who prefer school to vacation." Meeting note says 40–60% (a range). Is that range because campuses differ? Or is there one correct figure?',
+        sources:["FutureOfEd Substack (62%)","Messaging Framework (60%)","Meeting Note 12/10/25 (40–60%)"],
+        options:[
+          {key:"A",label:'"40–60%" — a range with en-dash',note:"Reflects variation across campuses/years"},
+          {key:"B",label:'"60%" — single clean figure',note:""},
+          {key:"C",label:'"62%" — single precise figure',note:""},
+          {key:"D",label:"Drop the stat — not reliable enough to publish",note:""},
+          {key:"E",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"percentile", title:'"Top 1%" exclusively, or can "top 1–2%" appear?', conflict:true,
+        context:'Meeting notes say use "Top 1%" only and remove all "top 2%" references. But multiple sources use "top 1–2%" — possibly because it was more conservative/accurate. Is top 1% always correct, or does the range apply somewhere?',
+        sources:["2hourlearning.com (top 1-2%)","Messaging Framework (top 1–2%)","Meeting Notes (Top 1% only)"],
+        options:[
+          {key:"A",label:'"Top 1%" exclusively — remove all "1–2%" references',note:""},
+          {key:"B",label:'"Top 1%" in headlines; "top 1–2%" where conservative accuracy is needed',note:""},
+          {key:"C",label:"Context-dependent by campus — some should use 1–2%",note:""}
+        ]
+      },
+      { id:"classes_students", title:'"Classes rank in the top 1%" or "Students rank…"?', conflict:false,
+        context:'Meeting notes say always say "classes" not "students," because students enter at different levels. Is this a universal rule?',
+        sources:["Meeting Note 10/29/25","Meeting Note 12/10/25"],
+        options:[
+          {key:"A",label:'"Classes rank in the top 1%" — always classes, not students',note:""},
+          {key:"B",label:"Both acceptable depending on context",note:""},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"multiplier", title:'Which learning growth figure for general marketing? (now five exist)', conflict:true,
+        context:'The Bible adds one more figure beyond what was previously known, bringing the total to five: 2x (general claim), 2.6x (all students, MAP normed), 3.6x (top two-thirds), "almost 4x" (advanced students, Deep Dive video), 6.5x (top 20%). What figure belongs in general, non-campus-specific marketing copy?',
+        sources:["alpha.school (2x — general)","MAP / Messaging Framework (2.6x — all students)","Internal data (3.6x — top 2/3)","Deep Dive video (~4x — advanced)","Internal data (6.5x — top 20%)"],
+        options:[
+          {key:"A",label:'"2x" — simple general claim, no qualifier needed',note:""},
+          {key:"B",label:'"2.6x" — specific MAP-normed figure for Alpha Austin K-8',note:""},
+          {key:"C",label:'"Twice as much" — words, no number',note:"Sidesteps the inconsistency entirely"},
+          {key:"D",label:'Different figures per context — no single approved general figure',note:"Each figure used only with its specific qualifier"},
+          {key:"E",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"love_school_pct", title:'"Love school" percentage: 95%, 96%, or "over 90%"?', conflict:true,
+        context:'The Messaging Framework says 95%. An Instagram post from Dec 2024 says 96%. MacKenzie told Reid Hoffman "over 90%." These may all be accurate at different points in time — which number is current and which should be used in evergreen copy?',
+        sources:["Messaging Framework (95%)","Instagram Dec 2024 (96%)","Reid Hoffman interview (over 90%)"],
+        options:[
+          {key:"A",label:'Use the most recent survey number (currently 96%)',note:"Update with each new survey cycle"},
+          {key:"B",label:'Always "95%" per the Messaging Framework',note:"Stable, approved figure"},
+          {key:"C",label:'"Over 90%" — round down for safety in evergreen copy',note:"Conservative; won\'t go stale"},
+          {key:"D",label:'Always cite with survey date: "95% in Session 1 2025–26"',note:"Specific, but adds friction in short copy"}
+        ]
+      },
+      { id:"sat_avg", title:'SAT average: "1500+", "1470+", or "1470"?', conflict:true,
+        context:'Three different figures appear across sources. The Messaging Framework calls "Average 1500+" the approved proof point. 2hourlearning.com uses "Average SAT: 1470+." The Bible cites "1470" (no plus sign) as the average. These are distinct numbers — which is current, which is approved, and does the "+" matter?',
+        sources:["Messaging Framework (Average 1500+ — 2024 cohort)","2hourlearning.com (1470+)","The Bible (1470, no plus)","alphahigh.school (1410 overall avg; 1530 seniors)"],
+        options:[
+          {key:"A",label:'"Average 1500+" — per Messaging Framework, approved for external use',note:"2024 cohort figure; may need updating each year"},
+          {key:"B",label:'"Average 1470+" — per 2hourlearning.com',note:""},
+          {key:"C",label:'"1470" — no plus sign, per the Bible',note:""},
+          {key:"D",label:'Specify by grade: freshman avg vs. senior avg — never one flat number',note:"e.g., 'seniors average 1530; incoming students average 1410'"},
+          {key:"E",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"sat_perfect", title:'SAT claim: average figure only, or can individual perfect scores also be cited?', conflict:false,
+        context:'Instagram highlights individual students with "1600 SAT" and "perfect score on SAT math." Should individual peak achievements appear alongside the school average, or should SAT claims be the aggregate figure only?',
+        sources:["Messaging Framework (Average 1500+)","Instagram (individual perfect scores — 1600 SAT)"],
+        options:[
+          {key:"A",label:'Average figure only — no individual score callouts in brand copy',note:""},
+          {key:"B",label:'Individual perfect scores OK alongside the average, with clear labeling',note:"e.g., 'school average 1500+; several students have scored 1600'"},
+          {key:"C",label:'Individual scores OK on social; aggregate only in formal marketing',note:""},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"growth_qualifier", title:'Must every growth multiplier always include its student-group qualifier?', conflict:true,
+        context:'There are five different multipliers in circulation — 2x, 2.6x, 3.6x, ~4x, and 6.5x — each describing a different group or cohort. All have appeared without qualifiers in at least one source, which makes them easy to misuse or misread. Is a qualifier always mandatory, or is "2x" safe to use standalone?',
+        sources:["2.6x (all students, MAP normed)","3.6x (top two-thirds)","~4x (advanced students, Deep Dive video)","6.5x (top 20%)"],
+        options:[
+          {key:"A",label:'Always include the qualifier — every figure must specify its student group',note:"No bare numbers without context, ever"},
+          {key:"B",label:'"2x" may stand alone; all specific figures (2.6x and above) require a qualifier',note:""},
+          {key:"C",label:'Qualifier required only for figures above 3x; lower figures may stand alone',note:""},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"percentile_phrasing", title:'"99th percentile" vs. "top 1%" — interchangeable or distinct?', conflict:true,
+        context:'The Bible says Alpha students "consistently perform in the 99th percentile nationally." The quiz already covers "top 1% vs. top 1–2%," but this adds a third phrasing. Mathematically, 99th percentile and top 1% mean the same thing — but they read differently. Is one preferred, or are they interchangeable?',
+        sources:["The Bible (99th percentile nationally)","alpha.school + meeting notes (top 1%)","alpha.school/the-program (99th Percentile — capitalized)"],
+        options:[
+          {key:"A",label:'They mean the same thing — either is fine in context',note:""},
+          {key:"B",label:'"Top 1%" preferred — simpler and more accessible for parents',note:""},
+          {key:"C",label:'"99th percentile" for formal, data-heavy contexts; "top 1%" in marketing headlines',note:""},
+          {key:"D",label:'"Top 1%" only — never use percentile language in external copy',note:""}
+        ]
+      },
+      { id:"national_merit", title:'"Half of graduates qualifying as National Merit Scholars or Commended Scholars" — current and approved?', conflict:false,
+        context:'The Bible references video data stating that roughly half of Alpha graduates qualify as National Merit Scholars or Commended Scholars. This is an extraordinary claim. Is this stat current, verified, and approved for external use?',
+        sources:["The Bible (video data — half of graduates)"],
+        options:[
+          {key:"A",label:'Confirmed and approved for external use as stated',note:""},
+          {key:"B",label:'Needs updated or sourced data before using externally',note:""},
+          {key:"C",label:'Internal reference only — not for external marketing',note:""},
+          {key:"D",label:'Approved but needs qualifying language',note:"e.g., 'historically, roughly half of…'"}
+        ]
+      }
+    ]
+  },
+  {
+    id:"style", icon:"¶", title:"Style Rules",
+    questions:[
+      { id:"exclamation", title:'Exclamation marks in headlines and ending cards', conflict:false,
+        context:'Meeting notes say change ! to period — avoids looking "market-y." Does this apply everywhere or only specific placements?',
+        sources:["Meeting Note 11/5/25","Meeting Note 1/14/26"],
+        options:[
+          {key:"A",label:"Always periods — no ! in any headline or ending card",note:""},
+          {key:"B",label:"Periods in formal headlines; ! acceptable in celebratory social content",note:"e.g., student achievement posts, announcements"},
+          {key:"C",label:"Writer's discretion — use sparingly",note:""}
+        ]
+      },
+      { id:"ai_terms", title:'"AI-driven" vs. "AI-powered"', conflict:true,
+        context:'Meeting notes say "AI-driven" must be hyphenated. But "AI-powered" already appears in the style guide as an approved term. Are these interchangeable or do they mean different things?',
+        sources:["Meeting Note 11/5/25 (AI-driven)","Existing Style Guide (AI-powered)"],
+        options:[
+          {key:"A",label:"Only 'AI-driven' — replace all 'AI-powered' instances",note:""},
+          {key:"B",label:"Only 'AI-powered' — that is the approved form",note:""},
+          {key:"C",label:"Both acceptable in different contexts",note:"AI-driven = the system/approach; AI-powered = the product/tool"},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"parent_quotes", title:'Parent quote attribution for small campuses', conflict:false,
+        context:'Meeting notes say remove specific location for small campuses to protect privacy. What is "small"?',
+        sources:["Meeting Note 3/11/26"],
+        options:[
+          {key:"A",label:"No campus location in any parent quote — only age: 'Alpha parent, age 8'",note:"Universal rule across all campuses"},
+          {key:"B",label:"Large established campuses may include city; new/small ones use age only",note:""},
+          {key:"C",label:"Ask the parent for permission to include location",note:""},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"timeback_subjects", title:'"Time Back" subjects list', conflict:false,
+        context:'Meeting notes say always list: "reading, writing, math, and science." Can this be shortened in very short-form copy?',
+        sources:["Meeting Note 1/7/26"],
+        options:[
+          {key:"A",label:'Always the full list: reading, writing, math, and science',note:"No abbreviating even in short-form"},
+          {key:"B",label:'"Core academics" or "core subjects" acceptable in very short copy',note:"Full list required in long-form"},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"tgim", title:'"TGIM" — use it or lose it?', conflict:false,
+        context:'Meeting notes say "TGIM" (Thank God It\'s Monday) may not resonate with all parents and could have religious connotations.',
+        sources:["Meeting Note 12/10/25"],
+        options:[
+          {key:"A",label:"Spell out fully on first use: 'Thank God It\'s Monday (TGIM)'",note:""},
+          {key:"B",label:"Avoid TGIM entirely — replace with 'kids who love Mondays' or similar",note:""},
+          {key:"C",label:"TGIM is fine as a standalone phrase for the right audiences",note:""},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"twohl_handle", title:'"2HourLearning" — approved for social handles/bios?', conflict:true,
+        context:'MacKenzie\'s Instagram bio says "Founder of 2HourLearning" (one word, no space). This form doesn\'t appear anywhere else — all other sources write "2 Hour Learning" as three words. Should the Instagram bio be updated?',
+        sources:["MacKenzie Instagram bio (2HourLearning)","All other sources (2 Hour Learning — three words)"],
+        options:[
+          {key:"A",label:'Update Instagram bio to "2 Hour Learning" (three words)',note:"Consistent with all other sources"},
+          {key:"B",label:'"2HourLearning" is fine for social media handles and bios only',note:"Social shorthand is a common exception"},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"oxford_comma", title:'Oxford comma — always required?', conflict:true,
+        context:'The Messaging Framework consistently uses the Oxford comma (e.g., "reading, writing, math, and science"). Some Instagram posts omit it. Should the Oxford comma be a hard rule?',
+        sources:["Messaging Framework (Oxford comma used)","Some Instagram posts (Oxford comma omitted)"],
+        options:[
+          {key:"A",label:'Always use the Oxford comma — required in all Alpha copy',note:""},
+          {key:"B",label:'Oxford comma in long-form and formal copy; optional in social',note:""},
+          {key:"C",label:"Optional — writer's discretion throughout",note:""}
+        ]
+      }
+    ]
+  },
+  {
+    id:"terms", icon:"★", title:"New Terms to Confirm",
+    questions:[
+      { id:"queue_breaks", title:'"Queue Breaks" — confirm as approved term for movement breaks', conflict:false,
+        context:'Meeting notes say never say "recess." Use "Queue Breaks" instead. Is this term for both internal staff use and external parent-facing copy?',
+        sources:["Meeting Note 2/18/26"],
+        options:[
+          {key:"A",label:'"Queue Breaks" — both internal and parent-facing copy',note:""},
+          {key:"B",label:'"Queue Breaks" internally; describe the activity for parents',note:"e.g., 'movement break,' 'outdoor time'"},
+          {key:"C",label:"A different term",note:"",custom:true}
+        ]
+      },
+      { id:"limitless_launch", title:'"Limitless Launch" — confirm as the term replacing "Brain Warmup"', conflict:false,
+        context:'Meeting notes say never say "Brain Warmup" — use "Limitless Launch" for the morning body and brain activity.',
+        sources:["Meeting Note 2/18/26"],
+        options:[
+          {key:"A",label:'"Limitless Launch" — confirmed, for all uses',note:""},
+          {key:"B",label:'"Limitless Launch" for marketing; describe the activity for new parents',note:""},
+          {key:"C",label:"A different term",note:"",custom:true}
+        ]
+      },
+      { id:"alpha_math", title:'"Alpha Math" — confirm capitalization and scope', conflict:false,
+        context:'"Alpha Math" appears in a Feb 2026 meeting note with a capital M. Is this a specific program/product name or a general description?',
+        sources:["Meeting Note 2/18/26"],
+        options:[
+          {key:"A",label:'"Alpha Math" — Title Case, a specific named program',note:""},
+          {key:"B",label:'"alpha math" — lowercase, a description not a product name',note:""},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"twohl_abbrev", title:'"2HL" as an abbreviation — approved for external use?', conflict:false,
+        context:'The 2hourlearning.com website navigation uses "2HL Blog" and "2HL in the News." Is "2HL" an approved shorthand for external copy and navigation, or is it internal/nav-only?',
+        sources:["2hourlearning.com navigation (2HL Blog, 2HL in the News)"],
+        options:[
+          {key:"A",label:'"2HL" is approved for navigation and shorthand use',note:""},
+          {key:"B",label:'Never abbreviate — always write "2 Hour Learning"',note:""},
+          {key:"C",label:'"2HL" for navigation and internal copy only; never in marketing body text',note:""},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"confidence_anchors", title:'"Confidence anchors" — official term or conversational?', conflict:false,
+        context:'MacKenzie uses "confidence anchors" in her Reid Hoffman interview to describe moments of mastery that build lasting student confidence. It\'s a compelling phrase. Is it an official Alpha term to use in copy, or conversational shorthand?',
+        sources:["MacKenzie — Reid Hoffman interview"],
+        options:[
+          {key:"A",label:'"Confidence anchors" — approved term for external copy (lowercase)',note:""},
+          {key:"B",label:'Conversational — not an official term; do not use in brand copy',note:""},
+          {key:"C",label:'Use in MacKenzie-attributed content only',note:"Bylines, interviews, founder quotes"},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"how_high", title:'"How high is high?" — use in Alpha marketing copy?', conflict:false,
+        context:'MacKenzie uses "How high is high?" as a signature question on her Substack — describing the philosophy that there is no ceiling on what students can achieve. Should it appear in general Alpha marketing copy, or stay in MacKenzie-attributed channels?',
+        sources:["MacKenzie Substack (signature phrase)"],
+        options:[
+          {key:"A",label:'Yes — core MacKenzie phrase, use freely in Alpha copy',note:""},
+          {key:"B",label:'Only in MacKenzie-attributed content (her byline, interviews, her social)',note:""},
+          {key:"C",label:'Not for external use — too abstract without context',note:""}
+        ]
+      }
+    ]
+  },
+  {
+    id:"confirms", icon:"✓", title:"Quick Confirms",
+    questions:[
+      { id:"gift_of_time", title:'"The gift of time" — always lowercase?', conflict:false,
+        context:'This phrase appears consistently across sources without capitalization. It has never been explicitly ruled on as a style decision. Confirm: always lowercase, or should it be Title Case as a named concept?',
+        sources:["alpha.school","2hourlearning.com","Substack (all lowercase)"],
+        options:[
+          {key:"A",label:'Always lowercase: "the gift of time"',note:"Confirmed"},
+          {key:"B",label:'Title Case: "The Gift of Time" — it is a core brand concept',note:""},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"mastery_based", title:'"Mastery-based learning" — always hyphenated, always lowercase?', conflict:false,
+        context:'All reviewed sources hyphenate "mastery-based" when used as a compound modifier. Confirm this is the standard and the phrase is lowercase unless starting a sentence.',
+        sources:["alpha.school","Messaging Framework","Substack"],
+        options:[
+          {key:"A",label:'"mastery-based learning" — hyphenated, lowercase, confirmed',note:""},
+          {key:"B",label:'"Mastery-Based Learning" — Title Case as a named program',note:""},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"one_on_one", title:'"1:1" vs. "one-on-one" — same rule everywhere, or depends on placement?', conflict:false,
+        context:'alpha.school uses "1:1 personalized education" in headers and labels. Standard editorial practice often spells out numbers in running prose ("one-on-one attention") while using numerals in headlines, cards, and UI elements. Is there a placement-based rule, or one form for all contexts?',
+        sources:["alpha.school (1:1 in headers and labels)"],
+        options:[
+          {key:"A",label:'"1:1" always — headlines, body text, labels, everywhere',note:""},
+          {key:"B",label:'"one-on-one" always — spelled out in all contexts',note:""},
+          {key:"C",label:'"1:1" in titles, headings, and labels; "one-on-one" in paragraph text',note:'e.g., heading: "1:1 Personalized Learning" — body: "each student gets one-on-one attention"'},
+          {key:"D",label:'"1-on-1" — hyphenated numeral form, always',note:""},
+          {key:"E",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"app_based", title:'"App-based learning" — always hyphenated?', conflict:false,
+        context:'"App-based learning" appears hyphenated on both websites as a compound modifier. Confirm hyphenation is standard.',
+        sources:["alpha.school","2hourlearning.com"],
+        options:[
+          {key:"A",label:'"App-based learning" — hyphenated, confirmed',note:""},
+          {key:"B",label:'"App based learning" — no hyphen',note:""},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"head_of_school", title:'"Head of School" — always Title Case?', conflict:false,
+        context:'"Head of School" appears Title Case consistently across all reviewed sources. Confirm this is standard for the role title.',
+        sources:["alpha.school","Messaging Framework","Visual Style Guide"],
+        options:[
+          {key:"A",label:'"Head of School" — Title Case when used as a role title, confirmed',note:"Lowercase when generic: 'our head of school\'s role is…'"},
+          {key:"B",label:'"Head of School" — always Title Case even in generic usage',note:""},
+          {key:"C",label:"Something else",note:"",custom:true}
+        ]
+      },
+      { id:"mobile_squad", title:'"Mobile Squad" — confirmed name for the field trip program?', conflict:false,
+        context:'"Mobile Squad" appears in program descriptions as the name for Alpha\'s field trip / off-campus learning program. Confirm this is the approved external name.',
+        sources:["Program descriptions"],
+        options:[
+          {key:"A",label:'"Mobile Squad" — confirmed, approved for external use',note:""},
+          {key:"B",label:'Not the official name — needs correction',note:"",custom:true},
+          {key:"C",label:"Internal use only — describe it differently for parents",note:""}
+        ]
+      },
+      { id:"xp_def", title:'XP definition — "one XP = one minute of focused learning"?', conflict:false,
+        context:'"XP" (experience points) appears in the style guide as a learning metric. The working definition is: one XP equals one minute of focused learning time. Confirm this is accurate for external use.',
+        sources:["Terms & Phrases spreadsheet","Internal program docs"],
+        options:[
+          {key:"A",label:'Confirmed: 1 XP = 1 minute of focused learning',note:""},
+          {key:"B",label:'The definition has changed — correct it in notes',note:"",custom:true},
+          {key:"C",label:'"XP" is internal only — do not explain the metric to parents',note:""}
+        ]
+      },
+      { id:"life_skills_connector", title:'Five Life Skills — "+" connector or "&" connector?', conflict:true,
+        context:'The Five Life Skills pairs (e.g., Teamwork + Leadership) appear with a "+" connector in some sources and "&" in others. Both appear on Alpha-owned channels. Which is the standard?',
+        sources:["Some sources: Teamwork + Leadership","Other sources: Teamwork & Leadership"],
+        options:[
+          {key:"A",label:'"+" connector — always (Teamwork + Leadership)',note:""},
+          {key:"B",label:'"&" connector — always (Teamwork & Leadership)',note:""},
+          {key:"C",label:"Either is fine — not a meaningful distinction",note:""}
+        ]
+      },
+      { id:"alphas_currency", title:'"Alphas" — the school currency: capitalized, and approved externally?', conflict:false,
+        context:'The Bible describes students earning "Alphas" (capitalized, in quotes) as an internal currency they can spend on rewards. The term appears with a capital A. Is "Alphas" a term used in parent-facing and marketing copy, or is it internal school language only?',
+        sources:["The Bible (students earn 'Alphas' — capitalized, internal currency)"],
+        options:[
+          {key:"A",label:'"Alphas" — capitalized, approved for external/parent-facing copy',note:"e.g., 'students earn Alphas for focused learning time'"},
+          {key:"B",label:'Internal term only — describe generically for parents',note:"e.g., 'reward points,' 'school currency,' 'learning credits'"},
+          {key:"C",label:'"Alphas" for enrolled-family communications; generic description for prospective families',note:""},
+          {key:"D",label:"Something else",note:"",custom:true}
+        ]
+      }
+    ]
+  }
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const answers = {}; // { qId: { choice, custom, notes } }
+let isEditing = false;
+
+function getAns(qId) {
+  if (!answers[qId]) answers[qId] = { choice:null, custom:'', notes:'' };
+  return answers[qId];
+}
+function totalQuestions() {
+  return categories.reduce((a,c) => a + c.questions.length, 0);
+}
+function answeredCount() {
+  return Object.values(answers).filter(s => s.choice !== null).length;
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function render() {
+  const container = document.getElementById('mainContent');
+  container.innerHTML = '';
+  if (isEditing) container.classList.add('is-editing');
+  else container.classList.remove('is-editing');
+
+  let qNum = 0;
+  categories.forEach((cat, ci) => {
+    const catDiv = document.createElement('div');
+    catDiv.className = 'cat-block';
+    catDiv.id = 'cat-' + ci;
+
+    // Category header
+    catDiv.innerHTML = `
+      <div class="category-header">
+        <div class="category-icon" contenteditable="${isEditing}" data-ci="${ci}" data-field="icon" data-placeholder="★"
+          oninput="syncField(this)">${cat.icon}</div>
+        <div class="cat-title-text" contenteditable="${isEditing}" data-ci="${ci}" data-field="title" data-placeholder="Category title"
+          oninput="syncField(this)">${cat.title}</div>
+        <div class="cat-count" id="cat-count-${ci}">${cat.questions.length} question${cat.questions.length!==1?'s':''}</div>
+        <div class="cat-edit-controls">
+          <button class="etb danger" onclick="deleteCategory(${ci})">🗑 Delete Category</button>
+        </div>
+      </div>`;
+
+    // Questions
+    cat.questions.forEach((q, qi) => {
+      qNum++;
+      const ans = getAns(q.id);
+      const answered = ans.choice !== null;
+      const conflictClass = q.conflict ? 'conflict' : '';
+      const answeredClass = answered ? 'answered' : '';
+
+      const card = document.createElement('div');
+      card.className = `q-card ${conflictClass} ${answeredClass}`;
+      card.id = `card-${q.id}`;
+
+      // Edit toolbar (only visible in edit mode)
+      const conflictActive = q.conflict ? 'active' : '';
+      card.innerHTML = `
+        <div class="edit-toolbar">
+          <div class="move-btns">
+            <button class="etb" onclick="moveQ(${ci},${qi},-1)" title="Move up">↑</button>
+            <button class="etb" onclick="moveQ(${ci},${qi},1)" title="Move down">↓</button>
+          </div>
+          <button class="etb ${conflictActive}" onclick="toggleConflict(${ci},${qi})" id="conflictBtn-${q.id}">⚠ Conflict</button>
+          <button class="etb danger" onclick="deleteQuestion(${ci},${qi})">🗑 Delete</button>
+        </div>
+
+        <div class="q-header">
+          <div class="q-number">Q${qNum}</div>
+          <div class="q-title-wrap">
+            <div class="q-title">
+              <span contenteditable="${isEditing}" data-ci="${ci}" data-qi="${qi}" data-field="title"
+                data-placeholder="Question title" oninput="syncQField(this)">${q.title}</span>
+              ${q.conflict ? '<span class="conflict-badge">⚠ Conflict</span>' : ''}
+            </div>
+            <div class="q-context">
+              <span contenteditable="${isEditing}" data-ci="${ci}" data-qi="${qi}" data-field="context"
+                data-placeholder="Add context for MacKenzie…" class="${isEditing?'block-editable':''}" oninput="syncQField(this)">${q.context}</span>
+              ${renderSources(q, ci, qi)}
+            </div>
+          </div>
+          <div class="q-status-icon">${answered ? '✅' : '○'}</div>
+        </div>`;
+
+      // Options — answer-mode rows (hidden in edit mode via CSS)
+      const optionsDiv = document.createElement('div');
+      optionsDiv.className = 'q-options';
+
+      q.options.forEach((opt, oi) => {
+        const selected = ans.choice === opt.key ? 'selected' : '';
+        // Answer-mode row
+        const ansRow = document.createElement('label');
+        ansRow.className = `option-row ${selected}`;
+        ansRow.onclick = () => selectOption(q.id, opt.key);
+        ansRow.innerHTML = `
+          <input type="radio" name="q_${q.id}" value="${opt.key}" ${ans.choice===opt.key?'checked':''} />
+          <div class="option-label">
+            <span class="option-key">${opt.key}.</span> ${opt.label}
+            ${opt.note ? `<span class="option-note">${opt.note}</span>` : ''}
+          </div>`;
+        optionsDiv.appendChild(ansRow);
+
+        // Edit-mode row
+        const editRow = document.createElement('div');
+        editRow.className = 'option-edit-row';
+        editRow.innerHTML = `
+          <input class="opt-key-input" type="text" value="${opt.key}" maxlength="2"
+            oninput="syncOptField(${ci},${qi},${oi},'key',this.value)" />
+          <div class="opt-text-wrap">
+            <span class="opt-label-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="label"
+              data-placeholder="Option label" oninput="syncOptFieldCE(this)">${opt.label}</span>
+            <span class="opt-note-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="note"
+              data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">${opt.note||''}</span>
+            <label class="opt-custom-toggle">
+              <input type="checkbox" ${opt.custom?'checked':''} onchange="syncOptField(${ci},${qi},${oi},'custom',this.checked)" />
+              Write-in option
+            </label>
+          </div>
+          <button class="opt-del-btn" onclick="deleteOption(${ci},${qi},${oi})">×</button>`;
+        optionsDiv.appendChild(editRow);
+      });
+
+      card.appendChild(optionsDiv);
+
+      // Add option button (edit mode only)
+      const addOptBtn = document.createElement('button');
+      addOptBtn.className = 'add-opt-btn';
+      addOptBtn.textContent = '+ Add Option';
+      addOptBtn.onclick = () => addOption(ci, qi);
+      card.appendChild(addOptBtn);
+
+      // Write-in (answer mode)
+      const customOpt = q.options.find(o => o.custom);
+      if (customOpt) {
+        const wiWrap = document.createElement('div');
+        wiWrap.className = 'write-in-wrap';
+        wiWrap.id = `writein-${q.id}`;
+        wiWrap.style.display = ans.choice === customOpt.key ? '' : 'none';
+        wiWrap.innerHTML = `
+          <div class="field-label">Your answer:</div>
+          <input class="write-in-input" type="text" placeholder="Type your answer here…"
+            value="${ans.custom}" oninput="updateCustom('${q.id}',this.value)" />`;
+        card.appendChild(wiWrap);
+      }
+
+      // Notes
+      const notesWrap = document.createElement('div');
+      notesWrap.className = 'notes-wrap';
+      notesWrap.innerHTML = `
+        <div class="field-label">Notes / context for the team (optional)</div>
+        <textarea class="notes-input" placeholder="Add any nuances, exceptions, or explanation…"
+          oninput="updateNotes('${q.id}',this.value)">${ans.notes}</textarea>`;
+      card.appendChild(notesWrap);
+
+      catDiv.appendChild(card);
+    });
+
+    // Add question button
+    const addQBtn = document.createElement('button');
+    addQBtn.className = 'add-q-btn';
+    addQBtn.textContent = '+ Add Question to This Category';
+    addQBtn.onclick = () => addQuestion(ci);
+    catDiv.appendChild(addQBtn);
+
+    container.appendChild(catDiv);
+  });
+
+  // Add category button
+  if (isEditing) {
+    const addCatBtn = document.createElement('button');
+    addCatBtn.style.cssText = 'display:block;width:100%;background:none;border:2px dashed #aaa;color:#888;font-family:Arial,sans-serif;font-size:13px;font-weight:700;padding:12px;cursor:pointer;border-radius:2px;margin-top:16px;';
+    addCatBtn.textContent = '+ Add New Category';
+    addCatBtn.onclick = addCategory;
+    container.appendChild(addCatBtn);
+  }
+
+  updateProgress();
+}
+
+function renderSources(q, ci, qi) {
+  if (!isEditing) {
+    return `<div class="sources">${q.sources.map(s=>`<span class="source-tag ${q.conflict?'conflict-tag':''}">${s}</span>`).join('')}</div>`;
+  }
+  // Edit mode — editable source tags
+  const tags = q.sources.map((s,si) => `
+    <span class="source-editable">
+      <span contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-si="${si}"
+        oninput="syncSource(this)">${s}</span>
+      <button class="source-del" onclick="deleteSource(${ci},${qi},${si})">×</button>
+    </span>`).join('');
+  return `<div class="source-edit-wrap">${tags}
+    <button class="add-source-btn" onclick="addSource(${ci},${qi})">+ source</button>
+  </div>`;
+}
+
+// ─── SYNC FUNCTIONS ──────────────────────────────────────────────────────────
+function syncField(el) {
+  const ci = +el.dataset.ci;
+  const field = el.dataset.field;
+  categories[ci][field] = el.textContent;
+}
+function syncQField(el) {
+  const ci=+el.dataset.ci, qi=+el.dataset.qi, field=el.dataset.field;
+  categories[ci].questions[qi][field] = el.textContent;
+}
+function syncOptField(ci,qi,oi,field,val) {
+  categories[ci].questions[qi].options[oi][field] = val;
+}
+function syncOptFieldCE(el) {
+  const ci=+el.dataset.ci, qi=+el.dataset.qi, oi=+el.dataset.oi, field=el.dataset.field;
+  categories[ci].questions[qi].options[oi][field] = el.textContent;
+}
+function syncSource(el) {
+  const ci=+el.dataset.ci, qi=+el.dataset.qi, si=+el.dataset.si;
+  categories[ci].questions[qi].sources[si] = el.textContent;
+}
+
+// ─── EDIT ACTIONS ────────────────────────────────────────────────────────────
+function toggleEditMode() {
+  isEditing = !isEditing;
+  document.getElementById('editToggleBtn').textContent = isEditing ? '✓ Done Editing' : '✏ Edit Questions';
+  document.getElementById('editToggleBtn').className = isEditing ? 'hbtn hbtn-amber' : 'hbtn hbtn-outline';
+  document.getElementById('downloadBtn').style.display = isEditing ? '' : 'none';
+  document.getElementById('editModeBar').classList.toggle('show', isEditing);
+  render();
+}
+
+function toggleConflict(ci, qi) {
+  categories[ci].questions[qi].conflict = !categories[ci].questions[qi].conflict;
+  render();
+}
+
+function moveQ(ci, qi, dir) {
+  const qs = categories[ci].questions;
+  const newIdx = qi + dir;
+  if (newIdx < 0 || newIdx >= qs.length) return;
+  [qs[qi], qs[newIdx]] = [qs[newIdx], qs[qi]];
+  render();
+}
+
+function deleteQuestion(ci, qi) {
+  if (!confirm('Delete this question?')) return;
+  const q = categories[ci].questions[qi];
+  delete answers[q.id];
+  categories[ci].questions.splice(qi, 1);
+  render();
+}
+
+function addQuestion(ci) {
+  const newId = 'q_' + Date.now();
+  categories[ci].questions.push({
+    id: newId,
+    title: 'New question title',
+    conflict: false,
+    context: 'Add context here — what sources conflict? What needs resolving?',
+    sources: ['Source 1'],
+    options: [
+      {key:'A', label:'Option A', note:'', custom:false},
+      {key:'B', label:'Option B', note:'', custom:false},
+      {key:'C', label:'Something else', note:'', custom:true}
+    ]
+  });
+  render();
+  // Scroll to new card
+  setTimeout(() => {
+    const last = categories[ci].questions[categories[ci].questions.length-1];
+    document.getElementById('card-'+last.id)?.scrollIntoView({behavior:'smooth',block:'center'});
+  }, 50);
+}
+
+function deleteCategory(ci) {
+  if (!confirm(`Delete the entire "${categories[ci].title}" category?`)) return;
+  categories[ci].questions.forEach(q => delete answers[q.id]);
+  categories.splice(ci, 1);
+  render();
+}
+
+function addCategory() {
+  categories.push({
+    id: 'cat_' + Date.now(),
+    icon: '★',
+    title: 'New Category',
+    questions: []
+  });
+  render();
+}
+
+function addOption(ci, qi) {
+  const opts = categories[ci].questions[qi].options;
+  const nextKey = String.fromCharCode(65 + opts.length);
+  opts.push({key: nextKey, label: 'New option', note: '', custom: false});
+  render();
+}
+
+function deleteOption(ci, qi, oi) {
+  categories[ci].questions[qi].options.splice(oi, 1);
+  render();
+}
+
+function addSource(ci, qi) {
+  categories[ci].questions[qi].sources.push('New source');
+  render();
+}
+
+function deleteSource(ci, qi, si) {
+  categories[ci].questions[qi].sources.splice(si, 1);
+  render();
+}
+
+// ─── ANSWER ACTIONS ──────────────────────────────────────────────────────────
+function selectOption(qId, key) {
+  const ans = getAns(qId);
+  ans.choice = key;
+
+  const card = document.getElementById(`card-${qId}`);
+  card.classList.add('answered');
+  card.querySelector('.q-status-icon').textContent = '✅';
+
+  card.querySelectorAll('.option-row').forEach(row => row.classList.remove('selected'));
+  card.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.checked = r.value === key;
+    if (r.value === key) r.closest('.option-row').classList.add('selected');
+  });
+
+  // Show/hide write-in
+  const q = getQuestion(qId);
+  if (q) {
+    const customOpt = q.options.find(o => o.custom);
+    const wi = document.getElementById(`writein-${qId}`);
+    if (wi) wi.style.display = (customOpt && key === customOpt.key) ? '' : 'none';
+  }
+
+  updateProgress();
+}
+
+function getQuestion(qId) {
+  for (const cat of categories) {
+    const q = cat.questions.find(q => q.id === qId);
+    if (q) return q;
+  }
+}
+
+function updateCustom(qId, val) { getAns(qId).custom = val; }
+function updateNotes(qId, val) { getAns(qId).notes = val; }
+
+function updateProgress() {
+  const total = totalQuestions();
+  const count = answeredCount();
+  const pct = total > 0 ? Math.round((count/total)*100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${count} of ${total} answered`;
+  document.getElementById('answeredCount').textContent = count;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('completeBanner').classList.toggle('show', count > 0 && count === total);
+}
+
+// ─── DOWNLOAD UPDATED PAGE ───────────────────────────────────────────────────
+function downloadPage() {
+  // Collect any final in-progress contenteditable changes
+  const allEditable = document.querySelectorAll('[contenteditable="true"]');
+  allEditable.forEach(el => {
+    if (el.dataset.field === 'title' && el.dataset.qi === undefined) syncField(el);
+    else if (el.dataset.qi !== undefined && el.dataset.oi === undefined) syncQField(el);
+    else if (el.dataset.oi !== undefined) syncOptFieldCE(el);
+    else if (el.dataset.si !== undefined) syncSource(el);
+  });
+
+  const serialized = JSON.stringify(categories, null, 2);
+  const pageHTML = document.documentElement.outerHTML;
+  // Replace the categories data in the script
+  const updated = pageHTML.replace(
+    /let categories = \[[\s\S]*?\];(?=\s*\/\/ ─── STATE)/,
+    `let categories = ${serialized};`
+  );
+
+  const blob = new Blob([updated], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'mackenzie-decisions.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─── EXPORT MODAL ────────────────────────────────────────────────────────────
+function getAnswerLabel(qId, choice) {
+  const q = getQuestion(qId);
+  if (!q) return choice;
+  const opt = q.options.find(o => o.key === choice);
+  if (!opt) return choice;
+  if (opt.custom) {
+    const custom = getAns(qId).custom;
+    return custom ? `${opt.key}. ${custom}` : `${opt.key}. (no write-in)`;
+  }
+  return `${opt.key}. ${opt.label}`;
+}
+
+function openModal() {
+  let html = '';
+  let qNum = 0;
+  categories.forEach(cat => {
+    html += `<div class="export-section"><h4>${cat.title}</h4>`;
+    cat.questions.forEach(q => {
+      qNum++;
+      const ans = getAns(q.id);
+      const answered = ans.choice !== null;
+      const label = answered ? getAnswerLabel(q.id, ans.choice) : null;
+      html += `
+        <div class="export-row">
+          <div class="export-q">Q${qNum}. ${q.title}</div>
+          <div class="export-a ${answered?'':'unanswered'}">${answered ? label : '— not yet answered'}</div>
+          ${ans.notes ? `<div class="export-note">"${ans.notes}"</div>` : '<div class="export-note"></div>'}
+        </div>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+function closeModalOutside(e) { if (e.target.id==='modalOverlay') closeModal(); }
+
+function copyToClipboard() {
+  let text = "MACKENZIE'S COPY DECISIONS — Alpha Schools\n" + "=".repeat(52) + "\n\n";
+  let qNum = 0;
+  categories.forEach(cat => {
+    text += cat.title.toUpperCase() + '\n' + '-'.repeat(38) + '\n';
+    cat.questions.forEach(q => {
+      qNum++;
+      const ans = getAns(q.id);
+      text += `\nQ${qNum}. ${q.title}\n`;
+      text += ans.choice ? `DECISION: ${getAnswerLabel(q.id, ans.choice)}\n` : `DECISION: — Not yet answered\n`;
+      if (ans.notes) text += `Notes: ${ans.notes}\n`;
+    });
+    text += '\n';
+  });
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy to Clipboard', 2000);
+  });
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
