@@ -2771,14 +2771,216 @@
 let categories = [
   {
     "id": "spelling",
+    "icon": "1w",
+    "title": "One Word or Two? Spelling & Format",
+    "questions": [
+      {
+        "id": "twox",
+        "title": "\"2x\" or \"2X\" \u2014 which form?",
+        "conflict": true,
+        "context": "Sources use both. The Three Commitments use \"2X.\" Some body copy uses \"2x.\" The Messaging Framework uses \"2\u00d7\" (multiplication symbol). Is one form standard, or does it vary by context?",
+        "sources": [
+          "alpha.school (2X)",
+          "2hourlearning.com (2x)",
+          "Messaging Framework (2\u00d7)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"2X\" always",
+            "note": "Uppercase X \u2014 matches Three Commitments treatment"
+          },
+          {
+            "key": "B",
+            "label": "\"2x\" always",
+            "note": "Lowercase x \u2014 more common in informal/body copy"
+          },
+          {
+            "key": "C",
+            "label": "Context-dependent: 2X in headlines; 2x in body text",
+            "note": ""
+          },
+          {
+            "key": "D",
+            "label": "\"2\u00d7\" (the multiplication symbol \u00d7)",
+            "note": "As used in the internal docs"
+          }
+        ],
+        "undefined": "Messaging Framework (2\u00d7)"
+      },
+      {
+        "id": "test2pass",
+        "title": "\"Test2Pass\" or \"Test 2 Pass\"?",
+        "conflict": true,
+        "context": "MacKenzie's Substack and the alpha.school blog write it as one word: \"Test2Pass.\" Instagram uses \"Test 2 Pass\" with spaces. This is an internal assessment tool name \u2014 the spelling affects signage, app labels, and any parent-facing mentions.",
+        "sources": [
+          "MacKenzie Substack (Test2Pass)",
+          "alpha.school blog (Test2Pass)",
+          "Instagram (Test 2 Pass)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"Test2Pass\" \u2014 one word, always",
+            "note": "Matches Substack and blog usage"
+          },
+          {
+            "key": "B",
+            "label": "\"Test 2 Pass\" \u2014 with spaces",
+            "note": "Matches Instagram usage"
+          },
+          {
+            "key": "C",
+            "label": "Something else",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "Instagram (Test 2 Pass)"
+      },
+      {
+        "id": "wonderlab",
+        "title": "\"WonderLab\" or \"Wonder Lab\"?",
+        "conflict": true,
+        "context": "Substack and Instagram use \"WonderLab\" (one word). The alpha.school website uses both forms \u2014 \"Wonder Lab\" in headers and \"WonderLab\" in blog text.\u00a0",
+        "sources": [
+          "Substack (WonderLab)",
+          "Instagram (WonderLab)",
+          "alpha.school website (both)",
+          "Campus signage (WONDER LAB)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"WonderLab\" \u2014 one word, capital W and capital L",
+            "note": ""
+          },
+          {
+            "key": "B",
+            "label": "\"Wonder Lab\" \u2014 two words",
+            "note": "Matches physical signage"
+          },
+          {
+            "key": "C",
+            "label": "Something else",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "Campus signage (WONDER LAB)"
+      },
+      {
+        "id": "one_on_one",
+        "title": "\"1:1\" vs. \"one-on-one\" \u2014 same rule everywhere, or depends on placement?",
+        "conflict": false,
+        "context": "alpha.school uses \"1:1 personalized education\" in headers and labels. Standard editorial practice often spells out numbers in running prose (\"one-on-one attention\") while using numerals in headlines, cards, and UI elements. Is there a placement-based rule, or one form for all contexts?",
+        "sources": [
+          "alpha.school (1:1 in headers and labels)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"1:1\" always \u2014 headlines, body text, labels, everywhere",
+            "note": ""
+          },
+          {
+            "key": "B",
+            "label": "\"one-on-one\" always \u2014 spelled out in all contexts",
+            "note": ""
+          },
+          {
+            "key": "C",
+            "label": "\"1:1\" in titles, headings, and labels; \"one-on-one\" in paragraph text",
+            "note": "e.g., heading: \"1:1 Personalized Learning\" \u2014 body: \"each student gets one-on-one attention\""
+          },
+          {
+            "key": "E",
+            "label": "Something else",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "alpha.school (1:1 in headers and labels)"
+      },
+      {
+        "id": "ai_terms",
+        "title": "\"AI-driven\" vs. \"AI-powered\"",
+        "conflict": true,
+        "context": "Meeting notes say \"AI-driven\" must be hyphenated. But \"AI-powered\" already appears in the style guide as an approved term. Are these interchangeable or do they mean different things?",
+        "sources": [
+          "Meeting Note 11/5/25 (AI-driven)",
+          "Existing Style Guide (AI-powered)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "Only 'AI-driven' \u2014 replace all 'AI-powered' instances",
+            "note": ""
+          },
+          {
+            "key": "B",
+            "label": "Only 'AI-powered' \u2014 that is the approved form",
+            "note": ""
+          },
+          {
+            "key": "C",
+            "label": "Both acceptable in different contexts",
+            "note": "AI-driven = the system/approach; AI-powered = the product/tool"
+          },
+          {
+            "key": "D",
+            "label": "Something else",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "Existing Style Guide (AI-powered)"
+      },
+      {
+        "id": "twohl_abbrev",
+        "title": "\"2HL\" as an abbreviation \u2014 approved for external use?",
+        "conflict": false,
+        "context": "The 2hourlearning.com website navigation uses \"2HL Blog\" and \"2HL in the News.\" Is \"2HL\" an approved shorthand for external copy and navigation, or is it internal/nav-only?",
+        "sources": [
+          "2hourlearning.com navigation (2HL Blog, 2HL in the News)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"2HL\" is approved for navigation and shorthand use",
+            "note": ""
+          },
+          {
+            "key": "B",
+            "label": "Never abbreviate \u2014 always write \"2 Hour Learning\"",
+            "note": ""
+          },
+          {
+            "key": "C",
+            "label": "\"2HL\" for navigation and internal copy only; never in marketing body text",
+            "note": ""
+          },
+          {
+            "key": "D",
+            "label": "Something else",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "2hourlearning.com navigation (2HL Blog, 2HL in the News)"
+      }
+    ]
+  },
+  {
+    "id": "caps",
     "icon": "Aa",
-    "title": "Spelling & Capitalization",
+    "title": "Capitalization",
     "questions": [
       {
         "id": "guide_cap",
         "title": "Capitalizing \"guide\" / \"guides\"",
         "conflict": true,
-        "context": "Meeting notes say do not capitalize — same rule as \"teacher.\" But alpha.school website and the Visual Style Guide both use \"Guides\" (capital G). Which is correct?",
+        "context": "Meeting notes say do not capitalize \u2014 same rule as \"teacher.\" But alpha.school website and the Visual Style Guide both use \"Guides\" (capital G). Which is correct?",
         "sources": [
           "Meeting Note 10/29/25",
           "alpha.school website",
@@ -2827,134 +3029,68 @@ let categories = [
         "undefined": "Meeting Note 2/18/26"
       },
       {
-        "id": "twox",
-        "title": "\"2x\" or \"2X\" — which form?",
-        "conflict": true,
-        "context": "Sources use both. The Three Commitments use \"2X.\" Some body copy uses \"2x.\" The Messaging Framework uses \"2×\" (multiplication symbol). Is one form standard, or does it vary by context?",
-        "sources": [
-          "alpha.school (2X)",
-          "2hourlearning.com (2x)",
-          "Messaging Framework (2×)"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"2X\" always",
-            "note": "Uppercase X — matches Three Commitments treatment"
-          },
-          {
-            "key": "B",
-            "label": "\"2x\" always",
-            "note": "Lowercase x — more common in informal/body copy"
-          },
-          {
-            "key": "C",
-            "label": "Context-dependent: 2X in headlines; 2x in body text",
-            "note": ""
-          },
-          {
-            "key": "D",
-            "label": "\"2×\" (the multiplication symbol ×)",
-            "note": "As used in the internal docs"
-          }
-        ],
-        "undefined": "Messaging Framework (2×)"
-      },
-      {
-        "id": "test2pass",
-        "title": "\"Test2Pass\" or \"Test 2 Pass\"?",
-        "conflict": true,
-        "context": "MacKenzie's Substack and the alpha.school blog write it as one word: \"Test2Pass.\" Instagram uses \"Test 2 Pass\" with spaces. This is an internal assessment tool name — the spelling affects signage, app labels, and any parent-facing mentions.",
-        "sources": [
-          "MacKenzie Substack (Test2Pass)",
-          "alpha.school blog (Test2Pass)",
-          "Instagram (Test 2 Pass)"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"Test2Pass\" — one word, always",
-            "note": "Matches Substack and blog usage"
-          },
-          {
-            "key": "B",
-            "label": "\"Test 2 Pass\" — with spaces",
-            "note": "Matches Instagram usage"
-          },
-          {
-            "key": "C",
-            "label": "Something else",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "Instagram (Test 2 Pass)"
-      },
-      {
-        "id": "wonderlab",
-        "title": "\"WonderLab\" or \"Wonder Lab\"?",
-        "conflict": true,
-        "context": "Substack and Instagram use \"WonderLab\" (one word). The alpha.school website uses both forms — \"Wonder Lab\" in headers and \"WonderLab\" in blog text. ",
-        "sources": [
-          "Substack (WonderLab)",
-          "Instagram (WonderLab)",
-          "alpha.school website (both)",
-          "Campus signage (WONDER LAB)"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"WonderLab\" — one word, capital W and capital L",
-            "note": ""
-          },
-          {
-            "key": "B",
-            "label": "\"Wonder Lab\" — two words",
-            "note": "Matches physical signage"
-          },
-          {
-            "key": "C",
-            "label": "Something else",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "Campus signage (WONDER LAB)"
-      },
-      {
         "id": "shadow_day",
-        "title": "\"Shadow Day\" (capitalized) vs. \"shadows\" (lowercase)",
+        "title": "\"Shadow Day\" \u2014 always capitalized, or only in titles and headings?",
+        "conflict": false,
+        "context": "Alpha uses \"Shadow Day\" for the prospective family visit program and \"shadows\" as a daily student reflection routine. Setting aside those two uses \u2014 when \"Shadow Day\" appears as a named event or program, is it always capitalized in all contexts, or only when it appears in a title or heading?",
+        "sources": [
+          "MacKenzie Instagram (shadows \u2014 daily routine)",
+          "Program calendar (Shadow Day \u2014 visitor event)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "Always \"Shadow Day\" \u2014 capitalized in every use, including body text",
+            "note": "It is a proper program name, like \"Limitless Launch\""
+          },
+          {
+            "key": "B",
+            "label": "Title Case in headings and program references; lowercase in body text",
+            "note": "e.g., headline: \"Shadow Day\" \u2014 body: \"join us for a shadow day\""
+          },
+          {
+            "key": "C",
+            "label": "Something else",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "Program calendar (Shadow Day \u2014 visitor event)"
+      },
+      {
+        "id": "head_of_school",
+        "title": "\"Head of School\" \u2014 always Title Case?",
         "conflict": false,
         "context": "",
         "sources": [
-          "MacKenzie Instagram (shadows — daily routine)",
-          "Program calendar (Shadow Day — visitor event)"
+          "alpha.school"
         ],
         "options": [
           {
             "key": "A",
-            "label": "Lowercase in body text; Title Case in headings",
-            "note": "Two distinct uses of the same word"
+            "label": "\"Head of School\" \u2014 Title Case when used as a role title, confirmed",
+            "note": "Lowercase when generic: 'our head of school's role is\u2026'"
           },
           {
             "key": "B",
-            "label": "Always lowercase \"shadow day\"",
+            "label": "\"Head of School\" \u2014 always Title Case even in generic usage",
             "note": ""
           },
           {
             "key": "C",
-            "label": "Always capitalize \"Shadow Day\"",
-            "note": ""
+            "label": "Something else",
+            "note": "",
+            "custom": true
           }
         ],
-        "undefined": "Program calendar (Shadow Day — visitor event)"
+        "undefined": "alpha.school"
       }
     ]
   },
   {
     "id": "terminology",
     "icon": "T",
-    "title": "Terminology Choices",
+    "title": "Which Word or Phrase to Use",
     "questions": [
       {
         "id": "twice_much",
@@ -2969,7 +3105,7 @@ let categories = [
         "options": [
           {
             "key": "A",
-            "label": "\"Twice as much\" — universal rule, never \"twice as fast\"",
+            "label": "\"Twice as much\" \u2014 universal rule, never \"twice as fast\"",
             "note": "Update all existing copy that says 'twice as fast'"
           },
           {
@@ -3002,7 +3138,7 @@ let categories = [
         "options": [
           {
             "key": "A",
-            "label": "\"Life Skills\" — always, across all copy and campuses",
+            "label": "\"Life Skills\" \u2014 always, across all copy and campuses",
             "note": ""
           },
           {
@@ -3017,7 +3153,7 @@ let categories = [
         "id": "love_school",
         "title": "\"Love School\" vs. \"Love Learning\"",
         "conflict": false,
-        "context": "Meeting notes say never \"kids love learning\" — wrong message. Always \"kids love school\" or \"Love School.\" Is this universal?",
+        "context": "Meeting notes say never \"kids love learning\" \u2014 wrong message. Always \"kids love school\" or \"Love School.\" Is this universal?",
         "sources": [
           "Meeting Note 10/29/25",
           "Meeting Note 11/5/25"
@@ -3025,7 +3161,7 @@ let categories = [
         "options": [
           {
             "key": "A",
-            "label": "\"Love School\" — always. Never \"love learning.\"",
+            "label": "\"Love School\" \u2014 always. Never \"love learning.\"",
             "note": ""
           },
           {
@@ -3055,7 +3191,7 @@ let categories = [
         "options": [
           {
             "key": "A",
-            "label": "\"Alpha School\" — always singular, regardless of context",
+            "label": "\"Alpha School\" \u2014 always singular, regardless of context",
             "note": ""
           },
           {
@@ -3071,6 +3207,114 @@ let categories = [
           }
         ],
         "undefined": "Instagram (both)"
+      },
+      {
+        "id": "queue_breaks",
+        "title": "\"Queue Breaks\" \u2014 confirm as approved term for movement breaks",
+        "conflict": false,
+        "context": "Meeting notes say never say \"recess.\" Use \"Queue Breaks\" instead. Is this term for both internal staff use and external parent-facing copy?",
+        "sources": [
+          "Meeting Note 2/18/26"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"Queue Breaks\" \u2014 both internal and parent-facing copy",
+            "note": ""
+          },
+          {
+            "key": "B",
+            "label": "\"Queue Breaks\" internally; describe the activity for parents",
+            "note": "e.g., 'movement break,' 'outdoor time'"
+          },
+          {
+            "key": "C",
+            "label": "A different term",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "Meeting Note 2/18/26"
+      },
+      {
+        "id": "mobile_squad",
+        "title": "\"Mobile Squad\" \u2014 confirmed name for the field trip program?",
+        "conflict": false,
+        "context": "\"Mobile Squad\" appears in program descriptions as the name for Alpha's field trip / off-campus learning program. Confirm this is the approved external name.",
+        "sources": [
+          "Program descriptions"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"Mobile Squad\" \u2014 confirmed, approved for external use",
+            "note": ""
+          },
+          {
+            "key": "B",
+            "label": "Not the official name \u2014 needs correction",
+            "note": "",
+            "custom": true
+          },
+          {
+            "key": "C",
+            "label": "Internal use only \u2014 describe it differently for parents",
+            "note": ""
+          }
+        ],
+        "undefined": "Program descriptions"
+      },
+      {
+        "id": "alphas_currency",
+        "title": "\"Alphas\" \u2014 the school currency: capitalized, and approved externally?",
+        "conflict": false,
+        "context": "The Bible describes students earning \"Alphas\" (capitalized, in quotes) as an internal currency they can spend on rewards. The term appears with a capital A. Is \"Alphas\" a term used in parent-facing and marketing copy, or is it internal school language only?",
+        "sources": [
+          "The Bible (students earn 'Alphas' \u2014 capitalized, internal currency)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"Alphas\" \u2014 capitalized, approved for external/parent-facing copy",
+            "note": "e.g., 'students earn Alphas for focused learning time'"
+          },
+          {
+            "key": "C",
+            "label": "\"Alphas\" for enrolled-family communications; generic description for prospective families",
+            "note": ""
+          },
+          {
+            "key": "D",
+            "label": "Something else",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "The Bible (students earn 'Alphas' \u2014 capitalized, internal currency)"
+      },
+      {
+        "id": "xp_def",
+        "title": "XP definition \u2014 \"one XP = one minute of focused learning\"?",
+        "conflict": false,
+        "context": "\"XP\" (experience points) appears in the style guide as a learning metric. The working definition is: one XP equals one minute of focused learning time. Confirm this is accurate for external use.",
+        "sources": [
+          "Terms & Phrases spreadsheet",
+          "Internal program docs"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "Confirmed: 1 XP = 1 minute of focused learning",
+            "note": ""
+          },
+          {
+            "key": "B",
+            "label": "Something else.\u00a0 Write in.",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "Internal program docs"
       }
     ]
   },
@@ -3079,141 +3323,6 @@ let categories = [
     "icon": "%",
     "title": "Statistics & Claims",
     "questions": [
-      {
-        "id": "vacation_stat",
-        "title": "Vacation preference stat: 40–60%, 60%, or 62%?",
-        "conflict": true,
-        "context": "Different sources cite different numbers for \"students who prefer school to vacation.\" Meeting note says 40–60% (a range). Is that range because campuses differ? Or is there one correct figure?",
-        "sources": [
-          "FutureOfEd Substack (62%)",
-          "Messaging Framework (60%)",
-          "Meeting Note 12/10/25 (40–60%)"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"40–60%\" — a range with en-dash",
-            "note": "Reflects variation across campuses/years"
-          },
-          {
-            "key": "B",
-            "label": "\"60%\" — single clean figure",
-            "note": ""
-          },
-          {
-            "key": "C",
-            "label": "\"52%\" — single precise figure",
-            "note": ""
-          },
-          {
-            "key": "D",
-            "label": "Drop the stat — not reliable enough to publish",
-            "note": ""
-          },
-          {
-            "key": "E",
-            "label": "Something else",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "Meeting Note 12/10/25 (40–60%)"
-      },
-      {
-        "id": "percentile",
-        "title": "\"Top 1%\" exclusively, or can \"top 1–2%\" appear?",
-        "conflict": true,
-        "context": "Meeting notes say use \"Top 1%\" only and remove all \"top 2%\" references. But multiple sources use \"top 1–2%\" — possibly because it was more conservative/accurate. Is top 1% always correct, or does the range apply somewhere?",
-        "sources": [
-          "2hourlearning.com (top 1-2%)",
-          "Messaging Framework (top 1–2%)",
-          "Meeting Notes (Top 1% only)"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"Top 1%\" exclusively — remove all \"1–2%\" references",
-            "note": ""
-          },
-          {
-            "key": "B",
-            "label": "\"Top 1%\" in headlines; \"top 1–2%\" where conservative accuracy is needed",
-            "note": ""
-          },
-          {
-            "key": "C",
-            "label": "Context-dependent by campus — some should use 1–2%",
-            "note": ""
-          }
-        ],
-        "undefined": "Meeting Notes (Top 1% only)"
-      },
-      {
-        "id": "classes_students",
-        "title": "\"Classes rank in the top 1%\" or \"Students rank…\"?",
-        "conflict": false,
-        "context": "Meeting notes say always say \"classes\" not \"students,\" because students enter at different levels. Is this a universal rule?",
-        "sources": [
-          "Meeting Note 10/29/25",
-          "Meeting Note 12/10/25"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"Classes rank in the top 1%\" — always classes, not students",
-            "note": ""
-          },
-          {
-            "key": "B",
-            "label": "Both acceptable depending on context",
-            "note": ""
-          },
-          {
-            "key": "C",
-            "label": "Something else",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "Meeting Note 12/10/25"
-      },
-      {
-        "id": "multiplier",
-        "title": "Which learning growth figure for general marketing? (now five exist)",
-        "conflict": true,
-        "context": "The Bible adds one more figure beyond what was previously known, bringing the total to five: 2x (general claim), 2.6x (all students, MAP normed), 3.6x (top two-thirds), \"almost 4x\" (advanced students, Deep Dive video), 6.5x (top 20%). What figure belongs in general, non-campus-specific marketing copy?",
-        "sources": [
-          "alpha.school (2x — general)",
-          "MAP / Messaging Framework (2.6x — all students)",
-          "Internal data (3.6x — top 2/3)",
-          "Deep Dive video (~4x — advanced)",
-          "Internal data (6.5x — top 20%)"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"2x\" — simple general claim, no qualifier needed",
-            "note": ""
-          },
-          {
-            "key": "B",
-            "label": "\"2.6x\" — specific MAP-normed figure for Alpha Austin K-8",
-            "note": ""
-          },
-          {
-            "key": "D",
-            "label": "Different figures per context — no single approved general figure",
-            "note": "Each figure used only with its specific qualifier"
-          },
-          {
-            "key": "E",
-            "label": "Something else",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "Internal data (6.5x — top 20%)"
-      },
       {
         "id": "love_school_pct",
         "title": "\"Love school\" percentage: 95%, 96%, or \"over 90%\"?",
@@ -3245,34 +3354,188 @@ let categories = [
         "undefined": "Reid Hoffman interview (over 90%)"
       },
       {
+        "id": "vacation_stat",
+        "title": "Vacation preference stat: 40\u201360%, 60%, or 62%?",
+        "conflict": true,
+        "context": "Different sources cite different numbers for \"students who prefer school to vacation.\" Meeting note says 40\u201360% (a range). Is that range because campuses differ? Or is there one correct figure?",
+        "sources": [
+          "FutureOfEd Substack (62%)",
+          "Messaging Framework (60%)",
+          "Meeting Note 12/10/25 (40\u201360%)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"40\u201360%\" \u2014 a range with en-dash",
+            "note": "Reflects variation across campuses/years"
+          },
+          {
+            "key": "B",
+            "label": "\"60%\" \u2014 single clean figure",
+            "note": ""
+          },
+          {
+            "key": "C",
+            "label": "\"52%\" \u2014 single precise figure",
+            "note": ""
+          },
+          {
+            "key": "D",
+            "label": "Drop the stat \u2014 not reliable enough to publish",
+            "note": ""
+          },
+          {
+            "key": "E",
+            "label": "Something else",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "Meeting Note 12/10/25 (40\u201360%)"
+      },
+      {
+        "id": "percentile",
+        "title": "\"Top 1%\" exclusively, or can \"top 1\u20132%\" appear?",
+        "conflict": true,
+        "context": "Meeting notes say use \"Top 1%\" only and remove all \"top 2%\" references. But multiple sources use \"top 1\u20132%\" \u2014 possibly because it was more conservative/accurate. Is top 1% always correct, or does the range apply somewhere?",
+        "sources": [
+          "2hourlearning.com (top 1-2%)",
+          "Messaging Framework (top 1\u20132%)",
+          "Meeting Notes (Top 1% only)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"Top 1%\" exclusively \u2014 remove all \"1\u20132%\" references",
+            "note": ""
+          },
+          {
+            "key": "B",
+            "label": "\"Top 1%\" in headlines; \"top 1\u20132%\" where conservative accuracy is needed",
+            "note": ""
+          },
+          {
+            "key": "C",
+            "label": "Context-dependent by campus \u2014 some should use 1\u20132%",
+            "note": ""
+          }
+        ],
+        "undefined": "Meeting Notes (Top 1% only)"
+      },
+      {
+        "id": "percentile_phrasing",
+        "title": "\"99th percentile\" vs. \"top 1%\" \u2014 interchangeable or distinct?",
+        "conflict": true,
+        "context": "",
+        "sources": [],
+        "options": [
+          {
+            "key": "B",
+            "label": "\"Top 1%\" preferred \u2014 simpler and more accessible for parents",
+            "note": ""
+          },
+          {
+            "key": "C",
+            "label": "\"99th percentile\" for formal, data-heavy contexts; \"top 1%\" in marketing headlines",
+            "note": ""
+          }
+        ]
+      },
+      {
+        "id": "classes_students",
+        "title": "\"Classes rank in the top 1%\" or \"Students rank\u2026\"?",
+        "conflict": false,
+        "context": "Meeting notes say always say \"classes\" not \"students,\" because students enter at different levels. Is this a universal rule?",
+        "sources": [
+          "Meeting Note 10/29/25",
+          "Meeting Note 12/10/25"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"Classes rank in the top 1%\" \u2014 always classes, not students",
+            "note": ""
+          },
+          {
+            "key": "B",
+            "label": "Both acceptable depending on context",
+            "note": ""
+          },
+          {
+            "key": "C",
+            "label": "Something else",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "Meeting Note 12/10/25"
+      },
+      {
+        "id": "multiplier",
+        "title": "Which learning growth figure for general marketing? (now five exist)",
+        "conflict": true,
+        "context": "The Bible adds one more figure beyond what was previously known, bringing the total to five: 2x (general claim), 2.6x (all students, MAP normed), 3.6x (top two-thirds), \"almost 4x\" (advanced students, Deep Dive video), 6.5x (top 20%). What figure belongs in general, non-campus-specific marketing copy?",
+        "sources": [
+          "alpha.school (2x \u2014 general)",
+          "MAP / Messaging Framework (2.6x \u2014 all students)",
+          "Internal data (3.6x \u2014 top 2/3)",
+          "Deep Dive video (~4x \u2014 advanced)",
+          "Internal data (6.5x \u2014 top 20%)"
+        ],
+        "options": [
+          {
+            "key": "A",
+            "label": "\"2x\" \u2014 simple general claim, no qualifier needed",
+            "note": ""
+          },
+          {
+            "key": "B",
+            "label": "\"2.6x\" \u2014 specific MAP-normed figure for Alpha Austin K-8",
+            "note": ""
+          },
+          {
+            "key": "D",
+            "label": "Different figures per context \u2014 no single approved general figure",
+            "note": "Each figure used only with its specific qualifier"
+          },
+          {
+            "key": "E",
+            "label": "Something else",
+            "note": "",
+            "custom": true
+          }
+        ],
+        "undefined": "Internal data (6.5x \u2014 top 20%)"
+      },
+      {
         "id": "sat_avg",
         "title": "SAT average: \"1500+\", \"1470+\", or \"1470\"?",
         "conflict": true,
         "context": "",
         "sources": [
-          "Messaging Framework (Average 1500+ — 2024 cohort)",
+          "Messaging Framework (Average 1500+ \u2014 2024 cohort)",
           "2hourlearning.com (1470+)",
           "alphahigh.school (1410 overall avg; 1530 seniors)"
         ],
         "options": [
           {
             "key": "A",
-            "label": "\"Average 1500+\" ",
+            "label": "\"Average 1500+\"\u00a0",
             "note": "2024 cohort figure; may need updating each year"
           },
           {
             "key": "B",
-            "label": "\"Average 1470+\" ",
+            "label": "\"Average 1470+\"\u00a0",
             "note": ""
           },
           {
             "key": "C",
-            "label": "\"1470\" ",
+            "label": "\"1470\"\u00a0",
             "note": ""
           },
           {
             "key": "D",
-            "label": "Specify by grade: freshman avg vs. senior avg — never one flat number",
+            "label": "Specify by grade: freshman avg vs. senior avg \u2014 never one flat number",
             "note": "e.g., 'seniors average 1530; incoming students average 1410'"
           },
           {
@@ -3293,7 +3556,7 @@ let categories = [
         "options": [
           {
             "key": "A",
-            "label": "Average figure only — no individual score callouts in brand copy",
+            "label": "Average figure only \u2014 no individual score callouts in brand copy",
             "note": ""
           },
           {
@@ -3315,27 +3578,8 @@ let categories = [
         ]
       },
       {
-        "id": "percentile_phrasing",
-        "title": "\"99th percentile\" vs. \"top 1%\" — interchangeable or distinct?",
-        "conflict": true,
-        "context": "",
-        "sources": [],
-        "options": [
-          {
-            "key": "B",
-            "label": "\"Top 1%\" preferred — simpler and more accessible for parents",
-            "note": ""
-          },
-          {
-            "key": "C",
-            "label": "\"99th percentile\" for formal, data-heavy contexts; \"top 1%\" in marketing headlines",
-            "note": ""
-          }
-        ]
-      },
-      {
         "id": "national_merit",
-        "title": "\"Half of graduates qualifying as National Merit Scholars or Commended Scholars\" — current and approved?",
+        "title": "\"Half of graduates qualifying as National Merit Scholars or Commended Scholars\" \u2014 current and approved?",
         "conflict": false,
         "context": "",
         "sources": [],
@@ -3352,28 +3596,28 @@ let categories = [
           },
           {
             "key": "C",
-            "label": "Internal reference only — not for external marketing",
+            "label": "Internal reference only \u2014 not for external marketing",
             "note": ""
           },
           {
             "key": "D",
             "label": "Approved but needs qualifying language",
-            "note": "e.g., 'historically, roughly half of…'"
+            "note": "e.g., 'historically, roughly half of\u2026'"
           }
         ]
       }
     ]
   },
   {
-    "id": "style",
-    "icon": "¶",
-    "title": "Style Rules",
+    "id": "grammar",
+    "icon": "\u00b6",
+    "title": "Grammar & Punctuation",
     "questions": [
       {
         "id": "exclamation",
         "title": "Exclamation marks in headlines and ending cards",
         "conflict": false,
-        "context": "Meeting notes say change ! to period — avoids looking \"market-y.\" Does this apply everywhere or only specific placements?",
+        "context": "Meeting notes say change ! to period \u2014 avoids looking \"market-y.\" Does this apply everywhere or only specific placements?",
         "sources": [
           "Meeting Note 11/5/25",
           "Meeting Note 1/14/26"
@@ -3381,7 +3625,7 @@ let categories = [
         "options": [
           {
             "key": "A",
-            "label": "Always periods — no ! in any headline or ending card",
+            "label": "Always periods \u2014 no ! in any headline or ending card",
             "note": ""
           },
           {
@@ -3391,56 +3635,22 @@ let categories = [
           },
           {
             "key": "C",
-            "label": "Writer's discretion — use sparingly",
+            "label": "Writer's discretion \u2014 use sparingly",
             "note": ""
           }
         ],
         "undefined": "Meeting Note 1/14/26"
       },
       {
-        "id": "ai_terms",
-        "title": "\"AI-driven\" vs. \"AI-powered\"",
-        "conflict": true,
-        "context": "Meeting notes say \"AI-driven\" must be hyphenated. But \"AI-powered\" already appears in the style guide as an approved term. Are these interchangeable or do they mean different things?",
-        "sources": [
-          "Meeting Note 11/5/25 (AI-driven)",
-          "Existing Style Guide (AI-powered)"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "Only 'AI-driven' — replace all 'AI-powered' instances",
-            "note": ""
-          },
-          {
-            "key": "B",
-            "label": "Only 'AI-powered' — that is the approved form",
-            "note": ""
-          },
-          {
-            "key": "C",
-            "label": "Both acceptable in different contexts",
-            "note": "AI-driven = the system/approach; AI-powered = the product/tool"
-          },
-          {
-            "key": "D",
-            "label": "Something else",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "Existing Style Guide (AI-powered)"
-      },
-      {
         "id": "oxford_comma",
-        "title": "Oxford comma — always required?",
+        "title": "Oxford comma \u2014 always required?",
         "conflict": true,
         "context": "The Messaging Framework consistently uses the Oxford comma (e.g., \"reading, writing, math, and science\"). Some Instagram posts omit it. Should the Oxford comma be a hard rule?",
         "sources": [],
         "options": [
           {
             "key": "A",
-            "label": "Always use the Oxford comma — required in all Alpha copy",
+            "label": "Always use the Oxford comma \u2014 required in all Alpha copy",
             "note": ""
           },
           {
@@ -3450,231 +3660,14 @@ let categories = [
           },
           {
             "key": "C",
-            "label": "Optional — writer's discretion throughout",
+            "label": "Optional \u2014 writer's discretion throughout",
             "note": ""
           }
         ]
       }
     ]
-  },
-  {
-    "id": "terms",
-    "icon": "★",
-    "title": "New Terms to Confirm",
-    "questions": [
-      {
-        "id": "queue_breaks",
-        "title": "\"Queue Breaks\" — confirm as approved term for movement breaks",
-        "conflict": false,
-        "context": "Meeting notes say never say \"recess.\" Use \"Queue Breaks\" instead. Is this term for both internal staff use and external parent-facing copy?",
-        "sources": [
-          "Meeting Note 2/18/26"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"Queue Breaks\" — both internal and parent-facing copy",
-            "note": ""
-          },
-          {
-            "key": "B",
-            "label": "\"Queue Breaks\" internally; describe the activity for parents",
-            "note": "e.g., 'movement break,' 'outdoor time'"
-          },
-          {
-            "key": "C",
-            "label": "A different term",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "Meeting Note 2/18/26"
-      },
-      {
-        "id": "twohl_abbrev",
-        "title": "\"2HL\" as an abbreviation — approved for external use?",
-        "conflict": false,
-        "context": "The 2hourlearning.com website navigation uses \"2HL Blog\" and \"2HL in the News.\" Is \"2HL\" an approved shorthand for external copy and navigation, or is it internal/nav-only?",
-        "sources": [
-          "2hourlearning.com navigation (2HL Blog, 2HL in the News)"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"2HL\" is approved for navigation and shorthand use",
-            "note": ""
-          },
-          {
-            "key": "B",
-            "label": "Never abbreviate — always write \"2 Hour Learning\"",
-            "note": ""
-          },
-          {
-            "key": "C",
-            "label": "\"2HL\" for navigation and internal copy only; never in marketing body text",
-            "note": ""
-          },
-          {
-            "key": "D",
-            "label": "Something else",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "2hourlearning.com navigation (2HL Blog, 2HL in the News)"
-      }
-    ]
-  },
-  {
-    "id": "confirms",
-    "icon": "✓",
-    "title": "Quick Confirms",
-    "questions": [
-      {
-        "id": "one_on_one",
-        "title": "\"1:1\" vs. \"one-on-one\" — same rule everywhere, or depends on placement?",
-        "conflict": false,
-        "context": "alpha.school uses \"1:1 personalized education\" in headers and labels. Standard editorial practice often spells out numbers in running prose (\"one-on-one attention\") while using numerals in headlines, cards, and UI elements. Is there a placement-based rule, or one form for all contexts?",
-        "sources": [
-          "alpha.school (1:1 in headers and labels)"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"1:1\" always — headlines, body text, labels, everywhere",
-            "note": ""
-          },
-          {
-            "key": "B",
-            "label": "\"one-on-one\" always — spelled out in all contexts",
-            "note": ""
-          },
-          {
-            "key": "C",
-            "label": "\"1:1\" in titles, headings, and labels; \"one-on-one\" in paragraph text",
-            "note": "e.g., heading: \"1:1 Personalized Learning\" — body: \"each student gets one-on-one attention\""
-          },
-          {
-            "key": "E",
-            "label": "Something else",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "alpha.school (1:1 in headers and labels)"
-      },
-      {
-        "id": "head_of_school",
-        "title": "\"Head of School\" — always Title Case?",
-        "conflict": false,
-        "context": "",
-        "sources": [
-          "alpha.school"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"Head of School\" — Title Case when used as a role title, confirmed",
-            "note": "Lowercase when generic: 'our head of school's role is…'"
-          },
-          {
-            "key": "B",
-            "label": "\"Head of School\" — always Title Case even in generic usage",
-            "note": ""
-          },
-          {
-            "key": "C",
-            "label": "Something else",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "alpha.school"
-      },
-      {
-        "id": "mobile_squad",
-        "title": "\"Mobile Squad\" — confirmed name for the field trip program?",
-        "conflict": false,
-        "context": "\"Mobile Squad\" appears in program descriptions as the name for Alpha's field trip / off-campus learning program. Confirm this is the approved external name.",
-        "sources": [
-          "Program descriptions"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"Mobile Squad\" — confirmed, approved for external use",
-            "note": ""
-          },
-          {
-            "key": "B",
-            "label": "Not the official name — needs correction",
-            "note": "",
-            "custom": true
-          },
-          {
-            "key": "C",
-            "label": "Internal use only — describe it differently for parents",
-            "note": ""
-          }
-        ],
-        "undefined": "Program descriptions"
-      },
-      {
-        "id": "xp_def",
-        "title": "XP definition — \"one XP = one minute of focused learning\"?",
-        "conflict": false,
-        "context": "\"XP\" (experience points) appears in the style guide as a learning metric. The working definition is: one XP equals one minute of focused learning time. Confirm this is accurate for external use.",
-        "sources": [
-          "Terms & Phrases spreadsheet",
-          "Internal program docs"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "Confirmed: 1 XP = 1 minute of focused learning",
-            "note": ""
-          },
-          {
-            "key": "B",
-            "label": "Something else.  Write in.",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "Internal program docs"
-      },
-      {
-        "id": "alphas_currency",
-        "title": "\"Alphas\" — the school currency: capitalized, and approved externally?",
-        "conflict": false,
-        "context": "The Bible describes students earning \"Alphas\" (capitalized, in quotes) as an internal currency they can spend on rewards. The term appears with a capital A. Is \"Alphas\" a term used in parent-facing and marketing copy, or is it internal school language only?",
-        "sources": [
-          "The Bible (students earn 'Alphas' — capitalized, internal currency)"
-        ],
-        "options": [
-          {
-            "key": "A",
-            "label": "\"Alphas\" — capitalized, approved for external/parent-facing copy",
-            "note": "e.g., 'students earn Alphas for focused learning time'"
-          },
-          {
-            "key": "C",
-            "label": "\"Alphas\" for enrolled-family communications; generic description for prospective families",
-            "note": ""
-          },
-          {
-            "key": "D",
-            "label": "Something else",
-            "note": "",
-            "custom": true
-          }
-        ],
-        "undefined": "The Bible (students earn 'Alphas' — capitalized, internal currency)"
-      }
-    ]
   }
 ];
-
 // ─── STATE ───────────────────────────────────────────────────────────────────
 const answers = {}; // { qId: { choice, custom, notes } }
 let isEditing = false;
