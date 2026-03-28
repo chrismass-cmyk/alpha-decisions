@@ -173,6 +173,16 @@
   .chips-hint { padding: 0 16px 10px 52px; font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); font-style: italic; }
   .is-editing .q-chips, .is-editing .chips-hint { display: none; }
 
+  /* ── GENERAL NOTES SECTION ── */
+  .general-notes-section { background: #fff; border: 2px solid var(--gold); border-radius: 4px; padding: 28px 32px; margin: 32px 0 24px; }
+  .gnotes-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+  .gnotes-icon { font-size: 30px; line-height: 1; }
+  .gnotes-title { font-family: Arial, sans-serif; font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 5px; }
+  .gnotes-sub { font-family: Arial, sans-serif; font-size: 13px; color: #666; line-height: 1.6; max-width: 560px; }
+  .gnotes-textarea { width: 100%; min-height: 160px; font-family: Arial, sans-serif; font-size: 13px; padding: 14px; border: 1.5px solid #ccc; border-radius: 3px; resize: vertical; box-sizing: border-box; line-height: 1.7; color: var(--navy); }
+  .gnotes-textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(197,163,109,.15); }
+  .gnotes-textarea::placeholder { color: #aaa; }
+
   /* ── COMPLETE BANNER ── */
   .complete-banner { background: var(--navy); color: white; text-align: center; padding: 28px 24px; margin-top: 28px; display: none; }
   .complete-banner.show { display: block; }
@@ -2764,6 +2774,20 @@
         <textarea class="notes-input" placeholder="Add any nuances, exceptions, or explanation…" oninput="updateNotes('alphas_currency',this.value)"></textarea></div></div><button class="add-q-btn">+ Add Question to This Category</button></div><button style="display: block; width: 100%; background: none; border: 2px dashed rgb(170, 170, 170); color: rgb(136, 136, 136); font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; padding: 12px; cursor: pointer; border-radius: 2px; margin-top: 16px;">+ Add New Category</button></main>
 
 <div id="milestone-toast"></div>
+
+<div class="general-notes-section" id="generalNotesSection">
+  <div class="gnotes-header">
+    <div class="gnotes-icon">✍️</div>
+    <div>
+      <div class="gnotes-title">Anything else on your mind?</div>
+      <div class="gnotes-sub">Commonly misused terms, phrases you always want to avoid, wording that sounds off, words with a specific meaning at Alpha that outsiders might get wrong — anything you'd want a writer to know that doesn't fit neatly into the questions above.</div>
+    </div>
+  </div>
+  <textarea id="generalNotesTA" class="gnotes-textarea"
+    placeholder="e.g., &#10;• Never say 'innovative' — everyone says that.&#10;• The school is in Austin, not 'Austin, Texas' in headings.&#10;• Don't say students 'graduate' — they complete their Alpha journey."
+    oninput="updateGeneralNotes(this.value)"></textarea>
+</div>
+
 <div class="complete-banner" id="completeBanner">
   <h3>That's a ruling. ⚖️</h3>
   <p>Every question has been answered. Somewhere, a hyphen is finally at peace. Export your decisions to share with the copy editing team — or just sit with this feeling for a second. You've earned it.</p>
@@ -3421,7 +3445,8 @@ let categories = [
           { "key": "B", "label": "learner / learners", "note": "Found especially in Alpha Anywhere and Brownsville copy" },
           { "key": "C", "label": "kid / kids", "note": "Used in casual, aspirational, and conversational copy" },
           { "key": "D", "label": "child / children", "note": "Found in admissions and parent-facing FAQ copy" },
-          { "key": "E", "label": "scholar / scholars", "note": "Found on the Brownsville campus page" }
+          { "key": "E", "label": "scholar / scholars", "note": "Found on the Brownsville campus page" },
+          { "key": "ALL", "label": "All of the above \u2014 any of these terms is acceptable depending on context", "note": "" }
         ]
       },
       {
@@ -3803,25 +3828,25 @@ let categories = [
 // ─── STATE ───────────────────────────────────────────────────────────────────
 const answers = {
   // Pre-filled: MacKenzie confirmed lowercase — same rule as "teacher"
-  "guide_cap": { choice: "A", choices: [], custom: "", notes: "Same rule as \u201cteacher\u201d \u2014 not a proper noun." }
-}; // { qId: { choice, custom, notes } }
+  "guide_cap": { choices: ["A"], custom: "", notes: "Same rule as \u201cteacher\u201d \u2014 not a proper noun." }
+}; // { qId: { choices:[], custom, notes } }
 let isEditing = false;
+let generalNotes = null;
 
 function getAns(qId) {
-  if (!answers[qId]) answers[qId] = { choice:null, choices:[], custom:'', notes:'' };
+  if (!answers[qId]) answers[qId] = { choices:[], custom:'', notes:'' };
   return answers[qId];
 }
 function totalQuestions() {
   return categories.reduce((a,c) => a + c.questions.length, 0);
 }
-function isAnswered(qId, multiselect) {
-  const ans = getAns(qId);
-  return multiselect ? ans.choices.length > 0 : ans.choice !== null;
+function isAnswered(qId) {
+  return getAns(qId).choices.length > 0;
 }
 function answeredCount() {
   let count = 0;
   categories.forEach(cat => cat.questions.forEach(q => {
-    if (isAnswered(q.id, q.multiselect)) count++;
+    if (isAnswered(q.id)) count++;
   }));
   return count;
 }
@@ -3867,7 +3892,7 @@ function render() {
     cat.questions.forEach((q, qi) => {
       qNum++;
       const ans = getAns(q.id);
-      const answered = isAnswered(q.id, q.multiselect);
+      const answered = isAnswered(q.id);
       const conflictClass = q.conflict ? 'conflict' : '';
       const answeredClass = answered ? 'answered' : '';
 
@@ -3904,88 +3929,49 @@ function render() {
           <div class="q-status-icon">${answered ? '✅' : '○'}</div>
         </div>`;
 
-      if (q.multiselect) {
-        // ── MULTI-SELECT CHIP MODE ──
-        const hintDiv = document.createElement('div');
-        hintDiv.className = 'chips-hint';
-        hintDiv.textContent = 'Click every form that is acceptable. Click again to deselect.';
-        card.appendChild(hintDiv);
+      // ── CHIP MODE (all questions) ──
+      const hintDiv = document.createElement('div');
+      hintDiv.className = 'chips-hint';
+      hintDiv.textContent = 'Select all that apply. Click again to deselect.';
+      card.appendChild(hintDiv);
 
-        const chipsDiv = document.createElement('div');
-        chipsDiv.className = 'q-chips';
-        q.options.forEach(opt => {
-          const isSelected = ans.choices.includes(opt.key);
-          const chip = document.createElement('button');
-          chip.className = `chip${isSelected ? ' chip-selected' : ''}`;
-          chip.dataset.qid = q.id;
-          chip.dataset.key = opt.key;
-          chip.onclick = () => toggleMultiOption(q.id, opt.key);
-          chip.innerHTML = opt.label + (opt.note ? `<span class="chip-note">${opt.note}</span>` : '');
-          chipsDiv.appendChild(chip);
-        });
-        card.appendChild(chipsDiv);
+      const chipsDiv = document.createElement('div');
+      chipsDiv.className = 'q-chips';
+      q.options.forEach(opt => {
+        const isSelected = ans.choices.includes(opt.key);
+        const chip = document.createElement('button');
+        chip.className = `chip${isSelected ? ' chip-selected' : ''}`;
+        chip.dataset.qid = q.id;
+        chip.dataset.key = opt.key;
+        chip.onclick = () => toggleMultiOption(q.id, opt.key);
+        chip.innerHTML = opt.label + (opt.note ? `<span class="chip-note">${opt.note}</span>` : '');
+        chipsDiv.appendChild(chip);
+      });
+      card.appendChild(chipsDiv);
 
-        // Edit-mode rows for multiselect (reuse same edit-row UI)
-        const editOptWrap = document.createElement('div');
-        editOptWrap.className = 'q-options'; // reuse class for spacing
-        q.options.forEach((opt, oi) => {
-          const editRow = document.createElement('div');
-          editRow.className = 'option-edit-row';
-          editRow.innerHTML = `
-            <input class="opt-key-input" type="text" value="${opt.key}" maxlength="2"
-              oninput="syncOptField(${ci},${qi},${oi},'key',this.value)" />
-            <div class="opt-text-wrap">
-              <span class="opt-label-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="label"
-                data-placeholder="Option label" oninput="syncOptFieldCE(this)">${opt.label}</span>
-              <span class="opt-note-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="note"
-                data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">${opt.note||''}</span>
-            </div>
-            <button class="opt-del-btn" onclick="deleteOption(${ci},${qi},${oi})">×</button>`;
-          editOptWrap.appendChild(editRow);
-        });
-        card.appendChild(editOptWrap);
-      } else {
-        // ── STANDARD RADIO MODE ──
-        // Options — answer-mode rows (hidden in edit mode via CSS)
-        const optionsDiv = document.createElement('div');
-        optionsDiv.className = 'q-options';
-
-        q.options.forEach((opt, oi) => {
-          const selected = ans.choice === opt.key ? 'selected' : '';
-          // Answer-mode row
-          const ansRow = document.createElement('label');
-          ansRow.className = `option-row ${selected}`;
-          ansRow.onclick = () => selectOption(q.id, opt.key);
-          ansRow.innerHTML = `
-            <input type="radio" name="q_${q.id}" value="${opt.key}" ${ans.choice===opt.key?'checked':''} />
-            <div class="option-label">
-              <span class="option-key">${opt.key}.</span> ${opt.label}
-              ${opt.note ? `<span class="option-note">${opt.note}</span>` : ''}
-            </div>`;
-          optionsDiv.appendChild(ansRow);
-
-          // Edit-mode row
-          const editRow = document.createElement('div');
-          editRow.className = 'option-edit-row';
-          editRow.innerHTML = `
-            <input class="opt-key-input" type="text" value="${opt.key}" maxlength="2"
-              oninput="syncOptField(${ci},${qi},${oi},'key',this.value)" />
-            <div class="opt-text-wrap">
-              <span class="opt-label-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="label"
-                data-placeholder="Option label" oninput="syncOptFieldCE(this)">${opt.label}</span>
-              <span class="opt-note-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="note"
-                data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">${opt.note||''}</span>
-              <label class="opt-custom-toggle">
-                <input type="checkbox" ${opt.custom?'checked':''} onchange="syncOptField(${ci},${qi},${oi},'custom',this.checked)" />
-                Write-in option
-              </label>
-            </div>
-            <button class="opt-del-btn" onclick="deleteOption(${ci},${qi},${oi})">×</button>`;
-          optionsDiv.appendChild(editRow);
-        });
-
-        card.appendChild(optionsDiv);
-      } // end radio/multiselect branch
+      // Edit-mode option rows
+      const editOptWrap = document.createElement('div');
+      editOptWrap.className = 'q-options';
+      q.options.forEach((opt, oi) => {
+        const editRow = document.createElement('div');
+        editRow.className = 'option-edit-row';
+        editRow.innerHTML = `
+          <input class="opt-key-input" type="text" value="${opt.key}" maxlength="2"
+            oninput="syncOptField(${ci},${qi},${oi},'key',this.value)" />
+          <div class="opt-text-wrap">
+            <span class="opt-label-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="label"
+              data-placeholder="Option label" oninput="syncOptFieldCE(this)">${opt.label}</span>
+            <span class="opt-note-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="note"
+              data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">${opt.note||''}</span>
+            <label class="opt-custom-toggle">
+              <input type="checkbox" ${opt.custom?'checked':''} onchange="syncOptField(${ci},${qi},${oi},'custom',this.checked)" />
+              Write-in option
+            </label>
+          </div>
+          <button class="opt-del-btn" onclick="deleteOption(${ci},${qi},${oi})">×</button>`;
+        editOptWrap.appendChild(editRow);
+      });
+      card.appendChild(editOptWrap);
 
       // Add option button (edit mode only)
       const addOptBtn = document.createElement('button');
@@ -4000,7 +3986,7 @@ function render() {
         const wiWrap = document.createElement('div');
         wiWrap.className = 'write-in-wrap';
         wiWrap.id = `writein-${q.id}`;
-        wiWrap.style.display = ans.choice === customOpt.key ? '' : 'none';
+        wiWrap.style.display = ans.choices.includes(customOpt.key) ? '' : 'none';
         wiWrap.innerHTML = `
           <div class="field-label">Your answer:</div>
           <input class="write-in-input" type="text" placeholder="Type your answer here…"
@@ -4165,31 +4151,6 @@ function deleteSource(ci, qi, si) {
 }
 
 // ─── ANSWER ACTIONS ──────────────────────────────────────────────────────────
-function selectOption(qId, key) {
-  const ans = getAns(qId);
-  ans.choice = key;
-
-  const card = document.getElementById(`card-${qId}`);
-  card.classList.add('answered');
-  card.querySelector('.q-status-icon').textContent = '✅';
-
-  card.querySelectorAll('.option-row').forEach(row => row.classList.remove('selected'));
-  card.querySelectorAll('input[type="radio"]').forEach(r => {
-    r.checked = r.value === key;
-    if (r.value === key) r.closest('.option-row').classList.add('selected');
-  });
-
-  // Show/hide write-in
-  const q = getQuestion(qId);
-  if (q) {
-    const customOpt = q.options.find(o => o.custom);
-    const wi = document.getElementById(`writein-${qId}`);
-    if (wi) wi.style.display = (customOpt && key === customOpt.key) ? '' : 'none';
-  }
-
-  updateProgress();
-}
-
 function toggleMultiOption(qId, key) {
   const ans = getAns(qId);
   const idx = ans.choices.indexOf(key);
@@ -4201,12 +4162,19 @@ function toggleMultiOption(qId, key) {
   card.classList.toggle('answered', nowAnswered);
   card.querySelector('.q-status-icon').textContent = nowAnswered ? '✅' : '○';
 
-  // Update chip appearance
   card.querySelectorAll('.chip').forEach(chip => {
     if (chip.dataset.key === key) {
       chip.classList.toggle('chip-selected', ans.choices.includes(key));
     }
   });
+
+  // Show/hide write-in if a custom option is toggled
+  const wi = document.getElementById(`writein-${qId}`);
+  if (wi) {
+    const q = getQuestion(qId);
+    const customOpt = q && q.options.find(o => o.custom);
+    wi.style.display = (customOpt && ans.choices.includes(customOpt.key)) ? '' : 'none';
+  }
 
   updateProgress();
 }
@@ -4220,6 +4188,7 @@ function getQuestion(qId) {
 
 function updateCustom(qId, val) { getAns(qId).custom = val; }
 function updateNotes(qId, val) { getAns(qId).notes = val; }
+function updateGeneralNotes(val) { generalNotes = val; }
 
 function updateProgress() {
   const total = totalQuestions();
@@ -4269,11 +4238,15 @@ function downloadPage() {
 
   const serialized = JSON.stringify(categories, null, 2);
   const pageHTML = document.documentElement.outerHTML;
-  // Replace the categories data in the script
-  const updated = pageHTML.replace(
-    /let categories = \[[\s\S]*?\];(?=\s*\/\/ ─── STATE)/,
-    `let categories = ${serialized};`
-  );
+  const updated = pageHTML
+    .replace(
+      /let categories = \[[\s\S]*?\];(?=\s*\/\/ ─── STATE)/,
+      `let categories = ${serialized};`
+    )
+    .replace(
+      /let generalNotes = [^;]*;/,
+      `let generalNotes = ${JSON.stringify(generalNotes)};`
+    );
 
   const blob = new Blob([updated], {type:'text/html'});
   const url = URL.createObjectURL(blob);
@@ -4305,15 +4278,10 @@ function openModal() {
     cat.questions.forEach(q => {
       qNum++;
       const ans = getAns(q.id);
-      const answered = isAnswered(q.id, q.multiselect);
-      let label;
-      if (q.multiselect) {
-        label = ans.choices.length > 0
-          ? ans.choices.map(k => { const o = q.options.find(o=>o.key===k); return o ? o.label : k; }).join('; ')
-          : null;
-      } else {
-        label = answered ? getAnswerLabel(q.id, ans.choice) : null;
-      }
+      const answered = isAnswered(q.id);
+      const label = answered
+        ? ans.choices.map(k => { const o = q.options.find(o=>o.key===k); return o ? o.label : k; }).join(', ')
+        : null;
       html += `
         <div class="export-row">
           <div class="export-q">Q${qNum}. ${q.title}</div>
@@ -4323,6 +4291,9 @@ function openModal() {
     });
     html += '</div>';
   });
+  if (generalNotes) {
+    html += `<div class="export-section"><h4>Additional Notes</h4><div class="export-row"><div class="export-a">${generalNotes.replace(/\n/g,'<br>')}</div></div></div>`;
+  }
   document.getElementById('modalBody').innerHTML = html;
   document.getElementById('modalOverlay').classList.add('open');
 }
@@ -4339,17 +4310,16 @@ function copyToClipboard() {
       qNum++;
       const ans = getAns(q.id);
       text += `\nQ${qNum}. ${q.title}\n`;
-      if (q.multiselect) {
-        text += ans.choices.length > 0
-          ? `ACCEPTED FORMS: ${ans.choices.map(k => { const o = q.options.find(o=>o.key===k); return o?o.label:k; }).join('; ')}\n`
-          : `ACCEPTED FORMS: — Not yet answered\n`;
-      } else {
-        text += ans.choice ? `DECISION: ${getAnswerLabel(q.id, ans.choice)}\n` : `DECISION: — Not yet answered\n`;
-      }
+      text += ans.choices.length > 0
+        ? `RULING: ${ans.choices.map(k => { const o = q.options.find(o=>o.key===k); return o?o.label:k; }).join(', ')}\n`
+        : `RULING: — Not yet answered\n`;
       if (ans.notes) text += `Notes: ${ans.notes}\n`;
     });
     text += '\n';
   });
+  if (generalNotes) {
+    text += 'ADDITIONAL NOTES\n' + '-'.repeat(38) + '\n' + generalNotes + '\n\n';
+  }
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector('.btn-copy');
     btn.textContent = 'Copied!';
@@ -4359,6 +4329,7 @@ function copyToClipboard() {
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 render();
+if (generalNotes) document.getElementById('generalNotesTA').value = generalNotes;
 </script>
 
 
