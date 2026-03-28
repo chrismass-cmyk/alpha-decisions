@@ -19,7 +19,9 @@
   .header-subtitle { font-family: Arial, sans-serif; font-size: 11px; color: rgba(255,255,255,.7); margin-top: 2px; }
   .progress-wrap { flex: 1; min-width: 140px; }
   .progress-label { font-family: Arial, sans-serif; font-size: 11px; color: rgba(255,255,255,.8); margin-bottom: 4px; text-align: right; }
-  .progress-quip { font-family: Arial, sans-serif; font-size: 10px; color: rgba(255,255,255,.55); margin-top: 4px; text-align: right; font-style: italic; min-height: 13px; }
+  .progress-quip { display: none; }
+  #milestone-toast { position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; border: 2.5px solid var(--gold); border-radius: 14px; padding: 20px 36px; font-family: Arial, sans-serif; font-size: 15px; font-weight: 600; text-align: center; max-width: 460px; width: 88%; z-index: 9999; box-shadow: 0 10px 40px rgba(0,0,0,.45); transition: bottom .45s cubic-bezier(.34,1.56,.64,1), opacity .3s; opacity: 0; pointer-events: none; }
+  #milestone-toast.show { bottom: 44px; opacity: 1; }
   .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 2px; height: 6px; overflow: hidden; }
   .progress-bar-fill { background: var(--gold); height: 100%; border-radius: 2px; transition: width .3s; width: 0%; }
   .hbtn { border: none; padding: 8px 14px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 3px; letter-spacing: .04em; white-space: nowrap; transition: background .15s, color .15s; }
@@ -2761,6 +2763,7 @@
         <div class="field-label">Notes / context for the team (optional)</div>
         <textarea class="notes-input" placeholder="Add any nuances, exceptions, or explanation…" oninput="updateNotes('alphas_currency',this.value)"></textarea></div></div><button class="add-q-btn">+ Add Question to This Category</button></div><button style="display: block; width: 100%; background: none; border: 2px dashed rgb(170, 170, 170); color: rgb(136, 136, 136); font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; padding: 12px; cursor: pointer; border-radius: 2px; margin-top: 16px;">+ Add New Category</button></main>
 
+<div id="milestone-toast"></div>
 <div class="complete-banner" id="completeBanner">
   <h3>That's a ruling. ⚖️</h3>
   <p>Every question has been answered. Somewhere, a hyphen is finally at peace. Export your decisions to share with the copy editing team — or just sit with this feeling for a second. You've earned it.</p>
@@ -3827,7 +3830,7 @@ function answeredCount() {
 const TAGLINES = {
   'spelling': "Some of these have been wrong on the website for years. Totally fine.",
   'caps': "What deserves to be a Proper Noun? (Guide is watching.)",
-  'terminology': "Turns out we've been using five words for the same thing. Classic.",
+  'terminology': "\"Student,\" \"learner,\" \"kid,\" \"child,\" \"scholar\" — pick your favorites.",
   'stats': "Numbers mean things. Specific things. That's why we're here.",
   'grammar': "The Oxford comma is in here. Just a heads up."
 };
@@ -4227,15 +4230,30 @@ function updateProgress() {
   document.getElementById('answeredCount').textContent = count;
   document.getElementById('totalCount').textContent = total;
   document.getElementById('completeBanner').classList.toggle('show', count > 0 && count === total);
-  const quips = [
+  const milestones = [
     [100, "Done. The hyphens have been tamed. ✓"],
     [75,  "Almost there. The style guide can smell freedom."],
     [50,  "Halfway. Not going to make a big deal of this. (Big deal.)"],
     [25,  "25% in. Someone just unclenched a fist."],
     [1,   "Good start. My emotional support copy editor is cautiously hopeful."]
   ];
-  const quip = quips.find(([t]) => pct >= t)?.[1] || '';
-  document.getElementById('progressQuip').textContent = quip;
+  const hit = milestones.find(([t]) => pct >= t);
+  if (hit) {
+    const key = hit[0];
+    if (!updateProgress._shown) updateProgress._shown = new Set();
+    if (!updateProgress._shown.has(key)) {
+      updateProgress._shown.add(key);
+      showToast(hit[1]);
+    }
+  }
+}
+
+function showToast(msg) {
+  const el = document.getElementById('milestone-toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => el.classList.remove('show'), 3500);
 }
 
 // ─── DOWNLOAD UPDATED PAGE ───────────────────────────────────────────────────
