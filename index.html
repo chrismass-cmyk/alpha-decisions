@@ -166,11 +166,15 @@
   .q-chips { padding: 6px 16px 14px 52px; display: flex; flex-wrap: wrap; gap: 7px; }
   .chip { display: inline-flex; align-items: center; gap: 5px; padding: 6px 13px; border: 1.5px solid var(--border); border-radius: 20px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; background: white; color: var(--text); transition: background .12s, border-color .12s, color .12s; white-space: nowrap; }
   .chip:hover { background: #f0ede8; border-color: #aaa; }
-  .chip.chip-selected { background: var(--green-light); border-color: #75b254; color: var(--green); }
+  .chip.chip-selected { background: var(--green-light); border-color: #75b254; color: var(--green); padding-right: 10px; }
+  .chip.chip-selected:hover { background: #fde8e8; border-color: #d9534f; color: #c0392b; }
+  .chip.chip-selected:hover .chip-remove { color: #c0392b; }
   .chip.chip-selected::before { content: "✓ "; font-size: 11px; }
+  .chip-remove { font-size: 13px; font-weight: 700; margin-left: 4px; opacity: .5; line-height: 1; }
+  .chip.chip-selected:hover .chip-remove { opacity: 1; }
   .chip-note { font-size: 10px; font-weight: 400; color: var(--muted); margin-left: 3px; }
   .chip.chip-selected .chip-note { color: var(--green); }
-  .chips-hint { padding: 0 16px 10px 52px; font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); font-style: italic; }
+  .chips-hint { padding: 4px 16px 10px 52px; font-family: Arial, sans-serif; font-size: 11.5px; color: #888; }
   .is-editing .q-chips, .is-editing .chips-hint { display: none; }
 
   /* ── GENERAL NOTES SECTION ── */
@@ -3932,7 +3936,7 @@ function render() {
       // ── CHIP MODE (all questions) ──
       const hintDiv = document.createElement('div');
       hintDiv.className = 'chips-hint';
-      hintDiv.textContent = 'Select all that apply. Click again to deselect.';
+      hintDiv.textContent = 'Click to select · Click a selected answer again (or hover to see ×) to remove it';
       card.appendChild(hintDiv);
 
       const chipsDiv = document.createElement('div');
@@ -3944,7 +3948,7 @@ function render() {
         chip.dataset.qid = q.id;
         chip.dataset.key = opt.key;
         chip.onclick = () => toggleMultiOption(q.id, opt.key);
-        chip.innerHTML = opt.label + (opt.note ? `<span class="chip-note">${opt.note}</span>` : '');
+        chip.innerHTML = opt.label + (opt.note ? `<span class="chip-note">${opt.note}</span>` : '') + (isSelected ? '<span class="chip-remove">×</span>' : '');
         chipsDiv.appendChild(chip);
       });
       card.appendChild(chipsDiv);
@@ -4164,7 +4168,18 @@ function toggleMultiOption(qId, key) {
 
   card.querySelectorAll('.chip').forEach(chip => {
     if (chip.dataset.key === key) {
-      chip.classList.toggle('chip-selected', ans.choices.includes(key));
+      const nowSelected = ans.choices.includes(key);
+      chip.classList.toggle('chip-selected', nowSelected);
+      // Add or remove the × remove indicator
+      const existing = chip.querySelector('.chip-remove');
+      if (nowSelected && !existing) {
+        const rx = document.createElement('span');
+        rx.className = 'chip-remove';
+        rx.textContent = '×';
+        chip.appendChild(rx);
+      } else if (!nowSelected && existing) {
+        existing.remove();
+      }
     }
   });
 
