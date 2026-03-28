@@ -37,12 +37,17 @@
   .edit-mode-bar.show { display: block; }
 
   /* ── INTRO ── */
-  .intro-banner { background: white; border-bottom: 3px solid var(--gold); padding: 18px 24px; }
-  .intro-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: flex-start; gap: 20px; }
-  .intro-text h2 { font-family: Arial, sans-serif; font-size: 16px; color: var(--navy); margin-bottom: 5px; }
-  .intro-text p { font-size: 13px; color: var(--muted); line-height: 1.5; }
-  .intro-stats { background: var(--navy); color: white; padding: 10px 16px; border-radius: 3px; font-family: Arial, sans-serif; font-size: 12px; white-space: nowrap; text-align: center; min-width: 110px; }
-  .intro-stats .big-num { font-size: 28px; font-weight: 700; color: var(--gold); display: block; line-height: 1; }
+  .intro-banner { background: white; border-bottom: 3px solid var(--gold); padding: 16px 24px 18px; }
+  .intro-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .intro-left { flex: 1; min-width: 260px; }
+  .intro-headline { font-family: Georgia, serif; font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.2; margin-bottom: 4px; }
+  .intro-headline span { color: var(--gold); }
+  .intro-sub { font-family: Arial, sans-serif; font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+  .intro-sub em { color: var(--navy); font-style: normal; font-weight: 700; }
+  .intro-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+  .intro-pill { display: inline-flex; align-items: center; gap: 5px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 20px; padding: 4px 12px; font-family: Arial, sans-serif; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .intro-stats { background: var(--navy); color: white; padding: 12px 20px; border-radius: 10px; font-family: Arial, sans-serif; font-size: 12px; white-space: nowrap; text-align: center; min-width: 110px; }
+  .intro-stats .big-num { font-size: 32px; font-weight: 700; color: var(--gold); display: block; line-height: 1; margin-bottom: 2px; }
 
   /* ── MAIN ── */
   .main { max-width: 900px; margin: 0 auto; padding: 28px 24px 80px; }
@@ -232,9 +237,14 @@
 
 <div class="intro-banner">
   <div class="intro-inner">
-    <div class="intro-text">
-      <h2>Okay. Here's the thing.</h2>
-      <p>Across every Alpha website, the same words have been spelled roughly forty-seven different ways. No judgment — actually, a lot of judgment. I'm going to need my emotional support dog, Hamilton, and a big glass of haterade to get through this. We are going to celebrate our epic copy fails today. Some of these have been wrong on the website for <em>years</em>. I'm claiming this as a massive fail, but it's okay — failure is just fuel on the way to success. Pick your answers below so we can finally fix this. Select all that apply, change your mind, and add notes. You hold the gavel. Use it.</p>
+    <div class="intro-left">
+      <div class="intro-headline">Same words. <span>47 spellings.</span></div>
+      <div class="intro-sub">No judgment. <em>Actually — a lot of judgment.</em></div>
+      <div class="intro-pills">
+        <span class="intro-pill">🐶 Hamilton is standing by</span>
+        <span class="intro-pill">🍹 Haterade: chilled</span>
+        <span class="intro-pill">⚖️ You hold the gavel</span>
+      </div>
     </div>
     <div class="intro-stats">
       <span class="big-num" id="answeredCount">0</span>
