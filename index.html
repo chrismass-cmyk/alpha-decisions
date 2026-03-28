@@ -22,8 +22,10 @@
   .progress-quip { display: none; }
   #milestone-toast { position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; border: 2.5px solid var(--gold); border-radius: 14px; padding: 20px 36px; font-family: Arial, sans-serif; font-size: 15px; font-weight: 600; text-align: center; max-width: 460px; width: 88%; z-index: 9999; box-shadow: 0 10px 40px rgba(0,0,0,.45); transition: bottom .45s cubic-bezier(.34,1.56,.64,1), opacity .3s; opacity: 0; pointer-events: none; }
   #milestone-toast.show { bottom: 44px; opacity: 1; }
-  .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 2px; height: 6px; overflow: hidden; }
-  .progress-bar-fill { background: var(--gold); height: 100%; border-radius: 2px; transition: width .3s; width: 0%; }
+  #reaction-toast { position: fixed; bottom: -60px; right: 28px; background: var(--navy); color: white; border-left: 4px solid var(--gold); padding: 13px 18px; font-family: Arial, sans-serif; font-size: 13px; font-weight: 600; border-radius: 8px; z-index: 9999; box-shadow: 0 4px 20px rgba(0,0,0,.3); transition: bottom .3s cubic-bezier(.34,1.56,.64,1), opacity .2s; opacity: 0; pointer-events: none; max-width: 300px; }
+  #reaction-toast.show { bottom: 28px; opacity: 1; }
+  .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 4px; height: 8px; overflow: hidden; }
+  .progress-bar-fill { background: var(--gold); height: 100%; border-radius: 4px; transition: width .4s ease; width: 0%; }
   .hbtn { border: none; padding: 8px 14px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 3px; letter-spacing: .04em; white-space: nowrap; transition: background .15s, color .15s; }
   .hbtn-gold { background: var(--gold); color: var(--navy); }
   .hbtn-gold:hover { background: var(--gold-light); }
@@ -47,17 +49,17 @@
 
   /* ── CATEGORY ── */
   .cat-block { margin-bottom: 36px; }
-  .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--navy); }
-  .category-icon { width: 32px; height: 32px; background: var(--navy); color: white; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 2px; }
-  .cat-title-text { font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: var(--navy); letter-spacing: .07em; text-transform: uppercase; }
+  .category-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; padding-bottom: 12px; border-bottom: 2px solid var(--navy); }
+  .category-icon { width: 36px; height: 36px; background: var(--navy); color: white; font-family: Georgia, serif; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 50%; }
+  .cat-title-text { font-family: Georgia, serif; font-size: 15px; font-weight: 700; color: var(--navy); letter-spacing: .02em; }
   .cat-count { font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); margin-left: auto; }
-  .cat-tagline { font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); font-style: italic; margin-top: -8px; margin-bottom: 14px; }
+  .cat-tagline { font-family: Arial, sans-serif; font-size: 12px; color: var(--muted); margin-top: -4px; margin-bottom: 16px; padding-left: 48px; }
   .cat-edit-controls { display: none; gap: 6px; margin-left: 8px; }
   .is-editing .cat-edit-controls { display: flex; }
 
   /* ── QUESTION CARD ── */
-  .q-card { background: white; border: 1px solid var(--border); border-left: 4px solid var(--border); margin-bottom: 12px; transition: border-left-color .2s, box-shadow .2s; position: relative; }
-  .q-card.answered { border-left-color: var(--green); box-shadow: 0 1px 4px rgba(55,86,35,.12); }
+  .q-card { background: white; border: 1px solid var(--border); border-left: 5px solid var(--border); margin-bottom: 14px; transition: border-left-color .2s, box-shadow .2s; position: relative; border-radius: 10px; overflow: hidden; }
+  .q-card.answered { border-left-color: var(--green); box-shadow: 0 2px 8px rgba(55,86,35,.1); }
   .q-card.conflict { border-left-color: var(--amber); }
   .q-card.conflict.answered { border-left-color: var(--green); }
   .is-editing .q-card { border-style: dashed; border-color: var(--amber); border-left-color: var(--amber); border-left-width: 4px; }
@@ -76,10 +78,11 @@
 
   /* ── OPTIONS (answer mode) ── */
   .q-options { padding: 2px 16px 14px 52px; }
-  .option-row { display: flex; align-items: flex-start; gap: 10px; padding: 7px 9px; margin-bottom: 3px; cursor: pointer; border: 1px solid transparent; border-radius: 2px; transition: background .1s, border-color .1s; }
-  .option-row:hover { background: #f5f3ef; }
-  .option-row.selected { background: var(--green-light); border-color: #b5d49a; }
-  .option-row input[type="radio"] { margin-top: 3px; accent-color: var(--green); flex-shrink: 0; }
+  .option-row { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; margin-bottom: 4px; cursor: pointer; border: 1.5px solid transparent; border-radius: 6px; transition: background .12s, border-color .12s; }
+  .option-row:hover { background: #f5f3ef; border-color: var(--border); }
+  .option-row.selected { background: var(--green-light); border-color: #90c870; }
+  .option-row.selected:hover { background: #fff0f0; border-color: #f0a0a0; }
+  .option-row input[type="checkbox"] { margin-top: 2px; }
   .option-label { font-family: Arial, sans-serif; font-size: 13px; line-height: 1.4; cursor: pointer; }
   .option-key { font-weight: 700; color: var(--navy); font-family: 'Courier New', monospace; font-size: 13px; }
   .option-note { color: var(--muted); font-size: 11px; display: block; margin-top: 1px; }
@@ -162,20 +165,9 @@
   /* move up/down */
   .move-btns { display: flex; gap: 2px; }
 
-  /* ── MULTI-SELECT CHIPS ── */
-  .q-chips { padding: 6px 16px 14px 52px; display: flex; flex-wrap: wrap; gap: 7px; }
-  .chip { display: inline-flex; align-items: center; gap: 5px; padding: 6px 13px; border: 1.5px solid var(--border); border-radius: 20px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; background: white; color: var(--text); transition: background .12s, border-color .12s, color .12s; white-space: nowrap; }
-  .chip:hover { background: #f0ede8; border-color: #aaa; }
-  .chip.chip-selected { background: var(--green-light); border-color: #75b254; color: var(--green); padding-right: 10px; }
-  .chip.chip-selected:hover { background: #fde8e8; border-color: #d9534f; color: #c0392b; }
-  .chip.chip-selected:hover .chip-remove { color: #c0392b; }
-  .chip.chip-selected::before { content: "✓ "; font-size: 11px; }
-  .chip-remove { font-size: 13px; font-weight: 700; margin-left: 4px; opacity: .5; line-height: 1; }
-  .chip.chip-selected:hover .chip-remove { opacity: 1; }
-  .chip-note { font-size: 10px; font-weight: 400; color: var(--muted); margin-left: 3px; }
-  .chip.chip-selected .chip-note { color: var(--green); }
-  .chips-hint { padding: 4px 16px 10px 52px; font-family: Arial, sans-serif; font-size: 11.5px; color: #888; }
-  .is-editing .q-chips, .is-editing .chips-hint { display: none; }
+  /* ── HINT TEXT ── */
+  .q-hint { padding: 0 16px 8px 52px; font-family: Arial, sans-serif; font-size: 11px; color: #999; }
+  .is-editing .q-hint { display: none; }
 
   /* ── GENERAL NOTES SECTION ── */
   .general-notes-section { background: #fff; border: 2px solid var(--gold); border-radius: 4px; padding: 28px 32px; margin: 32px 0 24px; }
@@ -221,8 +213,8 @@
 <header class="site-header">
   <div class="header-inner">
     <div>
-      <div class="header-title">Alpha Schools — Copy Decisions</div>
-      <div class="header-subtitle">MacKenzie Price &nbsp;·&nbsp; Style Guide Final Answers</div>
+      <div class="header-title">Alpha Style Rulings</div>
+      <div class="header-subtitle">MacKenzie Price — you're the final word. (Finally.)</div>
     </div>
     <div class="progress-wrap">
       <div class="progress-label" id="progressLabel">0 of 29 answered</div>
@@ -241,8 +233,8 @@
 <div class="intro-banner">
   <div class="intro-inner">
     <div class="intro-text">
-      <h2>Okay. Here's the thing.</h2>
-      <p>Across every Alpha website, Substack, and doc we could find, the same words have been spelled roughly forty-seven different ways. No judgment — actually, a little judgment. That's literally what this page is for. Pick your answer, we'll handle the rest. (My emotional support copy editor is standing by.)</p>
+      <h2>Every question below represents a real inconsistency spotted across Alpha's websites, Substacks, and marketing materials.</h2>
+      <p>Some of these have been causing quiet suffering for the copy team for months. You hold the gavel. Select everything that's acceptable to you — you can pick more than one, change your mind, and add notes. No pressure. (A little pressure.)</p>
     </div>
     <div class="intro-stats">
       <span class="big-num" id="answeredCount">0</span>
@@ -2778,6 +2770,7 @@
         <textarea class="notes-input" placeholder="Add any nuances, exceptions, or explanation…" oninput="updateNotes('alphas_currency',this.value)"></textarea></div></div><button class="add-q-btn">+ Add Question to This Category</button></div><button style="display: block; width: 100%; background: none; border: 2px dashed rgb(170, 170, 170); color: rgb(136, 136, 136); font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; padding: 12px; cursor: pointer; border-radius: 2px; margin-top: 16px;">+ Add New Category</button></main>
 
 <div id="milestone-toast"></div>
+<div id="reaction-toast"></div>
 
 <div class="general-notes-section" id="generalNotesSection">
   <div class="gnotes-header">
@@ -3835,6 +3828,7 @@ const answers = {
   "guide_cap": { choices: ["A"], custom: "", notes: "Same rule as \u201cteacher\u201d \u2014 not a proper noun." }
 }; // { qId: { choices:[], custom, notes } }
 let isEditing = false;
+let _interactionStarted = false;
 let generalNotes = null;
 
 function getAns(qId) {
@@ -3933,49 +3927,52 @@ function render() {
           <div class="q-status-icon">${answered ? '✅' : '○'}</div>
         </div>`;
 
-      // ── CHIP MODE (all questions) ──
+      // ── MULTI-SELECT OPTION ROWS (all questions) ──
       const hintDiv = document.createElement('div');
-      hintDiv.className = 'chips-hint';
-      hintDiv.textContent = 'Click to select · Click a selected answer again (or hover to see ×) to remove it';
+      hintDiv.className = 'q-hint';
+      hintDiv.textContent = 'Select all that apply — click a highlighted answer again to remove it';
       card.appendChild(hintDiv);
 
-      const chipsDiv = document.createElement('div');
-      chipsDiv.className = 'q-chips';
-      q.options.forEach(opt => {
-        const isSelected = ans.choices.includes(opt.key);
-        const chip = document.createElement('button');
-        chip.className = `chip${isSelected ? ' chip-selected' : ''}`;
-        chip.dataset.qid = q.id;
-        chip.dataset.key = opt.key;
-        chip.onclick = () => toggleMultiOption(q.id, opt.key);
-        chip.innerHTML = opt.label + (opt.note ? `<span class="chip-note">${opt.note}</span>` : '') + (isSelected ? '<span class="chip-remove">×</span>' : '');
-        chipsDiv.appendChild(chip);
-      });
-      card.appendChild(chipsDiv);
+      const optionsDiv = document.createElement('div');
+      optionsDiv.className = 'q-options';
 
-      // Edit-mode option rows
-      const editOptWrap = document.createElement('div');
-      editOptWrap.className = 'q-options';
       q.options.forEach((opt, oi) => {
+        const isSelected = ans.choices.includes(opt.key);
+
+        // Answer-mode row
+        const ansRow = document.createElement('div');
+        ansRow.className = `option-row${isSelected ? ' selected' : ''}`;
+        ansRow.dataset.key = opt.key;
+        ansRow.onclick = () => toggleMultiOption(q.id, opt.key);
+        ansRow.innerHTML = `
+    <input type="checkbox" ${isSelected ? 'checked' : ''} style="pointer-events:none; accent-color:#375623; flex-shrink:0; margin-top:3px;" />
+    <div class="option-label">
+      <span class="option-key">${opt.key}.</span> ${opt.label}
+      ${opt.note ? `<span class="option-note">${opt.note}</span>` : ''}
+    </div>`;
+        optionsDiv.appendChild(ansRow);
+
+        // Edit-mode row
         const editRow = document.createElement('div');
         editRow.className = 'option-edit-row';
         editRow.innerHTML = `
-          <input class="opt-key-input" type="text" value="${opt.key}" maxlength="2"
-            oninput="syncOptField(${ci},${qi},${oi},'key',this.value)" />
-          <div class="opt-text-wrap">
-            <span class="opt-label-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="label"
-              data-placeholder="Option label" oninput="syncOptFieldCE(this)">${opt.label}</span>
-            <span class="opt-note-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="note"
-              data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">${opt.note||''}</span>
-            <label class="opt-custom-toggle">
-              <input type="checkbox" ${opt.custom?'checked':''} onchange="syncOptField(${ci},${qi},${oi},'custom',this.checked)" />
-              Write-in option
-            </label>
-          </div>
-          <button class="opt-del-btn" onclick="deleteOption(${ci},${qi},${oi})">×</button>`;
-        editOptWrap.appendChild(editRow);
+    <input class="opt-key-input" type="text" value="${opt.key}" maxlength="2"
+      oninput="syncOptField(${ci},${qi},${oi},'key',this.value)" />
+    <div class="opt-text-wrap">
+      <span class="opt-label-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="label"
+        data-placeholder="Option label" oninput="syncOptFieldCE(this)">${opt.label}</span>
+      <span class="opt-note-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="note"
+        data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">${opt.note||''}</span>
+      <label class="opt-custom-toggle">
+        <input type="checkbox" ${opt.custom?'checked':''} onchange="syncOptField(${ci},${qi},${oi},'custom',this.checked)" />
+        Write-in option
+      </label>
+    </div>
+    <button class="opt-del-btn" onclick="deleteOption(${ci},${qi},${oi})">×</button>`;
+        optionsDiv.appendChild(editRow);
       });
-      card.appendChild(editOptWrap);
+
+      card.appendChild(optionsDiv);
 
       // Add option button (edit mode only)
       const addOptBtn = document.createElement('button');
@@ -4156,6 +4153,7 @@ function deleteSource(ci, qi, si) {
 
 // ─── ANSWER ACTIONS ──────────────────────────────────────────────────────────
 function toggleMultiOption(qId, key) {
+  _interactionStarted = true;
   const ans = getAns(qId);
   const idx = ans.choices.indexOf(key);
   if (idx === -1) ans.choices.push(key);
@@ -4166,22 +4164,14 @@ function toggleMultiOption(qId, key) {
   card.classList.toggle('answered', nowAnswered);
   card.querySelector('.q-status-icon').textContent = nowAnswered ? '✅' : '○';
 
-  card.querySelectorAll('.chip').forEach(chip => {
-    if (chip.dataset.key === key) {
-      const nowSelected = ans.choices.includes(key);
-      chip.classList.toggle('chip-selected', nowSelected);
-      // Add or remove the × remove indicator
-      const existing = chip.querySelector('.chip-remove');
-      if (nowSelected && !existing) {
-        const rx = document.createElement('span');
-        rx.className = 'chip-remove';
-        rx.textContent = '×';
-        chip.appendChild(rx);
-      } else if (!nowSelected && existing) {
-        existing.remove();
-      }
-    }
-  });
+  // Update option row appearance
+  const nowSelected = ans.choices.includes(key);
+  const row = card.querySelector(`.option-row[data-key="${key}"]`);
+  if (row) {
+    row.classList.toggle('selected', nowSelected);
+    const cb = row.querySelector('input[type="checkbox"]');
+    if (cb) cb.checked = nowSelected;
+  }
 
   // Show/hide write-in if a custom option is toggled
   const wi = document.getElementById(`writein-${qId}`);
@@ -4191,6 +4181,7 @@ function toggleMultiOption(qId, key) {
     wi.style.display = (customOpt && ans.choices.includes(customOpt.key)) ? '' : 'none';
   }
 
+  if (idx === -1) showReactionToast(); // only on selection, not deselection
   updateProgress();
 }
 
@@ -4205,6 +4196,37 @@ function updateCustom(qId, val) { getAns(qId).custom = val; }
 function updateNotes(qId, val) { getAns(qId).notes = val; }
 function updateGeneralNotes(val) { generalNotes = val; }
 
+// ─── REACTION TOASTS ─────────────────────────────────────────────────────────
+const _reactions = [
+  "Gavel has been banged. ⚖️",
+  "Filed. The copy editor just exhaled.",
+  "Bold choice. We support it.",
+  "Case closed on this one.",
+  "The style guide is writing this down.",
+  "Somewhere, a hyphen sighed with relief.",
+  "Your call. No pressure. (A little pressure.)",
+  "This is going in the guide. For real this time.",
+  "The copy editor has been notified. She cried.",
+  "Stamped with mom-level authority. 👍",
+  "One fewer argument at the next staff meeting.",
+  "The grammar police have been briefed.",
+  "That's a ruling. I'm not dramatic, you're dramatic.",
+  "Done. Next! (You're doing great.)",
+  "Even the Oxford comma is watching. Just saying.",
+];
+let _reactionIdx = Math.floor(Math.random() * _reactions.length);
+
+function showReactionToast() {
+  const el = document.getElementById('reaction-toast');
+  el.textContent = _reactions[_reactionIdx % _reactions.length];
+  _reactionIdx++;
+  el.classList.remove('show');
+  void el.offsetWidth; // force reflow to restart animation
+  el.classList.add('show');
+  clearTimeout(showReactionToast._t);
+  showReactionToast._t = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
 function updateProgress() {
   const total = totalQuestions();
   const count = answeredCount();
@@ -4215,19 +4237,21 @@ function updateProgress() {
   document.getElementById('totalCount').textContent = total;
   document.getElementById('completeBanner').classList.toggle('show', count > 0 && count === total);
   const milestones = [
-    [100, "Done. The hyphens have been tamed. ✓"],
-    [75,  "Almost there. The style guide can smell freedom."],
-    [50,  "Halfway. Not going to make a big deal of this. (Big deal.)"],
-    [25,  "25% in. Someone just unclenched a fist."],
-    [1,   "Good start. My emotional support copy editor is cautiously hopeful."]
+    [100, "🏆 DONE! All rulings are in. Someone cue the fake laugh track. The hyphens have been tamed."],
+    [75,  "75%! Almost there. The copy editor has unclenched both fists and is cautiously clapping."],
+    [50,  "HALFWAY. I'm not going to make a big deal of this. (This IS a big deal. I'm proud of you.)"],
+    [25,  "25% done! Honestly better than most style guide meetings I've sat through."],
+    [1,   "First ruling in! My emotional support copy editor is cautiously hopeful. 🥹"],
   ];
-  const hit = milestones.find(([t]) => pct >= t);
-  if (hit) {
-    const key = hit[0];
-    if (!updateProgress._shown) updateProgress._shown = new Set();
-    if (!updateProgress._shown.has(key)) {
-      updateProgress._shown.add(key);
-      showToast(hit[1]);
+  if (_interactionStarted) {
+    const hit = milestones.find(([t]) => pct >= t);
+    if (hit) {
+      const key = hit[0];
+      if (!updateProgress._shown) updateProgress._shown = new Set();
+      if (!updateProgress._shown.has(key)) {
+        updateProgress._shown.add(key);
+        showToast(hit[1]);
+      }
     }
   }
 }
