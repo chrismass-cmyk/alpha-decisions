@@ -3798,7 +3798,10 @@ let categories = [
   }
 ];
 // ─── STATE ───────────────────────────────────────────────────────────────────
-const answers = {}; // { qId: { choice, custom, notes } }
+const answers = {
+  // Pre-filled: MacKenzie confirmed lowercase — same rule as "teacher"
+  "guide_cap": { choice: "A", choices: [], custom: "", notes: "Same rule as \u201cteacher\u201d \u2014 not a proper noun." }
+}; // { qId: { choice, custom, notes } }
 let isEditing = false;
 
 function getAns(qId) {
