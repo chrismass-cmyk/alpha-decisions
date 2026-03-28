@@ -19,6 +19,7 @@
   .header-subtitle { font-family: Arial, sans-serif; font-size: 11px; color: rgba(255,255,255,.7); margin-top: 2px; }
   .progress-wrap { flex: 1; min-width: 140px; }
   .progress-label { font-family: Arial, sans-serif; font-size: 11px; color: rgba(255,255,255,.8); margin-bottom: 4px; text-align: right; }
+  .progress-quip { font-family: Arial, sans-serif; font-size: 10px; color: rgba(255,255,255,.55); margin-top: 4px; text-align: right; font-style: italic; min-height: 13px; }
   .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 2px; height: 6px; overflow: hidden; }
   .progress-bar-fill { background: var(--gold); height: 100%; border-radius: 2px; transition: width .3s; width: 0%; }
   .hbtn { border: none; padding: 8px 14px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 3px; letter-spacing: .04em; white-space: nowrap; transition: background .15s, color .15s; }
@@ -48,6 +49,7 @@
   .category-icon { width: 32px; height: 32px; background: var(--navy); color: white; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 2px; }
   .cat-title-text { font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: var(--navy); letter-spacing: .07em; text-transform: uppercase; }
   .cat-count { font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); margin-left: auto; }
+  .cat-tagline { font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); font-style: italic; margin-top: -8px; margin-bottom: 14px; }
   .cat-edit-controls { display: none; gap: 6px; margin-left: 8px; }
   .is-editing .cat-edit-controls { display: flex; }
 
@@ -209,6 +211,7 @@
     <div class="progress-wrap">
       <div class="progress-label" id="progressLabel">0 of 29 answered</div>
       <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div></div>
+      <div class="progress-quip" id="progressQuip"></div>
     </div>
     <button class="hbtn hbtn-amber" id="editToggleBtn" onclick="toggleEditMode()">✓ Done Editing</button>
     <button class="hbtn hbtn-amber" id="downloadBtn" onclick="downloadPage()" style="">⬇ Save Page</button>
@@ -222,8 +225,8 @@
 <div class="intro-banner">
   <div class="intro-inner">
     <div class="intro-text">
-      <h2>Your final word on open copy questions</h2>
-      <p>These questions came from research across alpha.school, 2hourlearning.com, GT School, Texas Sports Academy, meeting notes, and internal docs. Sources often conflict. Your answers update the copy editor reference guide.</p>
+      <h2>Okay. Here's the thing.</h2>
+      <p>Across every Alpha website, Substack, and doc we could find, the same words have been spelled roughly forty-seven different ways. No judgment — actually, a little judgment. That's literally what this page is for. Pick your answer, we'll handle the rest. (My emotional support copy editor is standing by.)</p>
     </div>
     <div class="intro-stats">
       <span class="big-num" id="answeredCount">0</span>
@@ -2759,8 +2762,8 @@
         <textarea class="notes-input" placeholder="Add any nuances, exceptions, or explanation…" oninput="updateNotes('alphas_currency',this.value)"></textarea></div></div><button class="add-q-btn">+ Add Question to This Category</button></div><button style="display: block; width: 100%; background: none; border: 2px dashed rgb(170, 170, 170); color: rgb(136, 136, 136); font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; padding: 12px; cursor: pointer; border-radius: 2px; margin-top: 16px;">+ Add New Category</button></main>
 
 <div class="complete-banner" id="completeBanner">
-  <h3>All decisions made.</h3>
-  <p>Export your answers to share with the copy editing team.</p>
+  <h3>That's a ruling. ⚖️</h3>
+  <p>Every question has been answered. Somewhere, a hyphen is finally at peace. Export your decisions to share with the copy editing team — or just sit with this feeling for a second. You've earned it.</p>
   <button class="complete-btn" onclick="openModal()">Export Final Decisions</button>
 </div>
 
@@ -3817,6 +3820,15 @@ function answeredCount() {
   return count;
 }
 
+// ─── CATEGORY TAGLINES ───────────────────────────────────────────────────────
+const TAGLINES = {
+  'spelling': "Some of these have been wrong on the website for years. Totally fine.",
+  'caps': "What deserves to be a Proper Noun? (Guide is watching.)",
+  'terminology': "Turns out we've been using five words for the same thing. Classic.",
+  'stats': "Numbers mean things. Specific things. That's why we're here.",
+  'grammar': "The Oxford comma is in here. Just a heads up."
+};
+
 // ─── RENDER ──────────────────────────────────────────────────────────────────
 function render() {
   const container = document.getElementById('mainContent');
@@ -3831,6 +3843,7 @@ function render() {
     catDiv.id = 'cat-' + ci;
 
     // Category header
+    const tagline = TAGLINES[cat.id] || '';
     catDiv.innerHTML = `
       <div class="category-header">
         <div class="category-icon" contenteditable="${isEditing}" data-ci="${ci}" data-field="icon" data-placeholder="★"
@@ -3841,7 +3854,8 @@ function render() {
         <div class="cat-edit-controls">
           <button class="etb danger" onclick="deleteCategory(${ci})">🗑 Delete Category</button>
         </div>
-      </div>`;
+      </div>
+      ${tagline && !isEditing ? `<div class="cat-tagline">${tagline}</div>` : ''}`;
 
     // Questions
     cat.questions.forEach((q, qi) => {
@@ -4210,6 +4224,15 @@ function updateProgress() {
   document.getElementById('answeredCount').textContent = count;
   document.getElementById('totalCount').textContent = total;
   document.getElementById('completeBanner').classList.toggle('show', count > 0 && count === total);
+  const quips = [
+    [100, "Done. The hyphens have been tamed. ✓"],
+    [75,  "Almost there. The style guide can smell freedom."],
+    [50,  "Halfway. Not going to make a big deal of this. (Big deal.)"],
+    [25,  "25% in. Someone just unclenched a fist."],
+    [1,   "Good start. My emotional support copy editor is cautiously hopeful."]
+  ];
+  const quip = quips.find(([t]) => pct >= t)?.[1] || '';
+  document.getElementById('progressQuip').textContent = quip;
 }
 
 // ─── DOWNLOAD UPDATED PAGE ───────────────────────────────────────────────────
