@@ -2822,33 +2822,38 @@ let categories = [
       },
       {
         "id": "test2pass",
-        "title": "\"Test2Pass\" or \"Test 2 Pass\"?",
+        "title": "\"Test2Pass,\" \"Test 2 Pass,\" or \"Test to Pass\"?",
         "conflict": true,
-        "context": "MacKenzie's Substack and the alpha.school blog write it as one word: \"Test2Pass.\" Instagram uses \"Test 2 Pass\" with spaces. This is an internal assessment tool name \u2014 the spelling affects signage, app labels, and any parent-facing mentions.",
+        "context": "Three distinct forms appear across Alpha properties. MacKenzie\u2019s Substack and the alpha.school/lifeskills-workshops/ page use \"Test2Pass\" (numeral, one word). Instagram uses \"Test 2 Pass\" (numeral, spaces). A separate alpha.school blog post uses the spelled-out form: \"Test to Pass.\" All three refer to the same assessment format.",
         "sources": [
           "MacKenzie Substack (Test2Pass)",
-          "alpha.school blog (Test2Pass)",
-          "Instagram (Test 2 Pass)"
+          "alpha.school/lifeskills-workshops/ (Test2Pass)",
+          "Instagram (Test 2 Pass)",
+          "alpha.school blog \u2014 life-skills-workshops post (Test to Pass)"
         ],
         "options": [
           {
             "key": "A",
-            "label": "\"Test2Pass\" \u2014 one word, always",
-            "note": "Matches Substack and blog usage"
+            "label": "\"Test2Pass\" \u2014 numeral, one word, always",
+            "note": "Matches Substack and dedicated workshop page"
           },
           {
             "key": "B",
-            "label": "\"Test 2 Pass\" \u2014 with spaces",
+            "label": "\"Test 2 Pass\" \u2014 numeral with spaces",
             "note": "Matches Instagram usage"
           },
           {
             "key": "C",
+            "label": "\"Test to Pass\" \u2014 fully spelled out",
+            "note": "Found on alpha.school blog; more readable in body text"
+          },
+          {
+            "key": "D",
             "label": "Something else",
             "note": "",
             "custom": true
           }
-        ],
-        "undefined": "Instagram (Test 2 Pass)"
+        ]
       },
       {
         "id": "wonderlab",
@@ -3391,6 +3396,27 @@ let categories = [
           }
         ],
         "undefined": "The Bible (students earn 'Alphas' \u2014 capitalized, internal currency)"
+      },
+      {
+        "id": "learner_student",
+        "title": "Which terms are acceptable when referring to Alpha kids in copy?",
+        "conflict": true,
+        "multiselect": true,
+        "context": "All five terms appear across Alpha properties, often on the same page. \"Learner/learners\" is most common in Alpha Anywhere and Brownsville contexts. \"Kid/kids\" dominates casual and aspirational copy. \"Student/students\" is the default in formal writing and data claims. \"Child/children\" appears in admissions and parent-facing FAQ copy. \"Scholar/scholars\" appears on the Brownsville campus page.",
+        "sources": [
+          "alpha.school/2-hour-learning/ (\u201cstudents\u201d and \u201clearners\u201d on same page)",
+          "alpha.school/the-program/ (\u201ckids\u201d casual, \u201cstudents\u201d formal)",
+          "alpha.school/faq/ (\u201cstudents,\u201d \u201cchild/children,\u201d \u201ckid/kids\u201d)",
+          "alpha.school/brownsville/ (\u201clearners\u201d and \u201cscholars\u201d)",
+          "futureofeducation.substack.com (\u201ckids\u201d casual, \u201cstudents\u201d in data claims)"
+        ],
+        "options": [
+          { "key": "A", "label": "student / students", "note": "Default for formal writing and data claims" },
+          { "key": "B", "label": "learner / learners", "note": "Found especially in Alpha Anywhere and Brownsville copy" },
+          { "key": "C", "label": "kid / kids", "note": "Used in casual, aspirational, and conversational copy" },
+          { "key": "D", "label": "child / children", "note": "Found in admissions and parent-facing FAQ copy" },
+          { "key": "E", "label": "scholar / scholars", "note": "Found on the Brownsville campus page" }
+        ]
       },
       {
         "id": "xp_def",
