@@ -158,6 +158,17 @@
   /* move up/down */
   .move-btns { display: flex; gap: 2px; }
 
+  /* ── MULTI-SELECT CHIPS ── */
+  .q-chips { padding: 6px 16px 14px 52px; display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip { display: inline-flex; align-items: center; gap: 5px; padding: 6px 13px; border: 1.5px solid var(--border); border-radius: 20px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; background: white; color: var(--text); transition: background .12s, border-color .12s, color .12s; white-space: nowrap; }
+  .chip:hover { background: #f0ede8; border-color: #aaa; }
+  .chip.chip-selected { background: var(--green-light); border-color: #75b254; color: var(--green); }
+  .chip.chip-selected::before { content: "✓ "; font-size: 11px; }
+  .chip-note { font-size: 10px; font-weight: 400; color: var(--muted); margin-left: 3px; }
+  .chip.chip-selected .chip-note { color: var(--green); }
+  .chips-hint { padding: 0 16px 10px 52px; font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); font-style: italic; }
+  .is-editing .q-chips, .is-editing .chips-hint { display: none; }
+
   /* ── COMPLETE BANNER ── */
   .complete-banner { background: var(--navy); color: white; text-align: center; padding: 28px 24px; margin-top: 28px; display: none; }
   .complete-banner.show { display: block; }
@@ -2971,6 +2982,30 @@ let categories = [
         "undefined": "2hourlearning.com navigation (2HL Blog, 2HL in the News)"
       },
       {
+        "id": "twohl_forms",
+        "title": "Which forms of \"2 Hour Learning\" are acceptable?",
+        "conflict": true,
+        "multiselect": true,
+        "context": "At least 9 different forms appear across Alpha properties. Click every version MacKenzie considers acceptable. Unclicked forms should be corrected in copy.",
+        "sources": [
+          "2hourlearning.com (official name, logo, schema)",
+          "alpha.school homepage (2HR LEARNING, 2hr Learning)",
+          "alpha.school FAQ (2-Hour Learning, two-hour learning)",
+          "MacKenzie Instagram bio (2HourLearning)"
+        ],
+        "options": [
+          { "key": "A", "label": "2 Hour Learning", "note": "no hyphen — official name" },
+          { "key": "B", "label": "2-Hour Learning", "note": "hyphenated, title case" },
+          { "key": "C", "label": "two-hour learning", "note": "spelled out, hyphenated" },
+          { "key": "D", "label": "2HourLearning", "note": "one word — Instagram handle style" },
+          { "key": "E", "label": "2HL", "note": "abbreviation — navigation / shorthand" },
+          { "key": "F", "label": "2HR Learning", "note": "mixed case abbreviation" },
+          { "key": "G", "label": "2HR LEARNING", "note": "all caps — section headings only?" },
+          { "key": "H", "label": "2hr Learning", "note": "lowercase hr" },
+          { "key": "I", "label": "2hrs", "note": "e.g. \"Learn 2x in 2hrs\" — tagline only?" }
+        ]
+      },
+      {
         "id": "lifeskills_modifier",
         "title": "\"life skills workshops\" or \"life skill workshops\"? (plural \"skills\" or singular \"skill\"?)",
         "conflict": true,
@@ -3739,14 +3774,22 @@ const answers = {}; // { qId: { choice, custom, notes } }
 let isEditing = false;
 
 function getAns(qId) {
-  if (!answers[qId]) answers[qId] = { choice:null, custom:'', notes:'' };
+  if (!answers[qId]) answers[qId] = { choice:null, choices:[], custom:'', notes:'' };
   return answers[qId];
 }
 function totalQuestions() {
   return categories.reduce((a,c) => a + c.questions.length, 0);
 }
+function isAnswered(qId, multiselect) {
+  const ans = getAns(qId);
+  return multiselect ? ans.choices.length > 0 : ans.choice !== null;
+}
 function answeredCount() {
-  return Object.values(answers).filter(s => s.choice !== null).length;
+  let count = 0;
+  categories.forEach(cat => cat.questions.forEach(q => {
+    if (isAnswered(q.id, q.multiselect)) count++;
+  }));
+  return count;
 }
 
 // ─── RENDER ──────────────────────────────────────────────────────────────────
@@ -3779,7 +3822,7 @@ function render() {
     cat.questions.forEach((q, qi) => {
       qNum++;
       const ans = getAns(q.id);
-      const answered = ans.choice !== null;
+      const answered = isAnswered(q.id, q.multiselect);
       const conflictClass = q.conflict ? 'conflict' : '';
       const answeredClass = answered ? 'answered' : '';
 
@@ -3816,45 +3859,88 @@ function render() {
           <div class="q-status-icon">${answered ? '✅' : '○'}</div>
         </div>`;
 
-      // Options — answer-mode rows (hidden in edit mode via CSS)
-      const optionsDiv = document.createElement('div');
-      optionsDiv.className = 'q-options';
+      if (q.multiselect) {
+        // ── MULTI-SELECT CHIP MODE ──
+        const hintDiv = document.createElement('div');
+        hintDiv.className = 'chips-hint';
+        hintDiv.textContent = 'Click every form that is acceptable. Click again to deselect.';
+        card.appendChild(hintDiv);
 
-      q.options.forEach((opt, oi) => {
-        const selected = ans.choice === opt.key ? 'selected' : '';
-        // Answer-mode row
-        const ansRow = document.createElement('label');
-        ansRow.className = `option-row ${selected}`;
-        ansRow.onclick = () => selectOption(q.id, opt.key);
-        ansRow.innerHTML = `
-          <input type="radio" name="q_${q.id}" value="${opt.key}" ${ans.choice===opt.key?'checked':''} />
-          <div class="option-label">
-            <span class="option-key">${opt.key}.</span> ${opt.label}
-            ${opt.note ? `<span class="option-note">${opt.note}</span>` : ''}
-          </div>`;
-        optionsDiv.appendChild(ansRow);
+        const chipsDiv = document.createElement('div');
+        chipsDiv.className = 'q-chips';
+        q.options.forEach(opt => {
+          const isSelected = ans.choices.includes(opt.key);
+          const chip = document.createElement('button');
+          chip.className = `chip${isSelected ? ' chip-selected' : ''}`;
+          chip.dataset.qid = q.id;
+          chip.dataset.key = opt.key;
+          chip.onclick = () => toggleMultiOption(q.id, opt.key);
+          chip.innerHTML = opt.label + (opt.note ? `<span class="chip-note">${opt.note}</span>` : '');
+          chipsDiv.appendChild(chip);
+        });
+        card.appendChild(chipsDiv);
 
-        // Edit-mode row
-        const editRow = document.createElement('div');
-        editRow.className = 'option-edit-row';
-        editRow.innerHTML = `
-          <input class="opt-key-input" type="text" value="${opt.key}" maxlength="2"
-            oninput="syncOptField(${ci},${qi},${oi},'key',this.value)" />
-          <div class="opt-text-wrap">
-            <span class="opt-label-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="label"
-              data-placeholder="Option label" oninput="syncOptFieldCE(this)">${opt.label}</span>
-            <span class="opt-note-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="note"
-              data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">${opt.note||''}</span>
-            <label class="opt-custom-toggle">
-              <input type="checkbox" ${opt.custom?'checked':''} onchange="syncOptField(${ci},${qi},${oi},'custom',this.checked)" />
-              Write-in option
-            </label>
-          </div>
-          <button class="opt-del-btn" onclick="deleteOption(${ci},${qi},${oi})">×</button>`;
-        optionsDiv.appendChild(editRow);
-      });
+        // Edit-mode rows for multiselect (reuse same edit-row UI)
+        const editOptWrap = document.createElement('div');
+        editOptWrap.className = 'q-options'; // reuse class for spacing
+        q.options.forEach((opt, oi) => {
+          const editRow = document.createElement('div');
+          editRow.className = 'option-edit-row';
+          editRow.innerHTML = `
+            <input class="opt-key-input" type="text" value="${opt.key}" maxlength="2"
+              oninput="syncOptField(${ci},${qi},${oi},'key',this.value)" />
+            <div class="opt-text-wrap">
+              <span class="opt-label-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="label"
+                data-placeholder="Option label" oninput="syncOptFieldCE(this)">${opt.label}</span>
+              <span class="opt-note-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="note"
+                data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">${opt.note||''}</span>
+            </div>
+            <button class="opt-del-btn" onclick="deleteOption(${ci},${qi},${oi})">×</button>`;
+          editOptWrap.appendChild(editRow);
+        });
+        card.appendChild(editOptWrap);
+      } else {
+        // ── STANDARD RADIO MODE ──
+        // Options — answer-mode rows (hidden in edit mode via CSS)
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'q-options';
 
-      card.appendChild(optionsDiv);
+        q.options.forEach((opt, oi) => {
+          const selected = ans.choice === opt.key ? 'selected' : '';
+          // Answer-mode row
+          const ansRow = document.createElement('label');
+          ansRow.className = `option-row ${selected}`;
+          ansRow.onclick = () => selectOption(q.id, opt.key);
+          ansRow.innerHTML = `
+            <input type="radio" name="q_${q.id}" value="${opt.key}" ${ans.choice===opt.key?'checked':''} />
+            <div class="option-label">
+              <span class="option-key">${opt.key}.</span> ${opt.label}
+              ${opt.note ? `<span class="option-note">${opt.note}</span>` : ''}
+            </div>`;
+          optionsDiv.appendChild(ansRow);
+
+          // Edit-mode row
+          const editRow = document.createElement('div');
+          editRow.className = 'option-edit-row';
+          editRow.innerHTML = `
+            <input class="opt-key-input" type="text" value="${opt.key}" maxlength="2"
+              oninput="syncOptField(${ci},${qi},${oi},'key',this.value)" />
+            <div class="opt-text-wrap">
+              <span class="opt-label-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="label"
+                data-placeholder="Option label" oninput="syncOptFieldCE(this)">${opt.label}</span>
+              <span class="opt-note-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="note"
+                data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">${opt.note||''}</span>
+              <label class="opt-custom-toggle">
+                <input type="checkbox" ${opt.custom?'checked':''} onchange="syncOptField(${ci},${qi},${oi},'custom',this.checked)" />
+                Write-in option
+              </label>
+            </div>
+            <button class="opt-del-btn" onclick="deleteOption(${ci},${qi},${oi})">×</button>`;
+          optionsDiv.appendChild(editRow);
+        });
+
+        card.appendChild(optionsDiv);
+      } // end radio/multiselect branch
 
       // Add option button (edit mode only)
       const addOptBtn = document.createElement('button');
@@ -4059,6 +4145,27 @@ function selectOption(qId, key) {
   updateProgress();
 }
 
+function toggleMultiOption(qId, key) {
+  const ans = getAns(qId);
+  const idx = ans.choices.indexOf(key);
+  if (idx === -1) ans.choices.push(key);
+  else ans.choices.splice(idx, 1);
+
+  const card = document.getElementById(`card-${qId}`);
+  const nowAnswered = ans.choices.length > 0;
+  card.classList.toggle('answered', nowAnswered);
+  card.querySelector('.q-status-icon').textContent = nowAnswered ? '✅' : '○';
+
+  // Update chip appearance
+  card.querySelectorAll('.chip').forEach(chip => {
+    if (chip.dataset.key === key) {
+      chip.classList.toggle('chip-selected', ans.choices.includes(key));
+    }
+  });
+
+  updateProgress();
+}
+
 function getQuestion(qId) {
   for (const cat of categories) {
     const q = cat.questions.find(q => q.id === qId);
@@ -4129,8 +4236,15 @@ function openModal() {
     cat.questions.forEach(q => {
       qNum++;
       const ans = getAns(q.id);
-      const answered = ans.choice !== null;
-      const label = answered ? getAnswerLabel(q.id, ans.choice) : null;
+      const answered = isAnswered(q.id, q.multiselect);
+      let label;
+      if (q.multiselect) {
+        label = ans.choices.length > 0
+          ? ans.choices.map(k => { const o = q.options.find(o=>o.key===k); return o ? o.label : k; }).join('; ')
+          : null;
+      } else {
+        label = answered ? getAnswerLabel(q.id, ans.choice) : null;
+      }
       html += `
         <div class="export-row">
           <div class="export-q">Q${qNum}. ${q.title}</div>
@@ -4156,7 +4270,13 @@ function copyToClipboard() {
       qNum++;
       const ans = getAns(q.id);
       text += `\nQ${qNum}. ${q.title}\n`;
-      text += ans.choice ? `DECISION: ${getAnswerLabel(q.id, ans.choice)}\n` : `DECISION: — Not yet answered\n`;
+      if (q.multiselect) {
+        text += ans.choices.length > 0
+          ? `ACCEPTED FORMS: ${ans.choices.map(k => { const o = q.options.find(o=>o.key===k); return o?o.label:k; }).join('; ')}\n`
+          : `ACCEPTED FORMS: — Not yet answered\n`;
+      } else {
+        text += ans.choice ? `DECISION: ${getAnswerLabel(q.id, ans.choice)}\n` : `DECISION: — Not yet answered\n`;
+      }
       if (ans.notes) text += `Notes: ${ans.notes}\n`;
     });
     text += '\n';
