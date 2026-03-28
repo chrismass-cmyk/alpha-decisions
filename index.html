@@ -3807,11 +3807,11 @@ function render() {
                 data-placeholder="Question title" oninput="syncQField(this)">${q.title}</span>
               ${q.conflict ? '<span class="conflict-badge">⚠ Conflict</span>' : ''}
             </div>
-            <div class="q-context">
-              <span contenteditable="${isEditing}" data-ci="${ci}" data-qi="${qi}" data-field="context"
-                data-placeholder="Add context for MacKenzie…" class="${isEditing?'block-editable':''}" oninput="syncQField(this)">${q.context}</span>
+            ${isEditing ? `<div class="q-context">
+              <span contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-field="context"
+                data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">${q.context}</span>
               ${renderSources(q, ci, qi)}
-            </div>
+            </div>` : ''}
           </div>
           <div class="q-status-icon">${answered ? '✅' : '○'}</div>
         </div>`;
