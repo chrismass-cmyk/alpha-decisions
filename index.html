@@ -41,11 +41,8 @@
   .intro-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
   .intro-left { flex: 1; min-width: 260px; }
   .intro-story { font-family: Georgia, serif; font-size: 14.5px; color: #555; line-height: 2; }
-  .is-count { color: var(--gold); font-weight: 700; font-size: 15.5px; }
   .is-nojudge { color: var(--navy); font-weight: 700; }
   .is-alot { font-style: italic; color: var(--navy); font-weight: 700; }
-  .is-hamilton { color: var(--navy); font-weight: 700; background: rgba(19,51,107,.08); padding: 1px 5px; border-radius: 4px; }
-  .is-haterade { color: #a07800; font-weight: 700; font-style: italic; background: rgba(201,168,76,.18); padding: 1px 5px; border-radius: 4px; }
   .intro-stats { background: var(--navy); color: white; padding: 12px 20px; border-radius: 10px; font-family: Arial, sans-serif; font-size: 12px; white-space: nowrap; text-align: center; min-width: 110px; }
   .intro-stats .big-num { font-size: 32px; font-weight: 700; color: var(--gold); display: block; line-height: 1; margin-bottom: 2px; }
 
@@ -235,11 +232,9 @@
   <div class="intro-inner">
     <div class="intro-left">
       <div class="intro-story">
-        Across every Alpha website, the same words have been spelled <span class="is-count">roughly forty-seven different ways.</span>
+        Across every Alpha website, the same words have been spelled roughly forty-seven different ways.
         <br>
         <span class="is-nojudge">No judgment</span> — <span class="is-alot">actually, a lot of judgment.</span>
-        <br>
-        🐶 I'm going to need my emotional support dog, <span class="is-hamilton">Hamilton,</span> and a big glass of <span class="is-haterade">haterade</span> to get through this.
       </div>
     </div>
     <div class="intro-stats">
@@ -1195,12 +1190,12 @@
     <input type="checkbox" style="pointer-events:none; accent-color:#375623; flex-shrink:0; margin-top:3px;">
     <div class="option-label">
       <span class="option-key">A.</span> "Life Skills" — always, across all copy and campuses
-      <span class="option-note">Please choose one so I stop sounding like an old, goofy, lame dad when I explain our curriculum.</span>
+      
     </div></div><div class="option-edit-row">
     <input class="opt-key-input" type="text" value="A" maxlength="2" oninput="syncOptField(2,1,0,'key',this.value)">
     <div class="opt-text-wrap">
       <span class="opt-label-edit" contenteditable="true" data-ci="2" data-qi="1" data-oi="0" data-field="label" data-placeholder="Option label" oninput="syncOptFieldCE(this)">"Life Skills" — always, across all copy and campuses</span>
-      <span class="opt-note-edit" contenteditable="true" data-ci="2" data-qi="1" data-oi="0" data-field="note" data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">Please choose one so I stop sounding like an old, goofy, lame dad when I explain our curriculum.</span>
+      <span class="opt-note-edit" contenteditable="true" data-ci="2" data-qi="1" data-oi="0" data-field="note" data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)"></span>
       <label class="opt-custom-toggle">
         <input type="checkbox" onchange="syncOptField(2,1,0,'custom',this.checked)">
         Write-in option
@@ -3027,7 +3022,7 @@ let categories = [
           {
             "key": "A",
             "label": "\"Life Skills\" — always, across all copy and campuses",
-            "note": "Please choose one so I stop sounding like an old, goofy, lame dad when I explain our curriculum."
+            "note": ""
           },
           {
             "key": "B",
@@ -3590,7 +3585,7 @@ function answeredCount() {
 const TAGLINES = {
   'spelling': "We are claiming these as epic fails. Some have been wrong on the website for years. Totally fine. (Not fine. But we're fixing it now.)",
   'caps': "What deserves to be a Proper Noun? This is your moment to decide who gets a capital letter and who does not.",
-  'terminology': "\"Student,\" \"learner,\" \"kid,\" \"child,\" \"scholar\" — we've been using all five. Pick your favorites so I stop sounding like an old, goofy, lame dad at every school tour.",
+  'terminology': "",
   'stats': "Numbers mean things. Specific things. That's why we're here. Please choose one so I stop being misquoted.",
   'grammar': "I am now going to do a very dramatic reading of a paragraph that uses four different versions of '2 Hour Learning' and 'Shadow Day' with no Oxford commas. Please. Save me from having to do this ever again."
 };
