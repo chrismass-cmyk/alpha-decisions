@@ -52,10 +52,8 @@
   .cat-edit-controls { display: none; }
 
   /* ── QUESTION CARD ── */
-  .q-card { background: white; border: 1px solid var(--border); border-left: 5px solid var(--border); margin-bottom: 14px; transition: border-left-color .2s, box-shadow .2s; position: relative; border-radius: 10px; overflow: hidden; }
+  .q-card { background: white; border: 1px solid var(--border); border-left: 5px solid var(--amber); margin-bottom: 14px; transition: border-left-color .2s, box-shadow .2s; position: relative; border-radius: 10px; overflow: hidden; }
   .q-card.answered { border-left-color: var(--green); box-shadow: 0 2px 8px rgba(55,86,35,.1); }
-  .q-card.conflict { border-left-color: var(--amber); }
-  .q-card.conflict.answered { border-left-color: var(--green); }
 
   .q-header { padding: 13px 16px 9px; display: flex; align-items: flex-start; gap: 10px; }
   .q-number { font-family: Arial, sans-serif; font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: .05em; padding-top: 3px; min-width: 26px; }
@@ -68,6 +66,7 @@
   .q-status-icon { font-size: 16px; padding-top: 1px; flex-shrink: 0; }
 
   /* ── OPTIONS (answer mode) ── */
+  .multi-hint { padding: 0 16px 5px 52px; font-family: Arial, sans-serif; font-size: 10.5px; color: var(--muted); font-style: italic; }
   .q-options { padding: 2px 16px 14px 52px; }
   .option-row { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; margin-bottom: 4px; cursor: pointer; border: 1.5px solid transparent; border-radius: 6px; transition: background .12s, border-color .12s; }
   .option-row:hover { background: #f5f3ef; border-color: var(--border); }
@@ -3552,6 +3551,11 @@ function render() {
 
 
       // ── MULTI-SELECT OPTION ROWS (all questions) ──
+      const hintEl = document.createElement('div');
+      hintEl.className = 'multi-hint';
+      hintEl.textContent = 'Select all that apply — click a choice again to remove it.';
+      card.appendChild(hintEl);
+
       const optionsDiv = document.createElement('div');
       optionsDiv.className = 'q-options';
 
