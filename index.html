@@ -55,7 +55,6 @@
   .category-icon { width: 36px; height: 36px; background: var(--navy); color: white; font-family: Georgia, serif; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 50%; }
   .cat-title-text { font-family: Georgia, serif; font-size: 15px; font-weight: 700; color: var(--navy); letter-spacing: .02em; }
   .cat-count { font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); margin-left: auto; }
-  .cat-tagline { font-family: Arial, sans-serif; font-size: 12px; color: var(--muted); margin-top: -4px; margin-bottom: 16px; padding-left: 48px; }
   .cat-edit-controls { display: none; gap: 6px; margin-left: 8px; }
   .is-editing .cat-edit-controls { display: flex; }
 
@@ -3581,14 +3580,6 @@ function answeredCount() {
   return count;
 }
 
-// ─── CATEGORY TAGLINES ───────────────────────────────────────────────────────
-const TAGLINES = {
-  'spelling': "We are claiming these as epic fails. Some have been wrong on the website for years. Totally fine. (Not fine. But we're fixing it now.)",
-  'caps': "What deserves to be a Proper Noun? This is your moment to decide who gets a capital letter and who does not.",
-  'terminology': "",
-  'stats': "Numbers mean things. Specific things. That's why we're here. Please choose one so I stop being misquoted.",
-  'grammar': "I am now going to do a very dramatic reading of a paragraph that uses four different versions of '2 Hour Learning' and 'Shadow Day' with no Oxford commas. Please. Save me from having to do this ever again."
-};
 
 // ─── RENDER ──────────────────────────────────────────────────────────────────
 function render() {
@@ -3604,7 +3595,6 @@ function render() {
     catDiv.id = 'cat-' + ci;
 
     // Category header
-    const tagline = TAGLINES[cat.id] || '';
     catDiv.innerHTML = `
       <div class="category-header">
         <div class="category-icon" contenteditable="${isEditing}" data-ci="${ci}" data-field="icon" data-placeholder="★"
@@ -3616,7 +3606,7 @@ function render() {
           <button class="etb danger" onclick="deleteCategory(${ci})">🗑 Delete Category</button>
         </div>
       </div>
-      ${tagline && !isEditing ? `<div class="cat-tagline">${tagline}</div>` : ''}`;
+      `;
 
     // Questions
     cat.questions.forEach((q, qi) => {
@@ -4008,6 +3998,11 @@ function updateProgress() {
 }
 
 function showToast(msg) {
+  // Dismiss any reaction toast so only one popup shows at a time
+  const rt = document.getElementById('reaction-toast');
+  clearTimeout(showReactionToast._t);
+  rt.classList.remove('show');
+
   const el = document.getElementById('milestone-toast');
   el.textContent = msg;
   el.classList.remove('show');
