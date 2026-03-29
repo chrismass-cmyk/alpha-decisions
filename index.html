@@ -16,7 +16,9 @@
   .site-header { background: var(--navy); color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
   .header-inner { max-width: 900px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
   .header-title { font-family: Arial, sans-serif; font-size: 17px; font-weight: 700; }
-  .header-subtitle { font-family: Arial, sans-serif; font-size: 11px; color: rgba(255,255,255,.7); margin-top: 2px; }
+  .header-tagline { border-top: 1px solid rgba(255,255,255,.18); padding: 6px 24px; text-align: center; font-family: Georgia, serif; font-size: 12.5px; color: rgba(255,255,255,.82); line-height: 1.5; }
+  .header-tagline .ht-bold { color: white; font-weight: 700; }
+  .header-tagline .ht-italic { font-style: italic; font-weight: 700; color: var(--gold); }
   .progress-wrap { flex: 1; min-width: 140px; }
   .progress-label { font-family: Arial, sans-serif; font-size: 11px; color: rgba(255,255,255,.8); margin-bottom: 4px; text-align: right; }
   .progress-quip { display: none; }
@@ -30,15 +32,6 @@
   .hbtn-gold { background: var(--gold); color: var(--navy); }
   .hbtn-gold:hover { background: var(--gold-light); }
 
-  /* ── INTRO ── */
-  .intro-banner { background: white; border-bottom: 3px solid var(--gold); padding: 16px 24px 18px; }
-  .intro-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-  .intro-left { flex: 1; min-width: 260px; }
-  .intro-story { font-family: Georgia, serif; font-size: 14.5px; color: #555; line-height: 2; }
-  .is-nojudge { color: var(--navy); font-weight: 700; }
-  .is-alot { font-style: italic; color: var(--navy); font-weight: 700; }
-  .intro-stats { background: var(--navy); color: white; padding: 12px 20px; border-radius: 10px; font-family: Arial, sans-serif; font-size: 12px; white-space: nowrap; text-align: center; min-width: 110px; }
-  .intro-stats .big-num { font-size: 32px; font-weight: 700; color: var(--gold); display: block; line-height: 1; margin-bottom: 2px; }
 
   /* ── MAIN ── */
   .main { max-width: 900px; margin: 0 auto; padding: 28px 24px 80px; }
@@ -132,7 +125,6 @@
   .export-a { color: var(--green); font-weight: 700; flex: 1; }
   .export-a.unanswered { color: #aaa; font-style: italic; font-weight: normal; }
   .export-note { color: var(--muted); font-size: 11px; flex: 1; }
-  .intro-save-note { font-family: Arial, sans-serif; font-size: 11.5px; color: var(--muted); margin-top: 10px; }
   .modal-send-note { padding: 10px 22px; background: #f0f4ff; border-top: 1px solid #d0d8f0; font-family: Arial, sans-serif; font-size: 12px; color: #2a3a6a; flex-shrink: 0; }
   .modal-footer { padding: 12px 22px; background: #f7f6f3; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; flex-shrink: 0; }
   .btn-copy { background: var(--navy); color: white; border: none; padding: 8px 16px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 3px; }
@@ -145,7 +137,6 @@
   <div class="header-inner">
     <div>
       <div class="header-title">Alpha Style Rulings</div>
-      <div class="header-subtitle">MacKenzie Price — you're the final word. (Finally.)</div>
     </div>
     <div class="progress-wrap">
       <div class="progress-label" id="progressLabel">0 of 28 answered</div>
@@ -154,24 +145,15 @@
     </div>
     <button class="hbtn hbtn-gold" onclick="openModal()">Submit Answers</button>
   </div>
+  <div class="header-tagline">
+    <span class="ht-bold">Across every Alpha website, the same words have been spelled roughly forty-seven different ways.</span>
+    &nbsp;·&nbsp;
+    <span class="ht-bold">No judgment</span> — <span class="ht-italic">actually, a lot of judgment.</span>
+    &nbsp;·&nbsp;
+    💾 <em>Saves automatically.</em>
+  </div>
 </header>
 
-<div class="intro-banner">
-  <div class="intro-inner">
-    <div class="intro-left">
-      <div class="intro-story">
-        <span class="is-nojudge">Across every Alpha website, the same words have been spelled roughly forty-seven different ways.</span>
-        <br>
-        <span class="is-nojudge">No judgment</span> — <span class="is-alot">actually, a lot of judgment.</span>
-      </div>
-      <div class="intro-save-note">💾 Your answers save automatically — close the tab and pick up right where you left off.</div>
-    </div>
-    <div class="intro-stats">
-      <span class="big-num" id="answeredCount">0</span>
-      of <span id="totalCount">28</span> answered
-    </div>
-  </div>
-</div>
 
 <main class="main" id="mainContent"><div class="cat-block" id="cat-0">
       <div class="category-header">
@@ -3853,8 +3835,6 @@ function updateProgress() {
   const pct = total > 0 ? Math.round((count/total)*100) : 0;
   document.getElementById('progressBar').style.width = pct + '%';
   document.getElementById('progressLabel').textContent = `${count} of ${total} answered`;
-  document.getElementById('answeredCount').textContent = count;
-  document.getElementById('totalCount').textContent = total;
   document.getElementById('completeBanner').classList.toggle('show', count > 0 && count === total);
   const milestones = [
     [100, "🏆 DONE! All rulings are in. Someone cue the fake laugh track. The hyphens have been tamed."],
