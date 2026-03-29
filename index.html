@@ -176,9 +176,6 @@
   /* move up/down */
   .move-btns { display: flex; gap: 2px; }
 
-  /* ── HINT TEXT ── */
-  .q-hint { padding: 0 16px 8px 52px; font-family: Arial, sans-serif; font-size: 11px; color: #999; }
-  .is-editing .q-hint { display: none; }
 
   /* ── GENERAL NOTES SECTION ── */
   .general-notes-section { background: #fff; border: 2px solid var(--gold); border-radius: 4px; padding: 28px 32px; margin: 32px 0 24px; }
@@ -2797,7 +2794,7 @@
     </div>
   </div>
   <textarea id="generalNotesTA" class="gnotes-textarea"
-    placeholder="e.g., &#10;• Never say 'innovative' — everyone says that.&#10;• The school is in Austin, not 'Austin, Texas' in headings.&#10;• Don't say students 'graduate' — they complete their Alpha journey."
+    placeholder="e.g., &#10;• Never say 'innovative' — everyone says that.&#10;• The school is in Austin, not 'Austin, Texas' in headings."
     oninput="updateGeneralNotes(this.value)"></textarea>
 </div>
 
@@ -3961,11 +3958,6 @@ function render() {
       }
 
       // ── MULTI-SELECT OPTION ROWS (all questions) ──
-      const hintDiv = document.createElement('div');
-      hintDiv.className = 'q-hint';
-      hintDiv.textContent = 'Select all that apply — click a highlighted answer again to remove it';
-      card.appendChild(hintDiv);
-
       const optionsDiv = document.createElement('div');
       optionsDiv.className = 'q-options';
 
