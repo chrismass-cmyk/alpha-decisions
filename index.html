@@ -146,7 +146,7 @@
       <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div></div>
       <div class="progress-quip" id="progressQuip"></div>
     </div>
-    <button class="hbtn hbtn-gold" onclick="openModal()">Export Decisions ↓</button>
+    <button class="hbtn hbtn-gold" onclick="openModal()">Submit Answers</button>
   </div>
 </header>
 
@@ -2572,11 +2572,15 @@
 • The school is in Austin, not 'Austin, Texas' in headings." oninput="updateGeneralNotes(this.value)"></textarea>
 </div>
 
+<div style="max-width:900px; margin: 0 auto; padding: 0 24px 40px; text-align: center;">
+  <button class="hbtn hbtn-gold" onclick="openModal()" style="padding: 14px 40px; font-size: 15px; border-radius: 6px;">Submit Answers</button>
+</div>
+
 <div class="complete-banner" id="completeBanner">
   <h3>All rulings are in. ⚖️</h3>
   <p>Every question has been answered. Somewhere, a hyphen is at peace.<br><br>
   <em>If everyone actually sticks to these rules, I will personally buy the copy team a Limitless Lunch or a bag of hot Takis. If you use the wrong version of 2 Hour Learning, you lose your Mobile Squad privileges.</em></p>
-  <button class="complete-btn" onclick="openModal()">Export Final Decisions</button>
+  <button class="complete-btn" onclick="openModal()">Submit Answers</button>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
