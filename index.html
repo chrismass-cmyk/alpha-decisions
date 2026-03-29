@@ -20,10 +20,10 @@
   .progress-wrap { flex: 1; min-width: 140px; }
   .progress-label { font-family: Arial, sans-serif; font-size: 11px; color: rgba(255,255,255,.8); margin-bottom: 4px; text-align: right; }
   .progress-quip { display: none; }
-  #milestone-toast { position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; border: 2.5px solid var(--gold); border-radius: 14px; padding: 20px 36px; font-family: Arial, sans-serif; font-size: 15px; font-weight: 600; text-align: center; max-width: 460px; width: 88%; z-index: 9999; box-shadow: 0 10px 40px rgba(0,0,0,.45); transition: bottom .45s cubic-bezier(.34,1.56,.64,1), opacity .3s; opacity: 0; pointer-events: none; }
-  #milestone-toast.show { bottom: 44px; opacity: 1; }
-  #reaction-toast { position: fixed; bottom: -60px; right: 28px; background: var(--navy); color: white; border-left: 4px solid var(--gold); padding: 13px 18px; font-family: Arial, sans-serif; font-size: 13px; font-weight: 600; border-radius: 8px; z-index: 9999; box-shadow: 0 4px 20px rgba(0,0,0,.3); transition: bottom .3s cubic-bezier(.34,1.56,.64,1), opacity .2s; opacity: 0; pointer-events: none; max-width: 300px; }
-  #reaction-toast.show { bottom: 28px; opacity: 1; }
+  #milestone-toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.88); background: var(--navy); color: #fff; border: 3px solid var(--gold); border-radius: 20px; padding: 28px 44px; font-family: Georgia, serif; font-size: 18px; font-weight: 700; text-align: center; max-width: 500px; width: 90%; z-index: 9999; box-shadow: 0 20px 60px rgba(0,0,0,.55); transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s; opacity: 0; pointer-events: none; line-height: 1.5; }
+  #milestone-toast.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  #reaction-toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.82); background: #fff; color: var(--navy); border: 2.5px solid var(--gold); padding: 18px 32px; font-family: Georgia, serif; font-size: 16px; font-weight: 700; border-radius: 16px; z-index: 9999; box-shadow: 0 16px 50px rgba(0,0,0,.4); transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s; opacity: 0; pointer-events: none; max-width: 420px; width: 86%; text-align: center; line-height: 1.5; }
+  #reaction-toast.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
   .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 4px; height: 8px; overflow: hidden; }
   .progress-bar-fill { background: var(--gold); height: 100%; border-radius: 4px; transition: width .4s ease; width: 0%; }
   .hbtn { border: none; padding: 8px 14px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 3px; letter-spacing: .04em; white-space: nowrap; transition: background .15s, color .15s; }
@@ -93,10 +93,11 @@
   .option-note { color: var(--muted); font-size: 11px; display: block; margin-top: 1px; }
 
   /* ── MACKENZIE SAYS QUIP BLOCK ── */
-  .quip-block { margin: 0 16px 10px 16px; background: #fffbf0; border-left: 4px solid var(--gold); border-radius: 0 8px 8px 0; padding: 11px 14px 11px 16px; font-family: Arial, sans-serif; font-size: 12.5px; color: #5a4200; line-height: 1.85; }
+  .quip-block { margin: 12px 16px 14px 16px; background: linear-gradient(135deg, #fff9ee 0%, #fffdf5 100%); border: 2px solid var(--gold); border-radius: 14px; padding: 14px 18px 14px 18px; font-family: Georgia, serif; font-size: 13px; color: #3a2a00; line-height: 1.9; position: relative; box-shadow: 0 3px 12px rgba(201,168,76,.18); }
+  .quip-block::before { content: '💬 MacKenzie says —'; display: block; font-family: Arial, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
   .quip-block .qs { display: block; }
-  .quip-block .qs:first-child { font-weight: 700; color: var(--navy); }
-  .quip-kw { background: rgba(201,168,76,.22); color: #6b4f00; font-weight: 700; padding: 0 3px; border-radius: 3px; }
+  .quip-block .qs:first-child { font-weight: 700; color: var(--navy); font-size: 13.5px; }
+  .quip-kw { background: rgba(201,168,76,.30); color: #5a3800; font-weight: 700; padding: 1px 4px; border-radius: 4px; font-style: italic; }
   .is-editing .quip-block { display: none; }
 
   /* ── WRITE-IN ── */
@@ -107,9 +108,7 @@
   .notes-wrap { padding: 0 16px 13px 52px; }
   .notes-input { background: #fafaf8; resize: vertical; min-height: 50px; font-size: 12px; }
 
-  /* ── CONFLICT BADGE ── */
-  .conflict-badge { display: inline-flex; align-items: center; gap: 3px; background: #FFF3CD; border: 1px solid #f0d080; color: #7D5A00; font-family: Arial, sans-serif; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 2px; margin-left: 8px; vertical-align: middle; }
-  .is-editing .conflict-badge { display: none; }
+  /* conflict-badge removed */
 
   /* ── EDIT MODE OVERLAYS ── */
   .edit-toolbar { display: none; position: absolute; top: 8px; right: 8px; gap: 4px; }
@@ -283,7 +282,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="0" data-qi="0" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">Capitalizing "guide" / "guides"</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="0" data-qi="0" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">Meeting notes say do not capitalize — same rule as "teacher." But alpha.school website and the Visual Style Guide both use "Guides" (capital G). Which is correct?</span>
@@ -432,7 +431,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="0" data-qi="2" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">"2x" or "2X" — which form?</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="0" data-qi="2" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">Sources use both. The Three Commitments use "2X." Some body copy uses "2x." The Messaging Framework uses "2×" (multiplication symbol). Is one form standard, or does it vary by context?</span>
@@ -531,7 +530,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="0" data-qi="3" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">"Test2Pass" or "Test 2 Pass"?</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="0" data-qi="3" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">MacKenzie's Substack and the alpha.school blog write it as one word: "Test2Pass." Instagram uses "Test 2 Pass" with spaces. This is an internal assessment tool name — the spelling affects signage, app labels, and any parent-facing mentions.</span>
@@ -617,7 +616,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="0" data-qi="4" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">"WonderLab" or "Wonder Lab"?</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="0" data-qi="4" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">Substack and Instagram use "WonderLab" (one word). The alpha.school website uses both forms — "Wonder Lab" in headers and "WonderLab" in blog text.&nbsp;</span>
@@ -795,7 +794,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="1" data-qi="0" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">"Twice as much" vs. "twice as fast"</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="1" data-qi="0" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)"></span>
@@ -1037,7 +1036,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="1" data-qi="3" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">"Alpha School" or "Alpha Schools"?</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="1" data-qi="3" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">alpha.school consistently uses the singular. 2hourlearning.com and Instagram use both forms. MacKenzie's founder page bio says "Alpha Schools" (plural). The plural may refer to the network while singular refers to a single location.</span>
@@ -1135,7 +1134,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="2" data-qi="0" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">Vacation preference stat: 40–60%, 60%, or 62%?</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="2" data-qi="0" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">Different sources cite different numbers for "students who prefer school to vacation." Meeting note says 40–60% (a range). Is that range because campuses differ? Or is there one correct figure?</span>
@@ -1251,7 +1250,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="2" data-qi="1" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">"Top 1%" exclusively, or can "top 1–2%" appear?</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="2" data-qi="1" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">Meeting notes say use "Top 1%" only and remove all "top 2%" references. But multiple sources use "top 1–2%" — possibly because it was more conservative/accurate. Is top 1% always correct, or does the range apply somewhere?</span>
@@ -1417,7 +1416,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="2" data-qi="3" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">Which learning growth figure for general marketing? (now five exist)</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="2" data-qi="3" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">The Bible adds one more figure beyond what was previously known, bringing the total to five: 2x (general claim), 2.6x (all students, MAP normed), 3.6x (top two-thirds), "almost 4x" (advanced students, Deep Dive video), 6.5x (top 20%). What figure belongs in general, non-campus-specific marketing copy?</span>
@@ -1526,7 +1525,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="2" data-qi="4" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">"Love school" percentage: 95%, 96%, or "over 90%"?</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="2" data-qi="4" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)"></span>
@@ -1612,7 +1611,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="2" data-qi="5" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">SAT average: "1500+", "1470+", or "1470"?</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="2" data-qi="5" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)"></span>
@@ -1817,7 +1816,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="2" data-qi="7" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">"99th percentile" vs. "top 1%" — interchangeable or distinct?</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="2" data-qi="7" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)"></span>
@@ -2049,7 +2048,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="3" data-qi="1" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">"AI-driven" vs. "AI-powered"</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="3" data-qi="1" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">Meeting notes say "AI-driven" must be hyphenated. But "AI-powered" already appears in the style guide as an approved term. Are these interchangeable or do they mean different things?</span>
@@ -2146,7 +2145,7 @@
           <div class="q-title-wrap">
             <div class="q-title">
               <span contenteditable="true" data-ci="3" data-qi="2" data-field="title" data-placeholder="Question title" oninput="syncQField(this)">Oxford comma — always required?</span>
-              <span class="conflict-badge">⚠ Multiple versions spotted</span>
+
             </div>
             <div class="q-context">
               <span contenteditable="true" data-ci="3" data-qi="2" data-field="context" data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">The Messaging Framework consistently uses the Oxford comma (e.g., "reading, writing, math, and science"). Some Instagram posts omit it. Should the Oxford comma be a hard rule?</span>
@@ -3941,7 +3940,6 @@ function render() {
             <div class="q-title">
               <span contenteditable="${isEditing}" data-ci="${ci}" data-qi="${qi}" data-field="title"
                 data-placeholder="Question title" oninput="syncQField(this)">${q.title}</span>
-              ${q.conflict ? '<span class="conflict-badge">⚠ Multiple versions spotted</span>' : ''}
             </div>
             ${isEditing ? `<div class="q-context">
               <span contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-field="context"
