@@ -32,6 +32,12 @@
   .hbtn-gold { background: var(--gold); color: var(--navy); }
   .hbtn-gold:hover { background: var(--gold-light); }
 
+  /* ── INTRO ── */
+  .intro-banner { background: white; border-bottom: 3px solid var(--gold); padding: 16px 24px 18px; }
+  .intro-inner { max-width: 900px; margin: 0 auto; }
+  .intro-story { font-family: Georgia, serif; font-size: 14.5px; color: #555; line-height: 2; }
+  .is-nojudge { color: var(--navy); font-weight: 700; }
+  .is-alot { font-style: italic; color: var(--navy); font-weight: 700; }
 
   /* ── MAIN ── */
   .main { max-width: 900px; margin: 0 auto; padding: 28px 24px 8px; }
@@ -146,14 +152,23 @@
     <button class="hbtn hbtn-gold" onclick="openModal()">Submit Answers</button>
   </div>
   <div class="header-tagline">
-    <span class="ht-bold">Across every Alpha website, the same words have been spelled roughly forty-seven different ways.</span>
-    &nbsp;·&nbsp;
     <span class="ht-bold">No judgment</span> — <span class="ht-italic">actually, a lot of judgment.</span>
     &nbsp;·&nbsp;
-    💾 <em>Saves automatically.</em>
+    💾 <em>Your answers save automatically — close the tab and pick up right where you left off.</em>
   </div>
 </header>
 
+<div class="intro-banner">
+  <div class="intro-inner">
+    <div class="intro-left">
+      <div class="intro-story">
+        <span class="is-nojudge">Across every Alpha website, the same words have been spelled roughly forty-seven different ways.</span>
+        <br>
+        <span class="is-nojudge">No judgment</span> — <span class="is-alot">actually, a lot of judgment.</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <main class="main" id="mainContent"><div class="cat-block" id="cat-0">
       <div class="category-header">
