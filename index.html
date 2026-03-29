@@ -92,13 +92,6 @@
   .option-key { font-weight: 700; color: var(--navy); font-family: 'Courier New', monospace; font-size: 13px; }
   .option-note { color: var(--muted); font-size: 11px; display: block; margin-top: 1px; }
 
-  /* ── MACKENZIE SAYS QUIP BLOCK ── */
-  .quip-block { margin: 12px 16px 14px 16px; background: linear-gradient(135deg, #fff9ee 0%, #fffdf5 100%); border: 2px solid var(--gold); border-radius: 14px; padding: 14px 18px 14px 18px; font-family: Georgia, serif; font-size: 13px; color: #3a2a00; line-height: 1.9; position: relative; box-shadow: 0 3px 12px rgba(201,168,76,.18); }
-  .quip-block::before { content: '💬 MacKenzie says —'; display: block; font-family: Arial, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
-  .quip-block .qs { display: block; }
-  .quip-block .qs:first-child { font-weight: 700; color: var(--navy); font-size: 13.5px; }
-  .quip-kw { background: rgba(201,168,76,.30); color: #5a3800; font-weight: 700; padding: 1px 4px; border-radius: 4px; font-style: italic; }
-  .is-editing .quip-block { display: none; }
 
   /* ── WRITE-IN ── */
   .write-in-wrap { padding: 0 16px 6px 52px; }
@@ -2727,7 +2720,6 @@ let categories = [
       {
         "id": "test2pass",
         "title": "\"Test2Pass,\" \"Test 2 Pass,\" or \"Test to Pass\"?",
-        "quip": "It’s <span class=\"quip-kw\">Test2Pass</span>. Because spelling out ‘Test to Pass’ takes way too long, and we are literally trying to give kids their time back!",
         "conflict": true,
         "context": "Three distinct forms appear across Alpha properties. MacKenzie’s Substack and the alpha.school/lifeskills-workshops/ page use \"Test2Pass\" (numeral, one word). Instagram uses \"Test 2 Pass\" (numeral, spaces). A separate alpha.school blog post uses the spelled-out form: \"Test to Pass.\" All three refer to the same assessment format.",
         "sources": [
@@ -2845,7 +2837,6 @@ let categories = [
       {
         "id": "twohl_forms",
         "title": "Which forms of \"2 Hour Learning\" are acceptable?",
-        "quip": "It’s <span class=\"quip-kw\">2 Hour Learning</span> — no hyphens allowed. We already cut the busywork out of the school day, so we don’t need extra punctuation slowing us down.",
         "conflict": true,
         "multiselect": true,
         "context": "At least 9 different forms appear across Alpha properties. Click every version MacKenzie considers acceptable. Unclicked forms should be corrected in copy.",
@@ -2902,7 +2893,6 @@ let categories = [
       {
         "id": "lifeskills_modifier",
         "title": "\"life skills workshops\" or \"life skill workshops\"? (plural \"skills\" or singular \"skill\"?)",
-        "quip": "It is <span class=\"quip-kw\">Life Skills</span> workshops, plural. If our kids only leave here with one single life skill, I am claiming a massive parenting fail!",
         "conflict": true,
         "context": "The inconsistency is in the modifier before \"workshops\" — not in the word \"workshops\" itself, which is consistently lowercase in body text and capitalized only as part of a specific named workshop (e.g., \"Seal Team Workshop\"). The conflict is whether the modifier is plural (\"life skills\") or singular (\"life skill\"), and secondarily whether it should be hyphenated as a compound modifier.",
         "sources": [
@@ -3517,7 +3507,6 @@ let categories = [
       {
         "id": "exclamation",
         "title": "Exclamation marks in headlines and ending cards",
-        "quip": "Use exclamation points <span class=\"quip-kw\">sparingly</span>! I already have enough teenage drama and yelling in my house. I don’t need the website screaming at me too.",
         "conflict": false,
         "context": "Meeting notes say change ! to period — avoids looking \"market-y.\" Does this apply everywhere or only specific placements?",
         "sources": [
@@ -3546,7 +3535,6 @@ let categories = [
       {
         "id": "oxford_comma",
         "title": "Oxford comma — always required?",
-        "quip": "Oxford commas save mamas… from drama. Let’s make sure we <span class=\"quip-kw\">require</span> them before we have a total meltdown.",
         "conflict": true,
         "context": "Oxford commas save mamas… from drama. The Messaging Framework consistently uses the Oxford comma (e.g., \"reading, writing, math, and science\"). Some Instagram posts omit it. Should the Oxford comma be a hard rule for all Alpha copy?",
         "sources": [],
@@ -3675,15 +3663,6 @@ function render() {
           <div class="q-status-icon">${answered ? '✅' : '○'}</div>
         </div>`;
 
-      // Quip block — inline styled, shown below header
-      if (q.quip && !isEditing) {
-        const quipDiv = document.createElement('div');
-        quipDiv.className = 'quip-block';
-        // Split on sentence boundaries and wrap each in a span
-        const sentences = q.quip.split(/(?<=[.!…])\s+/);
-        quipDiv.innerHTML = sentences.map(s => `<span class="qs">${s}</span>`).join('');
-        card.appendChild(quipDiv);
-      }
 
       // ── MULTI-SELECT OPTION ROWS (all questions) ──
       const optionsDiv = document.createElement('div');
