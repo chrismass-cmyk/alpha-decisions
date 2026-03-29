@@ -92,16 +92,12 @@
   .option-key { font-weight: 700; color: var(--navy); font-family: 'Courier New', monospace; font-size: 13px; }
   .option-note { color: var(--muted); font-size: 11px; display: block; margin-top: 1px; }
 
-  /* ── MACKENZIE SAYS TOOLTIP ── */
-  .quip-wrap { position: relative; display: inline-block; flex-shrink: 0; }
-  .quip-btn { background: none; border: 1.5px solid var(--gold); color: var(--gold); border-radius: 20px; padding: 2px 9px 2px 7px; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background .12s, transform .1s; line-height: 1.6; }
-  .quip-btn:hover { background: rgba(201,168,76,.12); transform: scale(1.04); }
-  .quip-popover { position: absolute; top: calc(100% + 10px); right: 0; background: var(--navy); color: white; border: 2px solid var(--gold); border-radius: 12px; padding: 14px 16px; font-family: Arial, sans-serif; font-size: 13px; line-height: 1.6; width: 270px; z-index: 500; box-shadow: 0 8px 28px rgba(0,0,0,.3); display: none; animation: quipIn .2s ease; }
-  .quip-popover.show { display: block; }
-  .quip-popover::before { content: ''; position: absolute; top: -8px; right: 18px; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 8px solid var(--gold); }
-  .quip-popover::after { content: ''; position: absolute; top: -5px; right: 20px; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 6px solid var(--navy); }
-  @keyframes quipIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-  .is-editing .quip-wrap { display: none; }
+  /* ── MACKENZIE SAYS QUIP BLOCK ── */
+  .quip-block { margin: 0 16px 10px 16px; background: #fffbf0; border-left: 4px solid var(--gold); border-radius: 0 8px 8px 0; padding: 11px 14px 11px 16px; font-family: Arial, sans-serif; font-size: 12.5px; color: #5a4200; line-height: 1.85; }
+  .quip-block .qs { display: block; }
+  .quip-block .qs:first-child { font-weight: 700; color: var(--navy); }
+  .quip-kw { background: rgba(201,168,76,.22); color: #6b4f00; font-weight: 700; padding: 0 3px; border-radius: 3px; }
+  .is-editing .quip-block { display: none; }
 
   /* ── WRITE-IN ── */
   .write-in-wrap { padding: 0 16px 6px 52px; }
@@ -2872,7 +2868,7 @@ let categories = [
       {
         "id": "test2pass",
         "title": "\"Test2Pass,\" \"Test 2 Pass,\" or \"Test to Pass\"?",
-        "quip": "It\u2019s Test2Pass. Because spelling out \u2018Test to Pass\u2019 takes way too long, and we are literally trying to give kids their time back!",
+        "quip": "It\u2019s <span class=\"quip-kw\">Test2Pass</span>. Because spelling out \u2018Test to Pass\u2019 takes way too long, and we are literally trying to give kids their time back!",
         "conflict": true,
         "context": "Three distinct forms appear across Alpha properties. MacKenzie\u2019s Substack and the alpha.school/lifeskills-workshops/ page use \"Test2Pass\" (numeral, one word). Instagram uses \"Test 2 Pass\" (numeral, spaces). A separate alpha.school blog post uses the spelled-out form: \"Test to Pass.\" All three refer to the same assessment format.",
         "sources": [
@@ -3006,7 +3002,7 @@ let categories = [
       {
         "id": "twohl_abbrev",
         "title": "\"2HL\" as an abbreviation \u2014 approved for external use?",
-        "quip": "Keep 2HL for internal use only. If you use it in front of parents, you lose all your cool factor \u2014 kind of like when I try to say \u2018slayalicious\u2019 to my teenagers.",
+        "quip": "Keep <span class=\"quip-kw\">2HL</span> for internal use only. If you use it in front of parents, you lose all your cool factor \u2014 kind of like when I try to say \u2018slayalicious\u2019 to my teenagers.",
         "conflict": false,
         "context": "The 2hourlearning.com website navigation uses \"2HL Blog\" and \"2HL in the News.\" Is \"2HL\" an approved shorthand for external copy and navigation, or is it internal/nav-only?",
         "sources": [
@@ -3040,7 +3036,7 @@ let categories = [
       {
         "id": "twohl_forms",
         "title": "Which forms of \"2 Hour Learning\" are acceptable?",
-        "quip": "It\u2019s 2 Hour Learning \u2014 no hyphens allowed. We already cut the busywork out of the school day, so we don\u2019t need extra punctuation slowing us down.",
+        "quip": "It\u2019s <span class=\"quip-kw\">2 Hour Learning</span> \u2014 no hyphens allowed. We already cut the busywork out of the school day, so we don\u2019t need extra punctuation slowing us down.",
         "conflict": true,
         "multiselect": true,
         "context": "At least 9 different forms appear across Alpha properties. Click every version MacKenzie considers acceptable. Unclicked forms should be corrected in copy.",
@@ -3064,7 +3060,7 @@ let categories = [
       {
         "id": "lifeskills_modifier",
         "title": "\"life skills workshops\" or \"life skill workshops\"? (plural \"skills\" or singular \"skill\"?)",
-        "quip": "It is Life Skills workshops, plural. If our kids only leave here with one single life skill, I am claiming a massive parenting fail!",
+        "quip": "It is <span class=\"quip-kw\">Life Skills</span> workshops, plural. If our kids only leave here with one single life skill, I am claiming a massive parenting fail!",
         "conflict": true,
         "context": "The inconsistency is in the modifier before \"workshops\" \u2014 not in the word \"workshops\" itself, which is consistently lowercase in body text and capitalized only as part of a specific named workshop (e.g., \"Seal Team Workshop\"). The conflict is whether the modifier is plural (\"life skills\") or singular (\"life skill\"), and secondarily whether it should be hyphenated as a compound modifier.",
         "sources": [
@@ -3137,7 +3133,7 @@ let categories = [
       {
         "id": "guide_cap",
         "title": "Capitalizing \"guide\" / \"guides\"",
-        "quip": "Keep guides lowercase. They might be the superheroes of our schools, but we like to keep their egos grounded. Plus, capitalizing it makes me feel like a boomer.",
+        "quip": "Keep <span class=\"quip-kw\">guides</span> lowercase. They might be the superheroes of our schools, but we like to keep their egos grounded. Plus, capitalizing it makes me feel like a boomer.",
         "conflict": true,
         "context": "Meeting notes say do not capitalize \u2014 same rule as \"teacher.\" But alpha.school website and the Visual Style Guide both use \"Guides\" (capital G). Which is correct?",
         "sources": [
@@ -3797,7 +3793,7 @@ let categories = [
       {
         "id": "exclamation",
         "title": "Exclamation marks in headlines and ending cards",
-        "quip": "Use exclamation points sparingly! I already have enough teenage drama and yelling in my house. I don\u2019t need the website screaming at me too.",
+        "quip": "Use exclamation points <span class=\"quip-kw\">sparingly</span>! I already have enough teenage drama and yelling in my house. I don\u2019t need the website screaming at me too.",
         "conflict": false,
         "context": "Meeting notes say change ! to period \u2014 avoids looking \"market-y.\" Does this apply everywhere or only specific placements?",
         "sources": [
@@ -3826,7 +3822,7 @@ let categories = [
       {
         "id": "oxford_comma",
         "title": "Oxford comma \u2014 always required?",
-        "quip": "Oxford commas save mamas\u2026 from drama. Let\u2019s make sure we require them before we have a total meltdown.",
+        "quip": "Oxford commas save mamas\u2026 from drama. Let\u2019s make sure we <span class=\"quip-kw\">require</span> them before we have a total meltdown.",
         "conflict": true,
         "context": "Oxford commas save mamas\u2026 from drama. The Messaging Framework consistently uses the Oxford comma (e.g., \"reading, writing, math, and science\"). Some Instagram posts omit it. Should the Oxford comma be a hard rule for all Alpha copy?",
         "sources": [],
@@ -3953,12 +3949,18 @@ function render() {
               ${renderSources(q, ci, qi)}
             </div>` : ''}
           </div>
-          ${q.quip ? `<div class="quip-wrap">
-            <button class="quip-btn" onclick="toggleQuip('${q.id}',event)">💬 MacKenzie says</button>
-            <div class="quip-popover" id="quip-${q.id}">${q.quip}</div>
-          </div>` : ''}
           <div class="q-status-icon">${answered ? '✅' : '○'}</div>
         </div>`;
+
+      // Quip block — inline styled, shown below header
+      if (q.quip && !isEditing) {
+        const quipDiv = document.createElement('div');
+        quipDiv.className = 'quip-block';
+        // Split on sentence boundaries and wrap each in a span
+        const sentences = q.quip.split(/(?<=[.!…])\s+/);
+        quipDiv.innerHTML = sentences.map(s => `<span class="qs">${s}</span>`).join('');
+        card.appendChild(quipDiv);
+      }
 
       // ── MULTI-SELECT OPTION ROWS (all questions) ──
       const hintDiv = document.createElement('div');
@@ -4229,17 +4231,6 @@ function updateCustom(qId, val) { getAns(qId).custom = val; }
 function updateNotes(qId, val) { getAns(qId).notes = val; }
 function updateGeneralNotes(val) { generalNotes = val; }
 
-// ─── QUIP TOOLTIPS ───────────────────────────────────────────────────────────
-function toggleQuip(qId, e) {
-  e.stopPropagation();
-  const el = document.getElementById('quip-' + qId);
-  const wasOpen = el.classList.contains('show');
-  document.querySelectorAll('.quip-popover.show').forEach(p => p.classList.remove('show'));
-  if (!wasOpen) el.classList.add('show');
-}
-document.addEventListener('click', () => {
-  document.querySelectorAll('.quip-popover.show').forEach(p => p.classList.remove('show'));
-});
 
 // ─── REACTION TOASTS ─────────────────────────────────────────────────────────
 const _reactions = [
