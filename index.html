@@ -168,7 +168,7 @@
   </div>
 </div>
 
-<main class="main is-editing" id="mainContent"><div class="cat-block" id="cat-0">
+<main class="main" id="mainContent"><div class="cat-block" id="cat-0">
       <div class="category-header">
         <div class="category-icon" contenteditable="true" data-ci="0" data-field="icon" data-placeholder="★" oninput="syncField(this)">1w</div>
         <div class="cat-title-text" contenteditable="true" data-ci="0" data-field="title" data-placeholder="Category title" oninput="syncField(this)">One Word or Two? Spelling &amp; Format</div>
@@ -3523,14 +3523,9 @@ function render() {
     // Category header
     catDiv.innerHTML = `
       <div class="category-header">
-        <div class="category-icon" contenteditable="${isEditing}" data-ci="${ci}" data-field="icon" data-placeholder="★"
-          oninput="syncField(this)">${cat.icon}</div>
-        <div class="cat-title-text" contenteditable="${isEditing}" data-ci="${ci}" data-field="title" data-placeholder="Category title"
-          oninput="syncField(this)">${cat.title}</div>
+        <div class="category-icon">${cat.icon}</div>
+        <div class="cat-title-text">${cat.title}</div>
         <div class="cat-count" id="cat-count-${ci}">${cat.questions.length} question${cat.questions.length!==1?'s':''}</div>
-        <div class="cat-edit-controls">
-          <button class="etb danger" onclick="deleteCategory(${ci})">🗑 Delete Category</button>
-        </div>
       </div>
       `;
 
@@ -3546,30 +3541,11 @@ function render() {
       card.className = `q-card ${conflictClass} ${answeredClass}`;
       card.id = `card-${q.id}`;
 
-      // Edit toolbar (only visible in edit mode)
-      const conflictActive = q.conflict ? 'active' : '';
       card.innerHTML = `
-        <div class="edit-toolbar">
-          <div class="move-btns">
-            <button class="etb" onclick="moveQ(${ci},${qi},-1)" title="Move up">↑</button>
-            <button class="etb" onclick="moveQ(${ci},${qi},1)" title="Move down">↓</button>
-          </div>
-          <button class="etb ${conflictActive}" onclick="toggleConflict(${ci},${qi})" id="conflictBtn-${q.id}">⚠ Multiple versions spotted</button>
-          <button class="etb danger" onclick="deleteQuestion(${ci},${qi})">🗑 Delete</button>
-        </div>
-
         <div class="q-header">
           <div class="q-number">Q${qNum}</div>
           <div class="q-title-wrap">
-            <div class="q-title">
-              <span contenteditable="${isEditing}" data-ci="${ci}" data-qi="${qi}" data-field="title"
-                data-placeholder="Question title" oninput="syncQField(this)">${q.title}</span>
-            </div>
-            ${isEditing ? `<div class="q-context">
-              <span contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-field="context"
-                data-placeholder="Add context for MacKenzie…" class="block-editable" oninput="syncQField(this)">${q.context}</span>
-              ${renderSources(q, ci, qi)}
-            </div>` : ''}
+            <div class="q-title">${q.title}</div>
           </div>
           <div class="q-status-icon">${answered ? '✅' : '○'}</div>
         </div>`;
@@ -3595,34 +3571,9 @@ function render() {
     </div>`;
         optionsDiv.appendChild(ansRow);
 
-        // Edit-mode row
-        const editRow = document.createElement('div');
-        editRow.className = 'option-edit-row';
-        editRow.innerHTML = `
-    <input class="opt-key-input" type="text" value="${opt.key}" maxlength="2"
-      oninput="syncOptField(${ci},${qi},${oi},'key',this.value)" />
-    <div class="opt-text-wrap">
-      <span class="opt-label-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="label"
-        data-placeholder="Option label" oninput="syncOptFieldCE(this)">${opt.label}</span>
-      <span class="opt-note-edit" contenteditable="true" data-ci="${ci}" data-qi="${qi}" data-oi="${oi}" data-field="note"
-        data-placeholder="Optional sub-note" oninput="syncOptFieldCE(this)">${opt.note||''}</span>
-      <label class="opt-custom-toggle">
-        <input type="checkbox" ${opt.custom?'checked':''} onchange="syncOptField(${ci},${qi},${oi},'custom',this.checked)" />
-        Write-in option
-      </label>
-    </div>
-    <button class="opt-del-btn" onclick="deleteOption(${ci},${qi},${oi})">×</button>`;
-        optionsDiv.appendChild(editRow);
       });
 
       card.appendChild(optionsDiv);
-
-      // Add option button (edit mode only)
-      const addOptBtn = document.createElement('button');
-      addOptBtn.className = 'add-opt-btn';
-      addOptBtn.textContent = '+ Add Option';
-      addOptBtn.onclick = () => addOption(ci, qi);
-      card.appendChild(addOptBtn);
 
       // Write-in (answer mode)
       const customOpt = q.options.find(o => o.custom);
@@ -3642,24 +3593,8 @@ function render() {
       catDiv.appendChild(card);
     });
 
-    // Add question button
-    const addQBtn = document.createElement('button');
-    addQBtn.className = 'add-q-btn';
-    addQBtn.textContent = '+ Add Question to This Category';
-    addQBtn.onclick = () => addQuestion(ci);
-    catDiv.appendChild(addQBtn);
-
     container.appendChild(catDiv);
   });
-
-  // Add category button
-  if (isEditing) {
-    const addCatBtn = document.createElement('button');
-    addCatBtn.style.cssText = 'display:block;width:100%;background:none;border:2px dashed #aaa;color:#888;font-family:Arial,sans-serif;font-size:13px;font-weight:700;padding:12px;cursor:pointer;border-radius:2px;margin-top:16px;';
-    addCatBtn.textContent = '+ Add New Category';
-    addCatBtn.onclick = addCategory;
-    container.appendChild(addCatBtn);
-  }
 
   updateProgress();
 }
