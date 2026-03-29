@@ -40,12 +40,12 @@
   .intro-banner { background: white; border-bottom: 3px solid var(--gold); padding: 16px 24px 18px; }
   .intro-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
   .intro-left { flex: 1; min-width: 260px; }
-  .intro-headline { font-family: Georgia, serif; font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.2; margin-bottom: 4px; }
-  .intro-headline span { color: var(--gold); }
-  .intro-sub { font-family: Arial, sans-serif; font-size: 13px; color: var(--muted); margin-bottom: 10px; }
-  .intro-sub em { color: var(--navy); font-style: normal; font-weight: 700; }
-  .intro-pills { display: flex; flex-wrap: wrap; gap: 7px; }
-  .intro-pill { display: inline-flex; align-items: center; gap: 5px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 20px; padding: 4px 12px; font-family: Arial, sans-serif; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .intro-story { font-family: Georgia, serif; font-size: 14.5px; color: #555; line-height: 2; }
+  .is-count { color: var(--gold); font-weight: 700; font-size: 15.5px; }
+  .is-nojudge { color: var(--navy); font-weight: 700; }
+  .is-alot { font-style: italic; color: var(--navy); font-weight: 700; }
+  .is-hamilton { color: var(--navy); font-weight: 700; background: rgba(19,51,107,.08); padding: 1px 5px; border-radius: 4px; }
+  .is-haterade { color: #a07800; font-weight: 700; font-style: italic; background: rgba(201,168,76,.18); padding: 1px 5px; border-radius: 4px; }
   .intro-stats { background: var(--navy); color: white; padding: 12px 20px; border-radius: 10px; font-family: Arial, sans-serif; font-size: 12px; white-space: nowrap; text-align: center; min-width: 110px; }
   .intro-stats .big-num { font-size: 32px; font-weight: 700; color: var(--gold); display: block; line-height: 1; margin-bottom: 2px; }
 
@@ -241,12 +241,12 @@
 <div class="intro-banner">
   <div class="intro-inner">
     <div class="intro-left">
-      <div class="intro-headline">Same words. <span>47 spellings.</span></div>
-      <div class="intro-sub">No judgment. <em>Actually — a lot of judgment.</em></div>
-      <div class="intro-pills">
-        <span class="intro-pill">🐶 Hamilton is standing by</span>
-        <span class="intro-pill">🍹 Haterade: chilled</span>
-        <span class="intro-pill">⚖️ You hold the gavel</span>
+      <div class="intro-story">
+        Across every Alpha website, the same words have been spelled <span class="is-count">roughly forty-seven different ways.</span>
+        <br>
+        <span class="is-nojudge">No judgment</span> — <span class="is-alot">actually, a lot of judgment.</span>
+        <br>
+        🐶 I'm going to need my emotional support dog, <span class="is-hamilton">Hamilton,</span> and a big glass of <span class="is-haterade">haterade</span> to get through this.
       </div>
     </div>
     <div class="intro-stats">
@@ -2800,7 +2800,7 @@
 
 <div class="complete-banner" id="completeBanner">
   <h3>All rulings are in. ⚖️</h3>
-  <p>Every question has been answered. Somewhere, a hyphen is finally at peace.<br><br>
+  <p>Every question has been answered. Somewhere, a hyphen is at peace.<br><br>
   <em>If everyone actually sticks to these rules, I will personally buy the copy team a Limitless Lunch or a bag of hot Takis. If you use the wrong version of 2 Hour Learning, you lose your Mobile Squad privileges.</em></p>
   <button class="complete-btn" onclick="openModal()">Export Final Decisions</button>
 </div>
