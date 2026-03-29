@@ -20,10 +20,10 @@
   .progress-wrap { flex: 1; min-width: 140px; }
   .progress-label { font-family: Arial, sans-serif; font-size: 11px; color: rgba(255,255,255,.8); margin-bottom: 4px; text-align: right; }
   .progress-quip { display: none; }
-  #milestone-toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.88); background: var(--navy); color: #fff; border: 3px solid var(--gold); border-radius: 20px; padding: 28px 44px; font-family: Georgia, serif; font-size: 18px; font-weight: 700; text-align: center; max-width: 500px; width: 90%; z-index: 9999; box-shadow: 0 20px 60px rgba(0,0,0,.55); transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s; opacity: 0; pointer-events: none; line-height: 1.5; }
-  #milestone-toast.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  #reaction-toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.82); background: #fff; color: var(--navy); border: 2.5px solid var(--gold); padding: 18px 32px; font-family: Georgia, serif; font-size: 16px; font-weight: 700; border-radius: 16px; z-index: 9999; box-shadow: 0 16px 50px rgba(0,0,0,.4); transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s; opacity: 0; pointer-events: none; max-width: 420px; width: 86%; text-align: center; line-height: 1.5; }
-  #reaction-toast.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  #milestone-toast { position: fixed; background: var(--navy); color: #fff; border: 3px solid var(--gold); border-radius: 20px; padding: 22px 36px; font-family: Georgia, serif; font-size: 16px; font-weight: 700; text-align: center; max-width: 480px; z-index: 9999; box-shadow: 0 16px 48px rgba(0,0,0,.5); opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .35s cubic-bezier(.34,1.56,.64,1); pointer-events: none; line-height: 1.55; }
+  #milestone-toast.show { opacity: 1; transform: translateY(0); }
+  #reaction-toast { position: fixed; background: #fff; color: var(--navy); border: 2.5px solid var(--gold); padding: 14px 24px; font-family: Georgia, serif; font-size: 14.5px; font-weight: 700; border-radius: 14px; z-index: 9999; box-shadow: 0 10px 36px rgba(0,0,0,.32); opacity: 0; transform: translateY(8px); transition: opacity .25s, transform .3s cubic-bezier(.34,1.56,.64,1); pointer-events: none; max-width: 380px; text-align: center; line-height: 1.5; }
+  #reaction-toast.show { opacity: 1; transform: translateY(0); }
   .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 4px; height: 8px; overflow: hidden; }
   .progress-bar-fill { background: var(--gold); height: 100%; border-radius: 4px; transition: width .4s ease; width: 0%; }
   .hbtn { border: none; padding: 8px 14px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 3px; letter-spacing: .04em; white-space: nowrap; transition: background .15s, color .15s; }
@@ -4185,6 +4185,7 @@ function toggleMultiOption(qId, key) {
   else ans.choices.splice(idx, 1);
 
   const card = document.getElementById(`card-${qId}`);
+  showToast._lastCard = card; // keep milestone toast aligned to same card
   const nowAnswered = ans.choices.length > 0;
   card.classList.toggle('answered', nowAnswered);
   card.querySelector('.q-status-icon').textContent = nowAnswered ? '✅' : '○';
@@ -4206,7 +4207,7 @@ function toggleMultiOption(qId, key) {
     wi.style.display = (customOpt && ans.choices.includes(customOpt.key)) ? '' : 'none';
   }
 
-  if (idx === -1) showReactionToast(); // only on selection, not deselection
+  if (idx === -1) showReactionToast(card); // only on selection, not deselection
   updateProgress();
 }
 
@@ -4242,11 +4243,33 @@ const _reactions = [
 ];
 let _reactionIdx = Math.floor(Math.random() * _reactions.length);
 
-function showReactionToast() {
+function _placeToastAboveCard(el, card) {
+  const rect = card.getBoundingClientRect();
+  const elW = Math.min(parseInt(el.style.maxWidth) || 380, window.innerWidth - 24);
+  const centerX = rect.left + rect.width / 2;
+  let leftPx = centerX - elW / 2;
+  leftPx = Math.max(12, Math.min(leftPx, window.innerWidth - elW - 12));
+  el.style.left = leftPx + 'px';
+  el.style.right = 'auto';
+  el.style.width = elW + 'px';
+  // Bottom of toast sits 14px above the card's top edge
+  const bottomPx = window.innerHeight - rect.top + 14;
+  if (bottomPx > window.innerHeight - 110) {
+    // Card is near top of viewport — anchor just below sticky header
+    el.style.top = '88px';
+    el.style.bottom = 'auto';
+  } else {
+    el.style.bottom = bottomPx + 'px';
+    el.style.top = 'auto';
+  }
+}
+
+function showReactionToast(card) {
   const el = document.getElementById('reaction-toast');
   el.textContent = _reactions[_reactionIdx % _reactions.length];
   _reactionIdx++;
   el.classList.remove('show');
+  if (card) _placeToastAboveCard(el, card);
   void el.offsetWidth; // force reflow to restart animation
   el.classList.add('show');
   clearTimeout(showReactionToast._t);
@@ -4285,9 +4308,12 @@ function updateProgress() {
 function showToast(msg) {
   const el = document.getElementById('milestone-toast');
   el.textContent = msg;
+  el.classList.remove('show');
+  if (showToast._lastCard) _placeToastAboveCard(el, showToast._lastCard);
+  void el.offsetWidth;
   el.classList.add('show');
   clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => el.classList.remove('show'), 3500);
+  showToast._t = setTimeout(() => el.classList.remove('show'), 3800);
 }
 
 // ─── DOWNLOAD UPDATED PAGE ───────────────────────────────────────────────────
