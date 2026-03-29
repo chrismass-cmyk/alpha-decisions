@@ -29,12 +29,6 @@
   .hbtn { border: none; padding: 8px 14px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 3px; letter-spacing: .04em; white-space: nowrap; transition: background .15s, color .15s; }
   .hbtn-gold { background: var(--gold); color: var(--navy); }
   .hbtn-gold:hover { background: var(--gold-light); }
-  .hbtn-amber { background: var(--amber); color: #1a1a1a; }
-  .hbtn-amber:hover { background: #f5bc50; }
-  .hbtn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,.4); }
-  .hbtn-outline:hover { background: rgba(255,255,255,.1); }
-  .edit-mode-bar { background: var(--amber); color: #1a1a1a; text-align: center; padding: 7px 24px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .03em; display: none; }
-  .edit-mode-bar.show { display: block; }
 
   /* ── INTRO ── */
   .intro-banner { background: white; border-bottom: 3px solid var(--gold); padding: 16px 24px 18px; }
@@ -55,23 +49,19 @@
   .category-icon { width: 36px; height: 36px; background: var(--navy); color: white; font-family: Georgia, serif; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 50%; }
   .cat-title-text { font-family: Georgia, serif; font-size: 15px; font-weight: 700; color: var(--navy); letter-spacing: .02em; }
   .cat-count { font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); margin-left: auto; }
-  .cat-edit-controls { display: none; gap: 6px; margin-left: 8px; }
-  .is-editing .cat-edit-controls { display: flex; }
+  .cat-edit-controls { display: none; }
 
   /* ── QUESTION CARD ── */
   .q-card { background: white; border: 1px solid var(--border); border-left: 5px solid var(--border); margin-bottom: 14px; transition: border-left-color .2s, box-shadow .2s; position: relative; border-radius: 10px; overflow: hidden; }
   .q-card.answered { border-left-color: var(--green); box-shadow: 0 2px 8px rgba(55,86,35,.1); }
   .q-card.conflict { border-left-color: var(--amber); }
   .q-card.conflict.answered { border-left-color: var(--green); }
-  .is-editing .q-card { border-style: dashed; border-color: var(--amber); border-left-color: var(--amber); border-left-width: 4px; }
-  .is-editing .q-card.answered { border-left-color: var(--amber); }
 
   .q-header { padding: 13px 16px 9px; display: flex; align-items: flex-start; gap: 10px; }
   .q-number { font-family: Arial, sans-serif; font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: .05em; padding-top: 3px; min-width: 26px; }
   .q-title-wrap { flex: 1; }
   .q-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: 700; color: var(--navy); line-height: 1.35; margin-bottom: 3px; }
   .q-context { font-size: 12px; color: var(--muted); font-family: Arial, sans-serif; line-height: 1.45; display: none; }
-  .is-editing .q-context { display: block; }
   .sources { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
   .source-tag { background: #eee; color: #555; font-size: 10px; font-family: Arial, sans-serif; padding: 1px 6px; border-radius: 2px; }
   .source-tag.conflict-tag { background: #FFF3CD; color: #7D6608; }
@@ -99,71 +89,8 @@
 
   /* conflict-badge removed */
 
-  /* ── EDIT MODE OVERLAYS ── */
-  .edit-toolbar { display: none; position: absolute; top: 8px; right: 8px; gap: 4px; }
-  .is-editing .edit-toolbar { display: flex; }
-  .etb { background: white; border: 1px solid var(--border); color: var(--muted); font-size: 10px; font-family: Arial, sans-serif; font-weight: 700; padding: 3px 7px; cursor: pointer; border-radius: 2px; white-space: nowrap; }
-  .etb:hover { background: #f0ede8; color: var(--text); }
-  .etb.danger { color: var(--red); }
-  .etb.danger:hover { background: var(--soft-red); }
-  .etb.active { background: #FFF3CD; border-color: var(--amber); color: #7D5A00; }
-
-  /* editable text in edit mode */
-  .is-editing [contenteditable="true"] {
-    outline: none;
-    background: rgba(232, 168, 56, 0.1);
-    border-radius: 2px;
-    padding: 1px 3px;
-    cursor: text;
-    min-width: 30px;
-    display: inline-block;
-  }
-  .is-editing [contenteditable="true"]:focus {
-    background: rgba(232, 168, 56, 0.22);
-    box-shadow: 0 0 0 2px var(--amber);
-  }
-  .is-editing [contenteditable="true"]:empty::before {
-    content: attr(data-placeholder);
-    color: #aaa;
-    font-style: italic;
-  }
-  .is-editing [contenteditable="true"].block-editable {
-    display: block;
-    width: 100%;
-  }
-
-  /* edit-mode option row */
-  .option-edit-row { display: none; align-items: flex-start; gap: 6px; padding: 5px 7px; margin-bottom: 3px; border: 1px dashed var(--amber); background: #fffdf5; border-radius: 2px; }
-  .is-editing .option-edit-row { display: flex; }
-  .is-editing .option-row { display: none; } /* hide answer radios in edit mode */
-  .opt-key-input { width: 28px; border: 1px solid var(--border); padding: 4px 5px; font-family: 'Courier New', monospace; font-size: 12px; font-weight: 700; text-align: center; background: white; border-radius: 2px; flex-shrink: 0; }
-  .opt-text-wrap { flex: 1; }
-  .opt-label-edit { font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: var(--navy); display: block; width: 100%; min-height: 20px; }
-  .opt-note-edit { font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); display: block; width: 100%; min-height: 16px; margin-top: 2px; }
-  .opt-custom-toggle { font-family: Arial, sans-serif; font-size: 10px; cursor: pointer; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 3px; margin-top: 2px; }
-  .opt-custom-toggle input { accent-color: var(--navy); }
-  .opt-del-btn { color: var(--red); font-size: 14px; cursor: pointer; line-height: 1; padding: 2px 4px; font-family: Arial, sans-serif; flex-shrink: 0; border: none; background: none; }
-  .opt-del-btn:hover { background: var(--soft-red); border-radius: 2px; }
-
-  /* source editing */
-  .source-edit-wrap { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; align-items: center; }
-  .source-editable { display: flex; align-items: center; gap: 2px; background: #eee; padding: 1px 3px 1px 6px; border-radius: 2px; font-size: 10px; font-family: Arial, sans-serif; }
-  .source-editable span { outline: none; min-width: 20px; }
-  .source-editable span:focus { background: #fff; }
-  .source-del { color: var(--red); cursor: pointer; font-size: 11px; border: none; background: none; line-height: 1; padding: 0 2px; }
-  .add-source-btn { font-size: 10px; font-family: Arial, sans-serif; background: none; border: 1px dashed #bbb; color: var(--muted); padding: 2px 6px; cursor: pointer; border-radius: 2px; }
-  .add-source-btn:hover { background: #f0ede8; }
-
-  /* add buttons in edit mode */
-  .add-opt-btn { display: none; margin: 4px 0 10px 52px; background: none; border: 1px dashed var(--amber); color: var(--amber); font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 5px 12px; cursor: pointer; border-radius: 2px; }
-  .add-opt-btn:hover { background: #fffbf0; }
-  .is-editing .add-opt-btn { display: inline-block; }
-  .add-q-btn { display: none; width: 100%; background: none; border: 2px dashed var(--amber); color: #7D5A00; font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; padding: 10px; cursor: pointer; border-radius: 2px; margin-top: 6px; text-align: center; }
-  .add-q-btn:hover { background: #fffbf0; }
-  .is-editing .add-q-btn { display: block; }
-
   /* move up/down */
-  .move-btns { display: flex; gap: 2px; }
+  .move-btns { display: none; }
 
 
   /* ── GENERAL NOTES SECTION ── */
@@ -218,14 +145,9 @@
       <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div></div>
       <div class="progress-quip" id="progressQuip"></div>
     </div>
-    <button class="hbtn hbtn-amber" id="editToggleBtn" onclick="toggleEditMode()">✓ Done Editing</button>
-    <button class="hbtn hbtn-amber" id="downloadBtn" onclick="downloadPage()" style="">⬇ Save Page</button>
     <button class="hbtn hbtn-gold" onclick="openModal()">Export Decisions ↓</button>
   </div>
 </header>
-<div class="edit-mode-bar show" id="editModeBar">
-  ✏ EDIT MODE — Click any text to change it. Use the controls on each card to add/remove questions and options. Click "Save Page" to download the updated file.
-</div>
 
 <div class="intro-banner">
   <div class="intro-inner">
@@ -3776,15 +3698,6 @@ function syncSource(el) {
   categories[ci].questions[qi].sources[si] = el.textContent;
 }
 
-// ─── EDIT ACTIONS ────────────────────────────────────────────────────────────
-function toggleEditMode() {
-  isEditing = !isEditing;
-  document.getElementById('editToggleBtn').textContent = isEditing ? '✓ Done Editing' : '✏ Edit Questions';
-  document.getElementById('editToggleBtn').className = isEditing ? 'hbtn hbtn-amber' : 'hbtn hbtn-outline';
-  document.getElementById('downloadBtn').style.display = isEditing ? '' : 'none';
-  document.getElementById('editModeBar').classList.toggle('show', isEditing);
-  render();
-}
 
 function toggleConflict(ci, qi) {
   categories[ci].questions[qi].conflict = !categories[ci].questions[qi].conflict;
@@ -4013,37 +3926,6 @@ function showToast(msg) {
   showToast._t = setTimeout(() => el.classList.remove('show'), 3800);
 }
 
-// ─── DOWNLOAD UPDATED PAGE ───────────────────────────────────────────────────
-function downloadPage() {
-  // Collect any final in-progress contenteditable changes
-  const allEditable = document.querySelectorAll('[contenteditable="true"]');
-  allEditable.forEach(el => {
-    if (el.dataset.field === 'title' && el.dataset.qi === undefined) syncField(el);
-    else if (el.dataset.qi !== undefined && el.dataset.oi === undefined) syncQField(el);
-    else if (el.dataset.oi !== undefined) syncOptFieldCE(el);
-    else if (el.dataset.si !== undefined) syncSource(el);
-  });
-
-  const serialized = JSON.stringify(categories, null, 2);
-  const pageHTML = document.documentElement.outerHTML;
-  const updated = pageHTML
-    .replace(
-      /let categories = \[[\s\S]*?\];(?=\s*\/\/ ─── STATE)/,
-      `let categories = ${serialized};`
-    )
-    .replace(
-      /let generalNotes = [^;]*;/,
-      `let generalNotes = ${JSON.stringify(generalNotes)};`
-    );
-
-  const blob = new Blob([updated], {type:'text/html'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'mackenzie-decisions.html';
-  a.click();
-  URL.revokeObjectURL(url);
-}
 
 // ─── EXPORT MODAL ────────────────────────────────────────────────────────────
 function getAnswerLabel(qId, choice) {
