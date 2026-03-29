@@ -2645,6 +2645,7 @@ let categories = [
       {
         "id": "test2pass",
         "title": "\"Test2Pass,\" \"Test 2 Pass,\" or \"Test to Pass\"?",
+        "hint": "Select all that are acceptable.",
         "conflict": true,
         "context": "Three distinct forms appear across Alpha properties. MacKenzie’s Substack and the alpha.school/lifeskills-workshops/ page use \"Test2Pass\" (numeral, one word). Instagram uses \"Test 2 Pass\" (numeral, spaces). A separate alpha.school blog post uses the spelled-out form: \"Test to Pass.\" All three refer to the same assessment format.",
         "sources": [
@@ -3578,6 +3579,12 @@ function render() {
         });
         card.appendChild(chipsDiv);
       } else {
+        if (q.hint) {
+          const hintEl = document.createElement('div');
+          hintEl.className = 'multi-hint';
+          hintEl.textContent = q.hint;
+          card.appendChild(hintEl);
+        }
         const optionsDiv = document.createElement('div');
         optionsDiv.className = 'q-options';
         q.options.forEach(opt => {
